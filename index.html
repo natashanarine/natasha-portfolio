@@ -514,13 +514,20 @@
       height: 320px;
       border: none;
       outline: none;
-      resize: none;
       padding: 4px;
       font-family: 'Lucida Console', 'Courier New', monospace;
       font-size: 14px;
       color: #000;
       background: #fff;
       display: block;
+      white-space: pre-wrap;
+      overflow-y: auto;
+      box-sizing: border-box;
+    }
+
+    .np-link {
+      color: #000;
+      text-decoration: underline;
     }
 
     /* ── Experience Window ── */
@@ -1510,16 +1517,18 @@
         <span class="np-menu">Help</span>
       </div>
       <div id="np-content">
-        <textarea id="np-textarea" spellcheck="false">Hello, my name is Natasha. Welcome to my portfolio! 
-          
-I study computer information systems at Georgia State University, building my career in product management. I've spent my time leading a programming club, marketing early-stage products, organizing large-scale events, and turning vague ideas into launched products. Somewhere in all of that, I figured out that I love taking messy, undefined problems and turning them into something that actually works. This site is where I document all of it!  
+        <div id="np-textarea">Hello, my name is Natasha. Welcome to my portfolio!
+
+I study computer information systems at Georgia State University, building my career in product management. I've spent my time leading a programming club, marketing early-stage products, organizing large-scale events, and turning vague ideas into launched products. Somewhere in all of that, I figured out that I love taking messy, undefined problems and turning them into something that actually works. This site is where I document all of it!
 
 Feel free to click around, everything functions like a real desktop :)
 
-email: nb.narine@gmail.com
-linkedin: linkedin.com/in/natasha-narine
 
-        </textarea>
+
+
+email: <a href="mailto:nb.narine@gmail.com" class="np-link">nb.narine@gmail.com</a>
+linkedin: <a href="https://www.linkedin.com/in/natasha-narine" target="_blank" rel="noopener noreferrer" class="np-link">linkedin.com/in/natasha-narine</a>
+        </div>
       </div>
     </div>
   </div>
