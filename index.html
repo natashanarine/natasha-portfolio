@@ -838,6 +838,119 @@
       background: #d4d0c8;
     }
 
+    /* Case Study detail view */
+    #cs-detail { display: none; flex-direction: column; flex: 1; }
+    #cs-detail.open { display: flex; }
+
+    #cs-detail-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 6px;
+      border-bottom: 1px solid #a0a0a0;
+      background: #d4d0c8;
+    }
+
+    #cs-back-btn {
+      height: 22px;
+      padding: 0 8px;
+      background: linear-gradient(to bottom, #ece8e0 0%, #c4c0b8 100%);
+      border-top: 1px solid #fff;
+      border-left: 1px solid #fff;
+      border-right: 1px solid #808080;
+      border-bottom: 1px solid #808080;
+      font-family: 'Tahoma', sans-serif;
+      font-size: 11px;
+      cursor: pointer;
+      color: #000;
+    }
+    #cs-back-btn:hover { background: linear-gradient(to bottom, #f8f4ec 0%, #d8d4cc 100%); }
+    #cs-back-btn:active {
+      border-color: #808080 #fff #fff #808080;
+      background: linear-gradient(to bottom, #c4c0b8 0%, #ece8e0 100%);
+    }
+
+    #cs-detail-content {
+      background: #fff;
+      border: 2px solid;
+      border-color: #808080 #ffffff #ffffff #808080;
+      margin: 6px;
+      overflow-y: auto;
+      max-height: 400px;
+      padding: 12px 14px;
+      font-family: 'Tahoma', sans-serif;
+      font-size: 11px;
+      line-height: 1.6;
+      color: #000;
+    }
+
+    .cs-d-head { margin-bottom: 12px; border-bottom: 1px solid #d0ccc4; padding-bottom: 10px; }
+    .cs-d-title { font-size: 13px; font-weight: bold; color: #000; margin-bottom: 3px; }
+    .cs-d-subtitle { font-size: 11px; color: #555; }
+
+    .cs-d-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: #a0a0a0;
+      border: 1px solid #a0a0a0;
+      margin-bottom: 14px;
+      font-size: 11px;
+    }
+    .cs-d-meta-item {
+      background: #f4f2ee;
+      padding: 5px 8px;
+    }
+    .cs-d-meta-label { font-weight: bold; color: #000; margin-bottom: 1px; }
+    .cs-d-meta-val { color: #333; }
+
+    .cs-d-section { margin-bottom: 14px; }
+    .cs-d-section-hdr {
+      display: flex;
+      align-items: baseline;
+      gap: 7px;
+      margin-bottom: 5px;
+      border-bottom: 1px solid #e0dcd4;
+      padding-bottom: 3px;
+    }
+    .cs-d-num {
+      font-size: 10px;
+      font-weight: bold;
+      color: #fff;
+      background: #0a246a;
+      padding: 1px 5px;
+      flex-shrink: 0;
+    }
+    .cs-d-section-title { font-weight: bold; font-size: 12px; color: #000; }
+    .cs-d-section-intro { font-style: italic; color: #333; margin-bottom: 5px; font-size: 11px; }
+    .cs-d-body { color: #222; font-size: 11px; }
+    .cs-d-body p + p { margin-top: 6px; }
+
+    .cs-d-quote {
+      border-left: 3px solid #0a246a;
+      margin: 6px 0;
+      padding: 3px 8px;
+      color: #333;
+      font-style: italic;
+      background: #f8f6f2;
+    }
+
+    .cs-d-stat-row { display: flex; gap: 16px; margin: 6px 0; flex-wrap: wrap; }
+    .cs-d-stat { text-align: center; }
+    .cs-d-stat-num { font-size: 18px; font-weight: bold; color: #0a246a; }
+    .cs-d-stat-label { font-size: 10px; color: #555; }
+
+    .cs-d-table { width: 100%; border-collapse: collapse; font-size: 10px; margin: 6px 0; }
+    .cs-d-table th {
+      background: #0a246a; color: #fff; padding: 3px 6px;
+      text-align: left; font-weight: bold;
+    }
+    .cs-d-table td { padding: 3px 6px; border-bottom: 1px solid #e0dcd4; vertical-align: top; }
+    .cs-d-table tr:nth-child(even) td { background: #f8f6f2; }
+
+    .cs-d-bullet { margin: 3px 0 3px 14px; list-style: disc; }
+    .cs-d-bullet li { margin-bottom: 2px; }
+
     /* ── Projects Window ── */
     #proj-window {
       position: absolute;
@@ -1689,15 +1802,101 @@ linkedin: linkedin.com/in/natasha-narine
       </div>
       <div id="cs-addressbar">
         <span class="addr-label">Address</span>
-        <span class="addr-field">C:\Natasha\Case Studies</span>
+        <span class="addr-field" id="cs-addr-field">C:\Natasha\Case Studies</span>
       </div>
-      <div id="cs-list" style="display:flex;align-items:center;justify-content:center;min-height:160px;">
-        <div style="text-align:center;color:#808080;font-family:'Tahoma',sans-serif;font-size:11px;line-height:1.8;">
-          <div>This folder is empty.</div>
-          <div>Files coming soon.</div>
+
+      <!-- List view -->
+      <div id="cs-list">
+        <div class="exp-row" style="cursor:pointer;" onclick="openCaseStudy(0)">
+          <img class="exp-entry-icon" src="techrise.png" style="width:30px;height:30px;object-fit:contain;flex-shrink:0;" />
+          <div>
+            <div class="exp-role">TechRise App UI/UX Redesign</div>
+            <div class="exp-desc">Students weren't engaging with TechRise not because they didn't need it but because the app made the wrong things hard. I led the redesign from research through shipped UI.</div>
+          </div>
         </div>
       </div>
-      <div id="cs-statusbar">0 object(s)</div>
+
+      <!-- Detail view -->
+      <div id="cs-detail">
+        <div id="cs-detail-toolbar">
+          <button id="cs-back-btn" onclick="closeCaseStudy()">&#9664; Back</button>
+        </div>
+        <div id="cs-detail-content">
+
+          <div class="cs-d-head">
+            <div class="cs-d-title">TechRise</div>
+            <div class="cs-d-subtitle">redesigning a student productivity app to actually get used</div>
+          </div>
+
+          <div class="cs-d-meta">
+            <div class="cs-d-meta-item"><div class="cs-d-meta-label">Timeline</div><div class="cs-d-meta-val">4 weeks</div></div>
+            <div class="cs-d-meta-item"><div class="cs-d-meta-label">My Role</div><div class="cs-d-meta-val">UI/UX Designer (solo)</div></div>
+            <div class="cs-d-meta-item"><div class="cs-d-meta-label">Collaborators</div><div class="cs-d-meta-val">Francis Ganya (engineer)</div></div>
+            <div class="cs-d-meta-item"><div class="cs-d-meta-label">Deliverables</div><div class="cs-d-meta-val">Research synthesis, user flows, wireframes, final UI, advisor variant</div></div>
+          </div>
+
+          <div class="cs-d-section">
+            <div class="cs-d-section-hdr"><span class="cs-d-num">01</span><span class="cs-d-section-title">context</span></div>
+            <div class="cs-d-section-intro">the app existed. the problem was adoption.</div>
+            <div class="cs-d-body">TechRise is a student-focused platform with two core jobs: help students book advisor appointments and surface relevant internship opportunities. the product had real utility on paper. but engagement was low, and the team had a hunch the interface was the reason.<br><br>i came in to diagnose whether that was true and if so, where exactly the experience was breaking down.</div>
+          </div>
+
+          <div class="cs-d-section">
+            <div class="cs-d-section-hdr"><span class="cs-d-num">02</span><span class="cs-d-section-title">problem framing</span></div>
+            <div class="cs-d-section-intro">what we were actually solving for</div>
+            <div class="cs-d-body">before touching anything, i needed to separate the symptoms from the real problem. the app being "cluttered" was a description, not a problem statement.<br><br><div class="cs-d-quote">students aren't engaging with TechRise because the cost of navigating the app exceeds the perceived value of what they'll find when they get there, especially for time-sensitive actions like booking appointments or finding internship deadlines.</div>this reframe mattered because it shifted the design goal. the question wasn't "how do we clean this up?" it was "how do we make the highest-value actions feel effortless and fast?"</div>
+          </div>
+
+          <div class="cs-d-section">
+            <div class="cs-d-section-hdr"><span class="cs-d-num">03</span><span class="cs-d-section-title">research</span></div>
+            <div class="cs-d-section-intro">what students actually said</div>
+            <div class="cs-d-body">i ran user interviews and distributed a survey to understand where the friction was coming from. i also did a competitive teardown of advisor booking and internship tools to understand what the bar looked like.<br><br><strong>user interviews: recurring quotes:</strong><ul class="cs-d-bullet"><li>"it's hard to find advisors that have time to help me."</li><li>"by the time i find the posting, it's too late to apply."</li><li>"switching between different platforms for internship postings gets frustrating."</li></ul><br><strong>survey data:</strong><div class="cs-d-stat-row"><div class="cs-d-stat"><div class="cs-d-stat-num">60%</div><div class="cs-d-stat-label">struggle to book appointments</div></div><div class="cs-d-stat"><div class="cs-d-stat-num">90%</div><div class="cs-d-stat-label">want internships easier to access</div></div><div class="cs-d-stat"><div class="cs-d-stat-num">50%</div><div class="cs-d-stat-label">find the interface confusing</div></div><div class="cs-d-stat"><div class="cs-d-stat-num">30%</div><div class="cs-d-stat-label">want meeting reminders</div></div></div><br><strong>competitive analysis takeaways:</strong><ul class="cs-d-bullet"><li>existing advisor booking tools are functional but built for admin convenience, not student speed</li><li>Handshake has volume but weak filtering; students waste time before finding relevant postings</li><li>common theme: students value speed and clarity over feature richness</li></ul></div>
+          </div>
+
+          <div class="cs-d-section">
+            <div class="cs-d-section-hdr"><span class="cs-d-num">04</span><span class="cs-d-section-title">synthesis & prioritization</span></div>
+            <div class="cs-d-section-intro">turning findings into a focused scope</div>
+            <div class="cs-d-body">
+              <table class="cs-d-table">
+                <tr><th>Problem</th><th>Severity</th><th>In Scope?</th><th>Rationale</th></tr>
+                <tr><td>Confusing navigation / IA</td><td>High</td><td>✓ Yes</td><td>Root cause of most friction</td></tr>
+                <tr><td>Advisor availability not visible</td><td>High</td><td>✓ Yes</td><td>Directly impacts core use case</td></tr>
+                <tr><td>Internship deadline visibility</td><td>High</td><td>✓ Yes</td><td>Zero-cost fix via info hierarchy</td></tr>
+                <tr><td>Notification system</td><td>Medium</td><td>Future</td><td>Backend dependency</td></tr>
+                <tr><td>Cross-platform aggregation</td><td>High (complex)</td><td>Future</td><td>Out of sprint feasibility</td></tr>
+              </table>
+              the call to scope out notifications and integrations was deliberate. trying to solve everything in 4 weeks would have compromised the structural redesign.
+            </div>
+          </div>
+
+          <div class="cs-d-section">
+            <div class="cs-d-section-hdr"><span class="cs-d-num">05</span><span class="cs-d-section-title">design decisions</span></div>
+            <div class="cs-d-section-intro">the choices i made and why</div>
+            <div class="cs-d-body">i mapped the three core user flows before touching UI: booking an advisor, finding and applying to an internship, and tracking active tasks/deadlines.<ul class="cs-d-bullet"><li><strong>restructured navigation hierarchy:</strong> reduced top-level items; moved highest-frequency actions to persistent nav.</li><li><strong>advisor availability surfaced on browse:</strong> open slots visible in directory view; reduces booking from 4+ taps to 2.</li><li><strong>deadline prominence on internship cards:</strong> deadlines moved from detail page to card-level summary.</li><li><strong>task tracking simplified:</strong> categorization reduced to three buckets (to-do, in progress, done).</li></ul></div>
+          </div>
+
+          <div class="cs-d-section">
+            <div class="cs-d-section-hdr"><span class="cs-d-num">06</span><span class="cs-d-section-title">tradeoffs</span></div>
+            <div class="cs-d-section-intro">what i gave up to get here</div>
+            <div class="cs-d-body"><ul class="cs-d-bullet"><li><strong>simplified task states vs. power user flexibility:</strong> students who wanted granular project tracking lost some customization. i accepted this because the majority were getting stuck on complexity.</li><li><strong>no onboarding flow redesign:</strong> first-run experience had friction but was a week of work alone. documented and flagged for a follow-up sprint.</li><li><strong>advisor UI as a variant, not a separate product:</strong> advisor-facing screens share the same component logic with the student view; kept engineering scope tight while unlocking a future use case.</li></ul></div>
+          </div>
+
+          <div class="cs-d-section">
+            <div class="cs-d-section-hdr"><span class="cs-d-num">07</span><span class="cs-d-section-title">output</span></div>
+            <div class="cs-d-section-intro">what shipped</div>
+            <div class="cs-d-body"><ul class="cs-d-bullet"><li>redesigned navigation and information architecture across student-facing screens</li><li>new advisor booking flow: reduced steps, availability visible upfront</li><li>internship board with deadline-forward card design</li><li>simplified task tracker with three-state categorization</li><li>advisor-facing UI variant for future engineering use</li></ul>designs were handed off to Francis Ganya and implemented in the live TechRise app.</div>
+          </div>
+
+          <div class="cs-d-section">
+            <div class="cs-d-section-hdr"><span class="cs-d-num">08</span><span class="cs-d-section-title">reflection</span></div>
+            <div class="cs-d-section-intro">what i'd do differently</div>
+            <div class="cs-d-body"><ul class="cs-d-bullet"><li><strong>validate the reframe earlier:</strong> i reframed the problem based on my read of the research but never explicitly tested that framing with stakeholders before designing against it.</li><li><strong>measure the thing i was trying to move:</strong> the brief didn't define a success metric. establishing a north star (e.g. task completion rate or time-to-book) would have sharpened every decision.</li><li><strong>document scope decisions as artifacts:</strong> i made deliberate calls to descope notifications and integrations, but those decisions lived in my head. capturing them as a scope doc would have made handoff cleaner.</li></ul></div>
+          </div>
+
+        </div>
+      </div>
+
+      <div id="cs-statusbar">1 object(s)</div>
     </div>
   </div>
 
@@ -2444,6 +2643,21 @@ linkedin: linkedin.com/in/natasha-narine
       csWin.style.zIndex = 25;
     });
 
+    function openCaseStudy(idx) {
+      document.getElementById('cs-list').style.display   = 'none';
+      document.getElementById('cs-detail').classList.add('open');
+      document.getElementById('cs-addr-field').textContent = 'C:\\Natasha\\Case Studies\\TechRise';
+      document.getElementById('cs-statusbar').textContent  = '';
+      document.getElementById('cs-detail-content').scrollTop = 0;
+    }
+
+    function closeCaseStudy() {
+      document.getElementById('cs-detail').classList.remove('open');
+      document.getElementById('cs-list').style.display   = '';
+      document.getElementById('cs-addr-field').textContent = 'C:\\Natasha\\Case Studies';
+      document.getElementById('cs-statusbar').textContent  = '1 object(s)';
+    }
+
     /* ── Projects Window ── */
     const projWin = document.getElementById('proj-window');
     const projBar = document.getElementById('proj-titlebar');
@@ -2539,9 +2753,17 @@ linkedin: linkedin.com/in/natasha-narine
 
     makeMaximizable(csWin, document.querySelector('.cs-max'), max => {
       document.getElementById('cs-body').style.flex = max ? '1' : '';
+      document.getElementById('cs-body').style.minHeight = max ? '0' : '';
       const cl = document.getElementById('cs-list');
       cl.style.flex = max ? '1' : '';
       cl.style.maxHeight = max ? 'none' : '';
+      const cd = document.getElementById('cs-detail');
+      cd.style.flex = max ? '1' : '';
+      cd.style.minHeight = max ? '0' : '';
+      const dc = document.getElementById('cs-detail-content');
+      dc.style.flex = max ? '1' : '';
+      dc.style.minHeight = max ? '0' : '';
+      dc.style.maxHeight = max ? 'none' : '400px';
     });
 
     /* ── Photos Window ── */
