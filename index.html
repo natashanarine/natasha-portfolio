@@ -1102,6 +1102,255 @@
       text-shadow: 1px 1px 2px #000, -1px -1px 2px #000, 1px -1px 2px #000, -1px 1px 2px #000;
       line-height: 1.3;
     }
+    /* ── Mobile Layout (hidden on desktop) ── */
+    #mobile-layout { display: none; }
+
+    @media (max-width: 768px) {
+      /* Hide all desktop elements */
+      #bg, #cdplayer, #mspaint, #notepad, #exp-window, #proj-window,
+      #cs-window, #photos-window, #loading-overlay,
+      .desk-icon { display: none !important; }
+
+      html, body { overflow: auto; background: #000; }
+
+      #mobile-layout {
+        display: block;
+        min-height: 100%;
+        background: url('mobile background.png') center center / cover fixed;
+        font-family: 'Tahoma', 'Arial', sans-serif;
+        font-size: 11px;
+        padding: 10px;
+        box-sizing: border-box;
+      }
+
+      /* Window chrome */
+      .mob-win {
+        margin-bottom: 10px;
+        box-shadow: 3px 3px 12px rgba(0,0,0,0.6);
+      }
+
+      .mob-win-bar {
+        background: linear-gradient(to right,
+          #0c2ec4 0%, #1a55d8 25%, #2e7ae0 55%, #4496e8 80%, #5aaef0 100%);
+        padding: 3px 6px 4px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        height: 28px;
+        border-top: 1px solid #a0c4ff;
+        border-left: 1px solid #a0c4ff;
+        border-right: 1px solid #0a1880;
+      }
+
+      .mob-win-icon {
+        width: 18px;
+        height: 18px;
+        object-fit: contain;
+        flex-shrink: 0;
+      }
+
+      .mob-win-title {
+        color: #fff;
+        font-weight: bold;
+        font-size: 12px;
+        text-shadow: 1px 1px 1px rgba(0,0,50,0.6);
+        flex: 1;
+      }
+
+      .mob-win-body {
+        background: #d4d0c8;
+        border: 2px solid;
+        border-color: #ffffff #808080 #808080 #ffffff;
+        border-top: none;
+      }
+
+      /* Menubar */
+      .mob-menubar {
+        display: flex;
+        padding: 2px 4px;
+        border-bottom: 1px solid #a0a0a0;
+        gap: 2px;
+      }
+      .mob-menu-item {
+        font-size: 11px;
+        padding: 1px 6px;
+        color: #000;
+        cursor: default;
+      }
+
+      /* Address bar */
+      .mob-addrbar {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 3px 6px;
+        border-bottom: 1px solid #a0a0a0;
+      }
+      .mob-addr-label {
+        font-size: 11px;
+        color: #000;
+        white-space: nowrap;
+      }
+      .mob-addr-field {
+        flex: 1;
+        border: 2px solid;
+        border-color: #808080 #ffffff #ffffff #808080;
+        background: #fff;
+        padding: 1px 5px;
+        font-size: 11px;
+        font-family: 'Tahoma', sans-serif;
+        color: #000;
+      }
+
+      /* White list area */
+      .mob-list {
+        background: #fff;
+        border: 2px solid;
+        border-color: #808080 #ffffff #ffffff #808080;
+        margin: 6px;
+        overflow: hidden;
+      }
+
+      /* Explorer rows */
+      .mob-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 6px 8px;
+        border-bottom: 1px solid #e0dcd4;
+        text-decoration: none;
+        color: #000;
+        background: #fff;
+      }
+      .mob-row:last-child { border-bottom: none; }
+      .mob-row:active { background: #0a246a; }
+      .mob-row:active .mob-row-title,
+      .mob-row:active .mob-row-desc { color: #fff; }
+
+      .mob-row-icon {
+        width: 28px;
+        height: 28px;
+        object-fit: contain;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+
+      .mob-row-title {
+        font-weight: bold;
+        font-size: 11px;
+        color: #000;
+        margin-bottom: 2px;
+      }
+
+      .mob-row-desc {
+        font-size: 11px;
+        color: #444;
+        line-height: 1.5;
+      }
+
+      /* Status bar */
+      .mob-statusbar {
+        font-size: 10px;
+        padding: 2px 6px;
+        border-top: 1px solid #a0a0a0;
+        color: #000;
+        background: #d4d0c8;
+      }
+
+      /* About / notepad body */
+      .mob-text-area {
+        background: #fff;
+        border: 2px solid;
+        border-color: #808080 #ffffff #ffffff #808080;
+        margin: 6px;
+        padding: 8px;
+        font-family: 'Courier New', monospace;
+        font-size: 11px;
+        color: #000;
+        line-height: 1.6;
+      }
+      .mob-text-area p + p { margin-top: 8px; }
+
+      /* Header window: avatar row */
+      #mob-avatar-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 10px;
+      }
+      #mob-avatar {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid;
+        border-color: #808080 #ffffff #ffffff #808080;
+        flex-shrink: 0;
+      }
+      #mob-avatar-name {
+        font-weight: bold;
+        font-size: 13px;
+        color: #000;
+      }
+      #mob-avatar-sub {
+        font-size: 11px;
+        color: #555;
+        margin-top: 2px;
+      }
+
+      /* Photos gallery */
+      #mob-gallery {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 4px;
+        margin: 6px;
+      }
+      .mob-photo {
+        width: 100%;
+        aspect-ratio: 1;
+        object-fit: cover;
+        border: 2px solid;
+        border-color: #808080 #ffffff #ffffff #808080;
+        cursor: pointer;
+        display: block;
+      }
+
+      /* Links buttons */
+      .mob-btns {
+        display: flex;
+        gap: 6px;
+        padding: 8px;
+      }
+      .mob-btn {
+        flex: 1;
+        text-align: center;
+        padding: 6px 4px;
+        background: linear-gradient(to bottom, #ece8e0 0%, #c4c0b8 100%);
+        border-top: 1px solid #fff;
+        border-left: 1px solid #fff;
+        border-right: 1px solid #808080;
+        border-bottom: 1px solid #808080;
+        color: #000;
+        text-decoration: none;
+        font-size: 11px;
+        font-family: 'Tahoma', sans-serif;
+      }
+      .mob-btn:active {
+        border-color: #808080 #fff #fff #808080;
+        background: linear-gradient(to bottom, #c4c0b8 0%, #ece8e0 100%);
+      }
+
+      #mob-footer {
+        text-align: center;
+        font-size: 10px;
+        color: #fff;
+        padding: 14px 0 4px;
+        text-shadow: 1px 1px 2px #000;
+      }
+
+      /* Lightbox still works on mobile */
+      #photo-lightbox.open { display: flex !important; }
+    }
   </style>
 </head>
 <body>
@@ -1492,6 +1741,151 @@ Feel free to click around, everything functions like a real desktop :)
   <div id="photo-lightbox">
     <span id="lightbox-close" onclick="closeLightbox()">&#10005;</span>
     <img id="lightbox-img" src="" alt="" />
+  </div>
+
+  <!-- ── Mobile Layout ── -->
+  <div id="mobile-layout">
+
+    <!-- About / header window -->
+    <div class="mob-win">
+      <div class="mob-win-bar">
+        <img src="icon-blog.png" class="mob-win-icon" />
+        <span class="mob-win-title">About Me — Notepad</span>
+      </div>
+      <div class="mob-win-body">
+        <div id="mob-avatar-row">
+          <img src="avatar.png" alt="Natasha" id="mob-avatar" />
+          <div>
+            <div id="mob-avatar-name">Natasha Narine</div>
+            <div id="mob-avatar-sub">Product · Design · Tech</div>
+          </div>
+        </div>
+        <div class="mob-text-area">
+          <p>Hello, my name is Natasha. Welcome to my portfolio!</p>
+          <p>I study computer information systems at Georgia State University, building my career in product management. I've spent my time leading a programming club, marketing early-stage products, organizing large-scale events, and turning vague ideas into launched products. Somewhere in all of that, I figured out that I love taking messy, undefined problems and turning them into something that actually works. This site is where I document all of it!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Experience window -->
+    <div class="mob-win">
+      <div class="mob-win-bar">
+        <img src="icon-experience.png" class="mob-win-icon" />
+        <span class="mob-win-title">Experience</span>
+      </div>
+      <div class="mob-win-body">
+        <div class="mob-menubar">
+          <span class="mob-menu-item">File</span>
+          <span class="mob-menu-item">Edit</span>
+          <span class="mob-menu-item">View</span>
+          <span class="mob-menu-item">Help</span>
+        </div>
+        <div class="mob-addrbar">
+          <span class="mob-addr-label">Address</span>
+          <span class="mob-addr-field">C:\Natasha\Experience</span>
+        </div>
+        <div class="mob-list">
+          <a class="mob-row" href="https://www.progsu.com/" target="_blank" rel="noopener noreferrer">
+            <img src="progsu.png" class="mob-row-icon" />
+            <div><div class="mob-row-title">Founder — progsu</div><div class="mob-row-desc">Turned a dormant club into GSU's most prominent student tech org. Led Hacklanta with 400+ attendees and $20K in sponsorships.</div></div>
+          </a>
+          <a class="mob-row" href="https://create-x.gatech.edu/" target="_blank" rel="noopener noreferrer">
+            <img src="createx.png" class="mob-row-icon" />
+            <div><div class="mob-row-title">CREATE-X Pre-Accelerator — Georgia Tech</div><div class="mob-row-desc">Selected for one of the top startup programs in the country. Building a 0-to-1 product using core PM methodology.</div></div>
+          </a>
+          <a class="mob-row" href="https://www.wecreatetech.org/" target="_blank" rel="noopener noreferrer">
+            <img src="techrise.png" class="mob-row-icon" />
+            <div><div class="mob-row-title">UX/UI & Creative Design Apprentice — We Create Tech</div><div class="mob-row-desc">Redesigned TechRise Launchpad, driving a 100-student increase in active usage. Work featured in the Atlanta Journal-Constitution.</div></div>
+          </a>
+          <a class="mob-row" href="https://www.theassemblydc.com/" target="_blank" rel="noopener noreferrer">
+            <img src="tadc.png" class="mob-row-icon" />
+            <div><div class="mob-row-title">Event Planning & Production Intern — The Assembly DC</div><div class="mob-row-desc">Own end-to-end production for live events. Drive all sponsor and vendor outreach from identification through close.</div></div>
+          </a>
+          <a class="mob-row" href="https://www.adobeforeducation.com/student-ambassador-program" target="_blank" rel="noopener noreferrer">
+            <img src="adobe.png" class="mob-row-icon" />
+            <div><div class="mob-row-title">Student Ambassador — Adobe</div><div class="mob-row-desc">On-campus product evangelist for Adobe Creative Cloud at a 50,000+ student campus.</div></div>
+          </a>
+          <a class="mob-row" href="https://learn.wecreatetech.org/" target="_blank" rel="noopener noreferrer">
+            <img src="wct.png" class="mob-row-icon" />
+            <div><div class="mob-row-title">CreativX Volunteer — We Create Tech</div><div class="mob-row-desc">Guided high school students through coding, design, and tech career pathways.</div></div>
+          </a>
+        </div>
+        <div class="mob-statusbar">6 object(s)</div>
+      </div>
+    </div>
+
+    <!-- Projects window -->
+    <div class="mob-win">
+      <div class="mob-win-bar">
+        <img src="icon-projects.png" class="mob-win-icon" />
+        <span class="mob-win-title">Projects</span>
+      </div>
+      <div class="mob-win-body">
+        <div class="mob-menubar">
+          <span class="mob-menu-item">File</span>
+          <span class="mob-menu-item">Edit</span>
+          <span class="mob-menu-item">View</span>
+          <span class="mob-menu-item">Help</span>
+        </div>
+        <div class="mob-addrbar">
+          <span class="mob-addr-label">Address</span>
+          <span class="mob-addr-field">C:\Natasha\Projects</span>
+        </div>
+        <div class="mob-list">
+          <a class="mob-row" href="https://memebooth.vercel.app/" target="_blank" rel="noopener noreferrer">
+            <img src="meme booth.png" class="mob-row-icon" />
+            <div><div class="mob-row-title">Meme Booth</div><div class="mob-row-desc">A web app using real-time pose detection to snap a photo when the user matches a meme pose, then layers them together for an instant shareable result.</div></div>
+          </a>
+          <a class="mob-row" href="https://ideathon-opal.vercel.app/" target="_blank" rel="noopener noreferrer">
+            <img src="pace.png" class="mob-row-icon" />
+            <div><div class="mob-row-title">Pace</div><div class="mob-row-desc">An AI-native smart glasses concept that adapts in real-time to a reader's speed and comprehension, built with a 9-agent architecture.</div></div>
+          </a>
+        </div>
+        <div class="mob-statusbar">2 object(s)</div>
+      </div>
+    </div>
+
+    <!-- Photos window -->
+    <div class="mob-win">
+      <div class="mob-win-bar">
+        <img src="icon-photos.png" class="mob-win-icon" />
+        <span class="mob-win-title">Photos</span>
+      </div>
+      <div class="mob-win-body">
+        <div class="mob-menubar">
+          <span class="mob-menu-item">File</span>
+          <span class="mob-menu-item">Edit</span>
+          <span class="mob-menu-item">View</span>
+          <span class="mob-menu-item">Help</span>
+        </div>
+        <div class="mob-addrbar">
+          <span class="mob-addr-label">Address</span>
+          <span class="mob-addr-field">C:\Natasha\Photos</span>
+        </div>
+        <div id="mob-gallery">
+          <img src="progteam.jpg" class="mob-photo" onclick="openLightbox('progteam.jpg')" />
+          <img src="progirls.jpg" class="mob-photo" onclick="openLightbox('progirls.jpg')" />
+          <img src="winners.jpg"  class="mob-photo" onclick="openLightbox('winners.jpg')" />
+        </div>
+        <div class="mob-statusbar">3 object(s)</div>
+      </div>
+    </div>
+
+    <!-- Links window -->
+    <div class="mob-win">
+      <div class="mob-win-bar">
+        <img src="icon-personalwork.png" class="mob-win-icon" />
+        <span class="mob-win-title">Links</span>
+      </div>
+      <div class="mob-win-body">
+        <div class="mob-btns">
+          <a class="mob-btn" href="https://www.instagram.com/tashasoutlet/" target="_blank" rel="noopener noreferrer">Personal Work</a>
+          <a class="mob-btn" href="https://natasha.substack.com" target="_blank" rel="noopener noreferrer">Blog</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="mob-footer">nb.narine@gmail.com</div>
   </div>
 
   <audio id="audio" src="134340.mp3" preload="auto"></audio>
