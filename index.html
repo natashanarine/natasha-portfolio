@@ -514,13 +514,16 @@
       height: 320px;
       border: none;
       outline: none;
-      resize: none;
       padding: 4px;
       font-family: 'Lucida Console', 'Courier New', monospace;
       font-size: 14px;
       color: #000;
       background: #fff;
       display: block;
+      white-space: pre-wrap;
+      overflow-y: auto;
+      cursor: text;
+      user-select: text;
     }
 
     /* ── Experience Window ── */
@@ -950,6 +953,11 @@
 
     .cs-d-bullet { margin: 3px 0 3px 14px; list-style: disc; }
     .cs-d-bullet li { margin-bottom: 2px; }
+
+    .cs-img { width: 180px; height: 180px; object-fit: cover; display: block; margin: 8px auto 2px; border: 1px solid #d0ccc4; }
+    .cs-img-caption { font-size: 10px; color: #666; font-style: italic; margin-bottom: 8px; text-align: center; }
+    .cs-img-row { display: flex; gap: 6px; margin: 8px 0 2px; flex-wrap: wrap; justify-content: center; }
+    .cs-img-row img { width: 180px; height: 180px; object-fit: cover; border: 1px solid #d0ccc4; flex-shrink: 0; }
 
     /* ── Projects Window ── */
     #proj-window {
@@ -1496,9 +1504,9 @@
       <img class="title-icon" src="music.png" style="width:20px;height:20px;object-fit:contain;" />
       <span class="title-text">CD Player</span>
       <div class="win-btns">
-        <button class="win-btn min">&#8212;</button>
+        <button class="win-btn min" id="cd-min-btn">&#8212;</button>
         <button class="win-btn max">&#9633;</button>
-        <button class="win-btn close">&#10005;</button>
+        <button class="win-btn close" id="cd-close-btn">&#10005;</button>
       </div>
     </div>
 
@@ -1623,17 +1631,15 @@
         <span class="np-menu">Help</span>
       </div>
       <div id="np-content">
-        <textarea id="np-textarea" spellcheck="false">Hello, my name is Natasha. Welcome to my portfolio! 
-          
-I study computer information systems at Georgia State University, building my career in product management. I've spent my time leading a programming club, marketing early-stage products, organizing large-scale events, and turning vague ideas into launched products. Somewhere in all of that, I figured out that I love taking messy, undefined problems and turning them into something that actually works. This site is where I document all of it!  
+        <div id="np-textarea" contenteditable="true" spellcheck="false"><b>Hello, my name is Natasha. Welcome to my portfolio!</b>
+
+I study computer information systems at Georgia State University, building my career in <b>product management</b>. I've spent my time <b>leading a programming club, marketing early-stage products, organizing large-scale events, and turning vague ideas into launched products.</b> Somewhere in all of that, I figured out that I love taking messy, undefined problems and turning them into something that actually works. This site is where I document all of it!
 
 Feel free to click around, everything functions like a real desktop :)
 
 
-email: nb.narine@gmail.com
-linkedin: linkedin.com/in/natasha-narine
-
-        </textarea>
+<b>email: <a href="mailto:nb.narine@gmail.com" style="color:#000;">nb.narine@gmail.com</a></b>
+<b>linkedin: <a href="https://www.linkedin.com/in/natasha-narine" target="_blank" rel="noopener noreferrer" style="color:#000;">linkedin.com/in/natasha-narine</a></b></div>
       </div>
     </div>
   </div>
@@ -1807,6 +1813,13 @@ linkedin: linkedin.com/in/natasha-narine
 
       <!-- List view -->
       <div id="cs-list">
+        <div class="exp-row" style="cursor:pointer;" onclick="openCaseStudy(1)">
+          <img class="exp-entry-icon" src="trace logo.png" style="width:30px;height:30px;object-fit:contain;flex-shrink:0;" />
+          <div>
+            <div class="exp-role">Trace Brand Identity</div>
+            <div class="exp-desc">Building a brand identity from scratch before launch. As CMO, I drove every visual decision (logo, typeface, and product display format) in the weeks before launch with no design budget.</div>
+          </div>
+        </div>
         <div class="exp-row" style="cursor:pointer;" onclick="openCaseStudy(0)">
           <img class="exp-entry-icon" src="techrise.png" style="width:30px;height:30px;object-fit:contain;flex-shrink:0;" />
           <div>
@@ -1822,6 +1835,7 @@ linkedin: linkedin.com/in/natasha-narine
           <button id="cs-back-btn" onclick="closeCaseStudy()">&#9664; Back</button>
         </div>
         <div id="cs-detail-content">
+          <div id="cs-content-0" class="cs-content">
 
           <div class="cs-d-head">
             <div class="cs-d-title">TechRise</div>
@@ -1893,10 +1907,87 @@ linkedin: linkedin.com/in/natasha-narine
             <div class="cs-d-body"><ul class="cs-d-bullet"><li><strong>validate the reframe earlier:</strong> i reframed the problem based on my read of the research but never explicitly tested that framing with stakeholders before designing against it.</li><li><strong>measure the thing i was trying to move:</strong> the brief didn't define a success metric. establishing a north star (e.g. task completion rate or time-to-book) would have sharpened every decision.</li><li><strong>document scope decisions as artifacts:</strong> i made deliberate calls to descope notifications and integrations, but those decisions lived in my head. capturing them as a scope doc would have made handoff cleaner.</li></ul></div>
           </div>
 
+          </div><!-- end cs-content-0 -->
+
+          <div id="cs-content-1" class="cs-content" style="display:none;">
+
+          <div class="cs-d-head">
+            <div class="cs-d-title">Trace</div>
+            <div class="cs-d-subtitle">building a brand identity from scratch before launch</div>
+          </div>
+
+          <div class="cs-d-meta">
+            <div class="cs-d-meta-item"><div class="cs-d-meta-label">Timeline</div><div class="cs-d-meta-val">1 week</div></div>
+            <div class="cs-d-meta-item"><div class="cs-d-meta-label">My Role</div><div class="cs-d-meta-val">CMO</div></div>
+            <div class="cs-d-meta-item"><div class="cs-d-meta-label">Collaborators</div><div class="cs-d-meta-val">Arhaan Keshwani, Joey Zhang, Nina Kilidzhiyska</div></div>
+            <div class="cs-d-meta-item"><div class="cs-d-meta-label">Deliverables</div><div class="cs-d-meta-val">Logo, typeface, product display format, launch assets</div></div>
+          </div>
+
+          <div class="cs-d-section">
+            <div class="cs-d-section-hdr"><span class="cs-d-num">01</span><span class="cs-d-section-title">context</span></div>
+            <div class="cs-d-section-intro">the reminder app you can talk to</div>
+            <div class="cs-d-body">trace is a conversational reminders iOS app. users talk to it naturally, and it handles the structure. i'm the cmo, working alongside arhaan keshwani, joey zhang, and nina kilidzhiyska.<br><br>we had a product but no visual language. no logo, no typeface, no defined way to show the app to people. with launch approaching, we needed brand decisions that could scale across social posts, product displays, and app store assets, made fast, with no dedicated design budget.<br><br><div class="cs-d-stat-row" style="justify-content:center;"><div class="cs-d-stat"><div class="cs-d-stat-num">3</div><div class="cs-d-stat-label">brand pillars to lock in</div></div><div class="cs-d-stat"><div class="cs-d-stat-num">1wk</div><div class="cs-d-stat-label">total</div></div><div class="cs-d-stat"><div class="cs-d-stat-num">$0</div><div class="cs-d-stat-label">design budget</div></div></div></div>
+          </div>
+
+          <div class="cs-d-section">
+            <div class="cs-d-section-hdr"><span class="cs-d-num">02</span><span class="cs-d-section-title">the problem</span></div>
+            <div class="cs-d-section-intro">without a shared visual identity, every piece of content we produced would read as disconnected.</div>
+            <div class="cs-d-body">more practically: i couldn't make product display graphics, social posts, or launch assets without knowing what trace actually looks like.<br><br>the three decisions blocking everything downstream were logo, typeface, and how to show the product in marketing. until those were locked, we couldn't build anything repeatable.<br><br><div class="cs-d-quote">as the sole designer on the team, i was responsible for driving each brand decision to a conclusion while keeping the rest of the team aligned through async gc feedback.</div></div>
+          </div>
+
+          <div class="cs-d-section">
+            <div class="cs-d-section-hdr"><span class="cs-d-num">03</span><span class="cs-d-section-title">decision 01: logo</span></div>
+            <div class="cs-d-section-intro">at this point we had nothing locked. no wordmark, no typeface, no visual direction.</div>
+            <div class="cs-d-body">the only alignment we had was that we wanted the brand to feel simplistic. the first logo attempt was a glowing abstract waveform mark: white on black, soft-edged, radiating outward. it looked striking in isolation but immediately read as too complex and too heavy for where we wanted to go. it didn't feel like trace.<br><br><img src="IMG_2324.jpg" class="cs-img" alt="first logo attempt: glowing waveform mark" /><div class="cs-img-caption">first logo attempt: glowing waveform mark</div><br>that reaction was useful. it told us what we didn't want. from there, the team moved toward a geometric mark, but i pushed back: without a brand identity established yet, something that abstract gave no signal about what trace actually did. i suggested the voice memo waveform direction and put together multiple variations to show what that could look like. we tested those with users and got positive feedback. but as the brand developed, the font and product displays started doing the heavy lifting on communication, and we grew more confident that the logo didn't need to spell out the product. combined with the original instinct toward something minimal and clean, we came back to the geometric mark: simple enough to sit small without losing its shape, and flexible enough to grow with the brand.<br><br><img src="finaltracelogo.JPEG" class="cs-img" alt="second logo attempt: hexagon mark" /><div class="cs-img-caption">second logo attempt: hexagon mark</div><br><div class="cs-img-row"><img src="pwave.JPG" alt="voice memo iteration 1" /><img src="wave1.JPG" alt="voice memo iteration 2" /><img src="wave2.JPG" alt="voice memo iteration 3" /><img src="wave3.JPG" alt="voice memo iteration 4" /></div><div class="cs-img-caption">suggestions after second attempt: voice memo waveform iterations</div><br><table class="cs-d-table"><tr><th>option</th><th>rationale</th><th>verdict</th></tr><tr><td>glowing waveform mark</td><td>visually interesting but too ornate. the soft glow and radiating shapes contradicted the simplistic direction we had aligned on</td><td>cut</td></tr><tr><td>abstract hexagon mark</td><td>geometric, clean, distinctive. not tied to any single product feature, which gave trace room to build its own identity around the mark over time. once we had a strong font and product displays carrying the communication, the logo could just be a mark</td><td>chosen</td></tr><tr><td>voice memo style icon (waveform bars)</td><td>cleaner than v1, referenced the app's core voice interaction directly. explored multiple iterations. ultimately felt too literal and too tied to a single feature</td><td>cut</td></tr></table><br><strong>final thoughts:</strong> the voice memo iterations were a necessary middle step. they were cleaner than the v1 and pointed in the right direction, but the more the rest of the brand system came together (typeface, product displays), the less the logo needed to explain what trace does. that freed us to go fully abstract. the hexagon mark tested well with the team and gave the brand more flexibility long-term.</div>
+          </div>
+
+          <div class="cs-d-section">
+            <div class="cs-d-section-hdr"><span class="cs-d-num">04</span><span class="cs-d-section-title">decision 02: typeface</span></div>
+            <div class="cs-d-section-intro">the font conversation started because the assets i was building felt off.</div>
+            <div class="cs-d-body">the team's instinct was to go fully minimalist, which had a clear vision behind it. but from a consumer standpoint, minimalism alone wasn't going to sell the product. i pushed for something with more personality, while making clear it didn't need to go overboard. there was a middle ground and we needed to find it.<br><br>we anchored off the font already on the trace website (a clean sans used for body), then focused the search on a display face that could carry the wordmark and headers.<br><br><img src="firstsuggestionfont.png" style="max-width:180px;display:block;margin:8px auto 2px;border:1px solid #d0ccc4;" alt="first font suggestion" /><div class="cs-img-caption">first font suggestion: building point</div><br><div style="display:flex;gap:10px;margin:8px 0 2px;flex-wrap:wrap;justify-content:center;align-items:flex-start;">
+  <div style="display:flex;flex-direction:column;align-items:center;gap:3px;max-width:120px;">
+    <img src="satoshithin.jpeg" style="width:120px;border:1px solid #d0ccc4;" alt="satoshi medium" />
+    <span class="cs-img-caption" style="margin:0;">satoshi medium: not enough character</span>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:3px;max-width:120px;">
+    <img src="satoshithick.jpeg" style="width:120px;border:1px solid #d0ccc4;" alt="satoshi black italic" />
+    <span class="cs-img-caption" style="margin:0;">satoshi black italic: too heavy</span>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:3px;max-width:120px;">
+    <img src="coolvetica.jpeg" style="width:120px;border:1px solid #d0ccc4;" alt="coolvetica rg" />
+    <span class="cs-img-caption" style="margin:0;">coolvetica: too elementary</span>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:3px;max-width:120px;">
+    <img src="apollo.jpeg" style="width:120px;border:1px solid #d0ccc4;" alt="apollo otf" />
+    <span class="cs-img-caption" style="margin:0;">apollo otf: the middle ground</span>
+  </div>
+</div><br><table class="cs-d-table"><tr><th>option</th><th>notes</th><th>verdict</th></tr><tr><td>website serif (first suggestion)</td><td>too corporate. i flagged that from a consumer standpoint this wouldn't sell the product. trace needed more personality</td><td>cut</td></tr><tr><td>satoshi medium</td><td>clean geometric sans. not enough character for what trace needed</td><td>cut</td></tr><tr><td>satoshi black italic</td><td>too heavy, didn't match the simplistic direction we were going for</td><td>cut</td></tr><tr><td>coolvetica rg</td><td>rounded and informal but read too elementary</td><td>cut</td></tr><tr><td>apollo otf</td><td>editorial serif with real character. the middle ground between minimalist and playful. team aligned immediately</td><td>chosen</td></tr></table><br>with apollo we tested both cases. uppercase read too formal. lowercase felt intentional and fit the conversational nature of the product. we locked in all lowercase as the wordmark.<br><br><img src="finalfont.png" style="max-width:180px;display:block;margin:8px auto 2px;border:1px solid #d0ccc4;" alt="final font: apollo otf" /><div class="cs-img-caption">final font: apollo otf</div></div>
+          </div>
+
+          <div class="cs-d-section">
+            <div class="cs-d-section-hdr"><span class="cs-d-num">05</span><span class="cs-d-section-title">decision 03: product display format</span></div>
+            <div class="cs-d-section-intro">the product display went through two distinct phases: before and after the rebrand.</div>
+            <div class="cs-d-body"><strong>phase 1: pre-rebrand</strong><br>the first attempts used a "hey trace" headline format with a single angled phone mockup on a light starburst background. the copy and layout were bold and attention-grabbing but the visual didn't feel like the product. it leaned too editorial, and without the brand system finalized, nothing was anchoring it to trace specifically.<br><br><div style="display:flex;gap:8px;margin:8px 0 8px;flex-wrap:wrap;justify-content:center;align-items:flex-start;"><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:160px;"><img src="4.png" style="width:160px;border:1px solid #d0ccc4;" alt="hey trace post v1" /><span class="cs-img-caption" style="margin:0;">post 1: hey trace</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:160px;"><img src="5.png" style="width:160px;border:1px solid #d0ccc4;" alt="hey trace post v2 with tagline" /><span class="cs-img-caption" style="margin:0;">post 2: with tagline</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:160px;"><img src="7.png" style="width:160px;border:1px solid #d0ccc4;" alt="stop juggling start living post" /><span class="cs-img-caption" style="margin:0;">post 3: CTA</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:160px;"><video src="firstvidmockup.mov" controls style="width:160px;border:1px solid #d0ccc4;display:block;"></video><span class="cs-img-caption" style="margin:0;">first video mockup</span></div></div><br><strong>phase 2: post-rebrand iterations</strong><br>once the font and logo were locked, i rebuilt the product display around the finalized brand. the format shifted to a dark background with three angled phone mockups showing the app in context. this immediately felt more like trace. the team responded positively but it still took a few passes to get the hierarchy right.<br><br><div style="display:flex;gap:8px;margin:8px 0 8px;flex-wrap:wrap;justify-content:center;align-items:flex-start;"><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:160px;"><img src="2.png" style="width:160px;border:1px solid #d0ccc4;" alt="phase 2 iteration 1" /><span class="cs-img-caption" style="margin:0;">iteration 1</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:160px;"><img src="3.png" style="width:160px;border:1px solid #d0ccc4;" alt="phase 2 iteration 2" /><span class="cs-img-caption" style="margin:0;">iteration 2</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:160px;"><img src="4 copy.png" style="width:160px;border:1px solid #d0ccc4;" alt="phase 2 iteration 3" /><span class="cs-img-caption" style="margin:0;">iteration 3</span></div></div><br><strong>phase 2b: incorporating feedback</strong><br>after the initial iterations, two clear pieces of feedback emerged: the visual hierarchy needed work and the logo was missing entirely. the wordmark was either too large and competing with the phones, or absent altogether, which left the display feeling unanchored from the brand. taking that feedback into account, i brought the sizing down, repositioned the elements, and reintroduced the logo in a way that complemented the product shots rather than overpowering them.<br><br><div style="display:flex;gap:8px;margin:8px 0 8px;flex-wrap:wrap;justify-content:center;align-items:flex-start;"><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:160px;"><img src="3 2.png" style="width:160px;border:1px solid #d0ccc4;" alt="font size and placement adjusted" /><span class="cs-img-caption" style="margin:0;">font size + placement adjusted</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:160px;"><img src="trace preview (1).png" style="width:160px;border:1px solid #d0ccc4;" alt="logo incorporated v1" /><span class="cs-img-caption" style="margin:0;">logo incorporated</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:160px;"><img src="trace preview (2).png" style="width:160px;border:1px solid #d0ccc4;" alt="logo incorporated v2" /><span class="cs-img-caption" style="margin:0;">logo incorporated</span></div></div><br><strong>top choices</strong><br>after evaluating the various iterations, we landed on two that felt the most cohesive and on-brand. both balance the product, the wordmark, and the logo without any one element overpowering the others.<br><br><div style="display:flex;gap:8px;margin:8px 0 8px;flex-wrap:wrap;justify-content:center;align-items:flex-start;"><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:160px;"><img src="4 copy.png" style="width:160px;border:1px solid #d0ccc4;" alt="top choice 1" /><span class="cs-img-caption" style="margin:0;">top choice 1</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:160px;"><img src="trace preview (1).png" style="width:160px;border:1px solid #d0ccc4;" alt="top choice 2" /><span class="cs-img-caption" style="margin:0;">top choice 2</span></div></div></div>
+          </div>
+
+          <div class="cs-d-section">
+            <div class="cs-d-section-hdr"><span class="cs-d-num">06</span><span class="cs-d-section-title">outcome</span></div>
+            <div class="cs-d-section-intro">a working brand system, locked and documented.</div>
+            <div class="cs-d-body">by the end of these three decision threads we had a working brand system: a hexagon icon mark, the apollo otf wordmark in lowercase, and a product display format we could repeat across launch assets.<br><br>the hexagon mark and apollo typeface ended up complementing each other in a way that gave trace a clear identity and tone. the geometric precision of the mark paired with the editorial character of the font reads as minimal but intentional, which is exactly the middle ground we were after. together they establish what trace looks and feels like before a single feature gets explained.<br><br>more importantly, we had a documented visual language the whole team understood. anything we produced after this (social posts, the app store listing, paid ads) could be built on the same foundation without re-litigating the same choices.<br><br><div class="cs-d-stat-row" style="justify-content:center;"><div class="cs-d-stat"><div class="cs-d-stat-num">1</div><div class="cs-d-stat-label">wordmark locked (apollo otf)</div><img src="tracenamelogo.png" style="width:140px;display:block;margin:8px auto 0;border:1px solid #d0ccc4;" alt="tracenamelogo" /></div><div class="cs-d-stat"><div class="cs-d-stat-num">1</div><div class="cs-d-stat-label">icon mark locked (hexagon)</div><img src="finaltracelogo.JPEG" style="width:140px;height:140px;object-fit:cover;display:block;margin:8px auto 0;border:1px solid #d0ccc4;" alt="hexagon icon mark" /></div><div class="cs-d-stat"><div class="cs-d-stat-num">1</div><div class="cs-d-stat-label">product display format locked</div><img src="4 copy.png" style="width:140px;display:block;margin:8px auto 0;border:1px solid #d0ccc4;" alt="product display format" /></div></div></div>
+          </div>
+
+          <div class="cs-d-section">
+            <div class="cs-d-section-hdr"><span class="cs-d-num">07</span><span class="cs-d-section-title">reflections</span></div>
+            <div class="cs-d-section-intro">what i'd do differently</div>
+            <div class="cs-d-body"><ul class="cs-d-bullet"><li><strong>decisions need a framing, not just a vote:</strong> the logo and font conversations moved faster once i framed them around what trace needs to communicate to a stranger, not which option looks better in isolation. "does this tell someone what the product is" became the filter.</li><li><strong>pushing back on your own team is part of the job:</strong> i disagreed on coolvetica being too corporate and on the flat screenshot format not doing enough work. both pushbacks led to better outcomes. as cmo, part of the role is holding the brand standard even when something "looks fine."</li><li><strong>async gc feedback is fast but incomplete:</strong> we used the gc as a lightweight review layer throughout. it moved quickly, but "tested well with some people" isn't a substitute for structured user feedback. for a v2 brand refresh, i'd want actual target users reacting to options, not just team consensus.</li><li><strong>establish a shared brand brief earlier:</strong> even a half-page doc covering tone, audience, and visual references, before jumping into asset iterations. we made good decisions but arrived at them through back-and-forth rather than from a shared north star.</li></ul></div>
+          </div>
+
+          </div><!-- end cs-content-1 -->
+
         </div>
       </div>
 
-      <div id="cs-statusbar">1 object(s)</div>
+      <div id="cs-statusbar">2 object(s)</div>
     </div>
   </div>
 
@@ -2114,17 +2205,17 @@ linkedin: linkedin.com/in/natasha-narine
 
       const messages = ['Loading...', 'Loading resources...', 'Almost there...', 'Finalizing...'];
       const timer = setInterval(() => {
-        pct += Math.random() * 3.5 + 0.8;
+        pct += Math.random() * 4 + 2;
         if (pct >= 100) {
           pct = 100;
           fill.style.width = '100%';
           clearInterval(timer);
-          setTimeout(dismiss, 200);
+          setTimeout(dismiss, 150);
           return;
         }
         fill.style.width = pct + '%';
         label.textContent = messages[Math.min(Math.floor(pct / 25), messages.length - 1)];
-      }, 70);
+      }, 60);
     })();
 
     /* ── Drag ── */
@@ -2643,10 +2734,14 @@ linkedin: linkedin.com/in/natasha-narine
       csWin.style.zIndex = 25;
     });
 
+    const csTitles = ['TechRise', 'Trace'];
     function openCaseStudy(idx) {
-      document.getElementById('cs-list').style.display   = 'none';
+      document.getElementById('cs-list').style.display = 'none';
       document.getElementById('cs-detail').classList.add('open');
-      document.getElementById('cs-addr-field').textContent = 'C:\\Natasha\\Case Studies\\TechRise';
+      document.querySelectorAll('.cs-content').forEach((el, i) => {
+        el.style.display = i === idx ? '' : 'none';
+      });
+      document.getElementById('cs-addr-field').textContent = 'C:\\Natasha\\Case Studies\\' + csTitles[idx];
       document.getElementById('cs-statusbar').textContent  = '';
       document.getElementById('cs-detail-content').scrollTop = 0;
     }
@@ -2655,7 +2750,7 @@ linkedin: linkedin.com/in/natasha-narine
       document.getElementById('cs-detail').classList.remove('open');
       document.getElementById('cs-list').style.display   = '';
       document.getElementById('cs-addr-field').textContent = 'C:\\Natasha\\Case Studies';
-      document.getElementById('cs-statusbar').textContent  = '1 object(s)';
+      document.getElementById('cs-statusbar').textContent  = '2 object(s)';
     }
 
     /* ── Projects Window ── */
@@ -2818,16 +2913,17 @@ linkedin: linkedin.com/in/natasha-narine
     });
 
     /* ── Window buttons ── */
-    document.querySelector('.win-btn.close').addEventListener('click', () => {
+    document.getElementById('cd-close-btn').addEventListener('click', () => {
       player.style.display = 'none';
       audio.pause();
       playing = false;
     });
 
-    document.querySelector('.win-btn.min').addEventListener('click', () => {
+    document.getElementById('cd-min-btn').addEventListener('click', () => {
       const body = document.getElementById('cd-body');
       body.style.display = body.style.display === 'none' ? 'flex' : 'none';
     });
+
   </script>
 </body>
 </html>
