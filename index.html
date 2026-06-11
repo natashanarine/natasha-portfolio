@@ -1638,7 +1638,7 @@ I study computer information systems at Georgia State University, building my ca
 Feel free to click around, everything functions like a real desktop :)
 
 
-<b>email: <a href="mailto:nb.narine@gmail.com" style="color:#000;">nb.narine@gmail.com</a></b>
+<b>email: <a href="https://mail.google.com/mail/?view=cm&to=nb.narine@gmail.com" style="color:#000;">nb.narine@gmail.com</a></b>
 <b>linkedin: <a href="https://www.linkedin.com/in/natasha-narine" target="_blank" rel="noopener noreferrer" style="color:#000;">linkedin.com/in/natasha-narine</a></b></div>
       </div>
     </div>
@@ -2913,6 +2913,11 @@ Feel free to click around, everything functions like a real desktop :)
     });
 
     /* ── Window buttons ── */
+    document.getElementById('np-textarea').addEventListener('click', function(e) {
+      const a = e.target.closest('a');
+      if (a) { e.preventDefault(); window.open(a.href, a.target || '_blank'); }
+    });
+
     document.getElementById('cd-close-btn').addEventListener('click', () => {
       player.style.display = 'none';
       audio.pause();
