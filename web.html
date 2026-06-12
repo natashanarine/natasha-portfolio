@@ -357,6 +357,25 @@
     .grid-col { flex: 1; }
     .grid-col + .grid-col { border-left: 1px solid var(--border); }
 
+    /* Flat entry grid — no empty column divs, so no phantom borders */
+    .entry-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-top: 1px solid var(--border);
+      border-left: 1px solid var(--border);
+    }
+
+    .entry-grid .entry {
+      border-bottom: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      border-top: none;
+      border-left: none;
+    }
+
+    .entry-grid .entry:last-child {
+      border-bottom: 1px solid var(--border);
+    }
+
     .entry {
       display: flex;
       align-items: flex-start;
@@ -467,11 +486,76 @@
       .cs-expand { padding: 28px 20px; }
       .two-col-grid { flex-direction: column; }
       .grid-col + .grid-col { border-left: none; border-top: 1px solid var(--border); }
+      .entry-grid { grid-template-columns: 1fr; }
       .photos-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    }
+    /* ── Loading screen ── */
+    #loading-screen {
+      position: fixed;
+      inset: 0;
+      background: #fff;
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      transition: opacity 0.5s ease;
+    }
+
+    #loading-screen.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .load-text {
+      font-family: var(--sans);
+      font-weight: 700;
+      font-size: 52px;
+      color: #000;
+      display: flex;
+      align-items: flex-end;
+      gap: 1px;
+      letter-spacing: -1px;
+    }
+
+    .load-text span {
+      display: inline-block;
+      animation: load-wave 1s ease-in-out infinite;
+    }
+
+    @keyframes load-wave {
+      0%, 100% { transform: translateY(0); }
+      45%       { transform: translateY(-14px); }
+    }
+
+    .load-dots {
+      display: flex;
+      gap: 8px;
+    }
+
+    .load-dot {
+      width: 7px;
+      height: 7px;
+      background: #000;
+      border-radius: 50%;
+      animation: load-dot-bounce 1s ease-in-out infinite;
+    }
+
+    @keyframes load-dot-bounce {
+      0%, 100% { transform: translateY(0); opacity: 0.25; }
+      45%       { transform: translateY(-8px); opacity: 1; }
     }
   </style>
 </head>
 <body>
+
+  <!-- ── Loading screen ── -->
+  <div id="loading-screen">
+    <div class="load-text">
+      <span style="animation-delay:0s">l</span><span style="animation-delay:0.1s">o</span><span style="animation-delay:0.2s">a</span><span style="animation-delay:0.3s">d</span><span style="animation-delay:0.4s">i</span><span style="animation-delay:0.5s">n</span><span style="animation-delay:0.6s">g</span><span style="animation-delay:0.7s">.</span><span style="animation-delay:0.8s">.</span><span style="animation-delay:0.9s">.</span>
+    </div>
+  </div>
 
   <!-- ── Nav ── -->
   <nav>
@@ -482,6 +566,7 @@
       <a class="nav-link" href="#experience">experience</a>
       <a class="nav-link" href="#blog">blog</a>
       <a class="nav-link" href="#photos">photos</a>
+      <a class="nav-link" href="#contact">contact</a>
     </div>
     <a class="nav-desktop-btn" href="index.html">switch to desktop view</a>
   </nav>
@@ -544,60 +629,56 @@
     <!-- ── Experience ── -->
     <section id="experience">
       <div class="section-label">experience</div>
-      <div class="two-col-grid">
-        <div class="grid-col">
-          <a class="entry" href="https://www.progsu.com/" target="_blank" rel="noopener noreferrer">
-            <img class="entry-icon" src="progsu.png" alt="progsu" />
-            <div>
-              <div class="entry-role">Founder — progsu</div>
-              <div class="entry-desc">Turned a dormant club into GSU's most prominent student tech org. Led Hacklanta, a student-run hackathon with 400+ attendees and $20K in sponsorships — owning the end-to-end marketing campaign from strategy to execution. Built a 0-to-1 incubation program that moved 14 student startups from idea to launch. Placed 40+ students into roles. Kept cross-functional teams aligned across every initiative.</div>
-            </div>
-          </a>
-          <a class="entry" href="https://remindmetrace.com/" target="_blank" rel="noopener noreferrer">
-            <img class="entry-icon" src="trace logo.png" alt="Trace" />
-            <div>
-              <div class="entry-role">CMO — Trace</div>
-              <div class="entry-desc">Pre-launch marketing owner for a conversational reminders iOS app. Built the brand system from zero: logo, typeface, and product display format. Developed and managed the organic and paid Instagram strategy, oversaw UGC, and owned all launch creative. Operated as the sole designer and marketing decision-maker across an async team.</div>
-            </div>
-          </a>
-          <a class="entry" href="https://create-x.gatech.edu/" target="_blank" rel="noopener noreferrer">
-            <img class="entry-icon" src="createx.png" alt="CREATE-X" />
-            <div>
-              <div class="entry-role">CREATE-X Pre-Accelerator — Georgia Tech</div>
-              <div class="entry-desc">Selected for one of the top startup programs in the country. Building a 0 to 1 product using core PM methodology: user interviews, pain point synthesis, and assumption testing before writing a line of code.</div>
-            </div>
-          </a>
-          <a class="entry" href="https://www.wecreatetech.org/" target="_blank" rel="noopener noreferrer">
-            <img class="entry-icon" src="techrise.png" alt="We Create Tech" />
-            <div>
-              <div class="entry-role">UX/UI &amp; Creative Design Apprentice — We Create Tech</div>
-              <div class="entry-desc">Redesigned the flow and UI of TechRise Launchpad based on direct user feedback, driving a 100-student increase in active usage. Separately owned the brand identity work for We Create Tech, running multiple iterations with the team to align visuals with the organization's mission and voice until it was right. Work was featured in the Atlanta Journal-Constitution.</div>
-            </div>
-          </a>
-        </div>
-        <div class="grid-col">
-          <a class="entry" href="https://www.theassemblydc.com/" target="_blank" rel="noopener noreferrer">
-            <img class="entry-icon" src="tadc.png" alt="The Assembly DC" />
-            <div>
-              <div class="entry-role">Event Planning &amp; Experiential Production Intern — The Assembly DC</div>
-              <div class="entry-desc">Own end-to-end production for live events. Drive all sponsor and vendor outreach from identification through close. Built the internal tracking system used across all events.</div>
-            </div>
-          </a>
-          <a class="entry" href="https://www.adobeforeducation.com/student-ambassador-program" target="_blank" rel="noopener noreferrer">
-            <img class="entry-icon" src="adobe.png" alt="Adobe" />
-            <div>
-              <div class="entry-role">Student Ambassador — Adobe</div>
-              <div class="entry-desc">On-campus product evangelist for Adobe Creative Cloud at a 50,000+ student campus. Drove adoption through workshops and partnerships, and served as a feedback channel between student users and Adobe.</div>
-            </div>
-          </a>
-          <a class="entry" href="https://learn.wecreatetech.org/" target="_blank" rel="noopener noreferrer">
-            <img class="entry-icon" src="wct.png" alt="We Create Tech" />
-            <div>
-              <div class="entry-role">CreativX Volunteer — We Create Tech</div>
-              <div class="entry-desc">Guided high school students through hands-on exploration of coding, digital design, and tech career pathways via We Create Tech's CreativX Lab program. Helped redesign lessons based on direct student feedback, improving fit and ensuring students could complete work within the allotted time.</div>
-            </div>
-          </a>
-        </div>
+      <div class="entry-grid">
+        <a class="entry" href="https://www.progsu.com/" target="_blank" rel="noopener noreferrer">
+          <img class="entry-icon" src="progsu.png" alt="progsu" />
+          <div>
+            <div class="entry-role">Founder — progsu</div>
+            <div class="entry-desc">Turned a dormant club into GSU's most prominent student tech org. Led Hacklanta, a student-run hackathon with 400+ attendees and $20K in sponsorships — owning the end-to-end marketing campaign from strategy to execution. Built a 0-to-1 incubation program that moved 14 student startups from idea to launch. Placed 40+ students into roles. Kept cross-functional teams aligned across every initiative.</div>
+          </div>
+        </a>
+        <a class="entry" href="https://remindmetrace.com/" target="_blank" rel="noopener noreferrer">
+          <img class="entry-icon" src="trace logo.png" alt="Trace" />
+          <div>
+            <div class="entry-role">CMO — Trace</div>
+            <div class="entry-desc">Pre-launch marketing owner for a conversational reminders iOS app. Built the brand system from zero: logo, typeface, and product display format. Developed and managed the organic and paid Instagram strategy, oversaw UGC, and owned all launch creative. Operated as the sole designer and marketing decision-maker across an async team.</div>
+          </div>
+        </a>
+        <a class="entry" href="https://create-x.gatech.edu/" target="_blank" rel="noopener noreferrer">
+          <img class="entry-icon" src="createx.png" alt="CREATE-X" />
+          <div>
+            <div class="entry-role">CREATE-X Pre-Accelerator — Georgia Tech</div>
+            <div class="entry-desc">Selected for one of the top startup programs in the country. Building a 0 to 1 product using core PM methodology: user interviews, pain point synthesis, and assumption testing before writing a line of code.</div>
+          </div>
+        </a>
+        <a class="entry" href="https://www.theassemblydc.com/" target="_blank" rel="noopener noreferrer">
+          <img class="entry-icon" src="tadc.png" alt="The Assembly DC" />
+          <div>
+            <div class="entry-role">Event Planning &amp; Experiential Production Intern — The Assembly DC</div>
+            <div class="entry-desc">Own end-to-end production for live events. Drive all sponsor and vendor outreach from identification through close. Built the internal tracking system used across all events.</div>
+          </div>
+        </a>
+        <a class="entry" href="https://www.wecreatetech.org/" target="_blank" rel="noopener noreferrer">
+          <img class="entry-icon" src="techrise.png" alt="We Create Tech" />
+          <div>
+            <div class="entry-role">UX/UI &amp; Creative Design Apprentice — We Create Tech</div>
+            <div class="entry-desc">Redesigned the flow and UI of TechRise Launchpad based on direct user feedback, driving a 100-student increase in active usage. Separately owned the brand identity work for We Create Tech, running multiple iterations with the team to align visuals with the organization's mission and voice until it was right. Work was featured in the Atlanta Journal-Constitution.</div>
+          </div>
+        </a>
+        <a class="entry" href="https://www.adobeforeducation.com/student-ambassador-program" target="_blank" rel="noopener noreferrer">
+          <img class="entry-icon" src="adobe.png" alt="Adobe" />
+          <div>
+            <div class="entry-role">Student Ambassador — Adobe</div>
+            <div class="entry-desc">On-campus product evangelist for Adobe Creative Cloud at a 50,000+ student campus. Drove adoption through workshops and partnerships, and served as a feedback channel between student users and Adobe.</div>
+          </div>
+        </a>
+        <a class="entry" href="https://learn.wecreatetech.org/" target="_blank" rel="noopener noreferrer">
+          <img class="entry-icon" src="wct.png" alt="We Create Tech" />
+          <div>
+            <div class="entry-role">CreativX Volunteer — We Create Tech</div>
+            <div class="entry-desc">Guided high school students through hands-on exploration of coding, digital design, and tech career pathways via We Create Tech's CreativX Lab program. Helped redesign lessons based on direct student feedback, improving fit and ensuring students could complete work within the allotted time.</div>
+          </div>
+        </a>
       </div>
     </section>
 
@@ -631,6 +712,15 @@
           <img src="winners.jpg" alt="Winners" />
           <span class="photo-label">winners.jpg</span>
         </div>
+      </div>
+    </section>
+
+    <!-- ── Contact ── -->
+    <section id="contact" style="text-align: center;">
+      <h2 style="font-family: var(--sans); font-size: clamp(36px, 5vw, 64px); font-weight: 700; text-transform: lowercase; letter-spacing: -1px; margin-bottom: 24px;">let's connect!</h2>
+      <div style="font-family: var(--mono); font-size: 15px; display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;">
+        <a href="https://mail.google.com/mail/?view=cm&to=nb.narine@gmail.com" style="color: #111; text-decoration: underline;">email</a>
+        <a href="https://www.linkedin.com/in/natasha-narine" target="_blank" rel="noopener noreferrer" style="color: #111; text-decoration: underline;">linkedin</a>
       </div>
     </section>
 
@@ -756,6 +846,14 @@
 
   <script>
     let activeCS = null;
+
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const screen = document.getElementById('loading-screen');
+        screen.classList.add('fade-out');
+        setTimeout(() => screen.remove(), 500);
+      }, 1400);
+    });
 
     function selectCS(idx) {
       const expand = document.getElementById('cs-expand');
