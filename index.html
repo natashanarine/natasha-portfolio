@@ -476,18 +476,46 @@
 
     /* ── Mobile ── */
     @media (max-width: 768px) {
-      nav { padding: 0 20px; gap: 12px; }
+      /* Nav */
+      nav { padding: 0 20px; gap: 10px; }
       .nav-links { display: none; }
-      section, #hero { padding-left: 20px; padding-right: 20px; }
-      .hero-h1 { letter-spacing: -1px; }
+      .nav-desktop-btn { display: none; }
+
+      /* Sections */
+      section { padding: 60px 20px; }
+      #hero { padding: 0 20px; min-height: calc(100vh - 52px); }
+
+      /* Hero */
+      .hero-h1 { font-size: clamp(40px, 11vw, 60px); letter-spacing: -1px; margin-bottom: 16px; }
+      .hero-sub { font-size: 14px; }
+
+      /* Case studies */
       .cs-cards { grid-template-columns: 1fr; }
       .cs-card { border-right: none; border-bottom: 1px solid var(--border); }
       .cs-card:last-child { border-bottom: none; }
-      .cs-expand { padding: 28px 20px; }
+      .cs-expand { padding: 24px 16px; }
+      .cs-d-meta { gap: 8px 16px; }
+      .cs-d-stat-row { gap: 8px; }
+      .cs-d-stat { min-width: 80px; padding: 10px 12px; }
+      .cs-img { width: 100%; max-width: 220px; height: auto; }
+      .cs-img-row img { width: 70px; height: 70px; }
+      .cs-d-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+      /* Grids */
       .two-col-grid { flex-direction: column; }
       .grid-col + .grid-col { border-left: none; border-top: 1px solid var(--border); }
       .entry-grid { grid-template-columns: 1fr; }
+
+      /* Blog */
+      #blog .two-col-grid > div[style*="width: 50%"],
+      #blog div[style*="width: 50%"] { width: 100% !important; }
+
+      /* Photos */
       .photos-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+
+      /* Contact */
+      #contact h2 { font-size: clamp(32px, 9vw, 48px); }
+      #contact div { flex-direction: column; gap: 16px; }
     }
     /* ── Loading screen ── */
     #loading-screen {
