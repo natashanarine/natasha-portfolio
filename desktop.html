@@ -1,0 +1,3303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Natasha Narine Portfolio</title>
+  <link rel="icon" type="image/png" href="avatar.png" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #000; user-select: none; border-radius: 0 !important; }
+
+    #bg { width: 100%; height: 100%; object-fit: cover; display: block; position: fixed; top: 0; left: 0; border-radius: 0 !important; }
+
+    /* ── CD Player Window ── */
+    #cdplayer {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      left: auto;
+      width: 340px;
+      font-family: 'Tahoma', 'Arial', sans-serif;
+      font-size: 11px;
+      box-shadow: 3px 3px 12px rgba(0,0,0,0.6);
+      z-index: 10;
+    }
+
+    /* Title bar */
+    #cd-titlebar {
+      background: linear-gradient(to right,
+        #0c2ec4 0%, #1a55d8 25%, #2e7ae0 55%, #4496e8 80%, #5aaef0 100%);
+      padding: 3px 5px 4px 6px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: move;
+      border-top: 1px solid #a0c4ff;
+      border-left: 1px solid #a0c4ff;
+      border-right: 1px solid #0a1880;
+      height: 28px;
+    }
+
+    #cd-titlebar .title-icon { font-size: 15px; line-height: 1; }
+
+    #cd-titlebar .title-text {
+      color: #fff;
+      font-weight: bold;
+      font-size: 12px;
+      flex: 1;
+      text-shadow: 1px 1px 1px rgba(0,0,50,0.6);
+      letter-spacing: 0.2px;
+    }
+
+    .win-btns { display: flex; gap: 2px; }
+
+    .win-btn {
+      width: 21px;
+      height: 20px;
+      background: linear-gradient(to bottom, #dce8fc 0%, #a8c0e8 100%);
+      border-top: 1px solid #e8f0ff;
+      border-left: 1px solid #e8f0ff;
+      border-right: 1px solid #3060a0;
+      border-bottom: 1px solid #3060a0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: bold;
+      color: #000;
+    }
+    .win-btn:hover { background: linear-gradient(to bottom, #eef2ff 0%, #c0d4f8 100%); }
+    .win-btn.close:hover {
+      background: linear-gradient(to bottom, #f04040 0%, #b81818 100%);
+      color: #fff;
+      border-color: #801010;
+    }
+
+    /* Window body */
+    #cd-body {
+      background: #d4d0c8;
+      border: 2px solid;
+      border-color: #ffffff #808080 #808080 #ffffff;
+      border-top: none;
+      padding: 7px;
+      display: flex;
+      gap: 7px;
+      align-items: stretch;
+    }
+
+    /* Album art */
+    #cd-art {
+      width: 95px;
+      flex-shrink: 0;
+      background: #0d0d20;
+      border: 2px solid;
+      border-color: #808080 #ffffff #ffffff #808080;
+      overflow: hidden;
+      position: relative;
+    }
+
+    #cd-art svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Info panel */
+    #cd-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding-top: 2px;
+    }
+
+    .cd-row { display: flex; align-items: stretch; gap: 3px; }
+
+    .cd-label {
+      width: 38px;
+      text-align: right;
+      font-size: 11px;
+      color: #000;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex-shrink: 0;
+    }
+
+    .cd-field-wrap {
+      flex: 1;
+      display: flex;
+      border: 2px solid;
+      border-color: #808080 #ffffff #ffffff #808080;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .cd-field-text {
+      flex: 1;
+      padding: 1px 4px;
+      font-family: 'Courier New', monospace;
+      font-weight: bold;
+      font-size: 11px;
+      color: #000;
+      display: flex;
+      align-items: center;
+    }
+
+    .cd-drive {
+      padding: 2px 5px;
+      font-size: 10px;
+      color: #555;
+      border-left: 1px solid #ccc;
+      background: #eae6de;
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+      font-family: 'Tahoma', sans-serif;
+    }
+
+    .cd-dropdown {
+      width: 16px;
+      background: linear-gradient(to bottom, #e8e4dc 0%, #c4c0b8 100%);
+      border: 2px solid;
+      border-color: #ffffff #808080 #808080 #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 7px;
+      cursor: pointer;
+      flex-shrink: 0;
+      color: #000;
+    }
+
+    #track-dropdown-list {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 38px;
+      right: 0;
+      background: #fff;
+      border: 2px solid;
+      border-color: #808080 #dfdfdf #dfdfdf #808080;
+      box-shadow: 1px 1px 0 #000;
+      z-index: 200;
+      overflow-y: auto;
+      max-height: 90px;
+    }
+    #track-dropdown-list.open { display: block; }
+    .track-option {
+      padding: 2px 6px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      color: #000;
+      cursor: default;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .track-option:hover { background: #0a246a; color: #fff; }
+    .track-option.active { background: #0a246a; color: #fff; }
+
+    /* Progress slider */
+    #cd-progress-wrap { padding: 2px 0 0; }
+
+    #progress {
+      width: 100%;
+      height: 16px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: transparent;
+      cursor: pointer;
+      display: block;
+    }
+
+    #progress::-webkit-slider-runnable-track {
+      height: 3px;
+      background: #888;
+      border-top: 1px solid #444;
+      border-bottom: 1px solid #ccc;
+      margin-top: 6px;
+    }
+
+    #progress::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 9px;
+      height: 16px;
+      margin-top: -6px;
+      background: linear-gradient(to bottom, #ece8e0 0%, #c4c0b8 100%);
+      border-top: 1px solid #fff;
+      border-left: 1px solid #fff;
+      border-right: 1px solid #808080;
+      border-bottom: 1px solid #808080;
+    }
+
+    /* Transport buttons */
+    #cd-transport {
+      display: flex;
+      gap: 3px;
+      margin-top: 4px;
+    }
+
+    .t-btn {
+      flex: 1;
+      height: 22px;
+      background: linear-gradient(to bottom, #ece8e0 0%, #c4c0b8 100%);
+      border-top: 1px solid #fff;
+      border-left: 1px solid #fff;
+      border-right: 1px solid #808080;
+      border-bottom: 1px solid #808080;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: #000;
+    }
+
+    .t-btn:hover { background: linear-gradient(to bottom, #f8f4ec 0%, #d8d4cc 100%); }
+    .t-btn.no-click { pointer-events: none; opacity: 0.6; cursor: default; }
+
+    .t-btn:active,
+    .t-btn.pressed {
+      border-color: #808080 #fff #fff #808080;
+      background: linear-gradient(to bottom, #c4c0b8 0%, #ece8e0 100%);
+    }
+
+    /* ── MS Paint ── */
+    #mspaint {
+      position: absolute;
+      top: 50px;
+      left: 220px;
+      width: 360px;
+      font-family: 'Tahoma', 'Arial', sans-serif;
+      font-size: 11px;
+      box-shadow: 3px 3px 12px rgba(0,0,0,0.6);
+      z-index: 10;
+    }
+
+    #paint-titlebar {
+      background: linear-gradient(to right,
+        #0c2ec4 0%, #1a55d8 25%, #2e7ae0 55%, #4496e8 80%, #5aaef0 100%);
+      padding: 3px 5px 4px 6px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: move;
+      border-top: 1px solid #a0c4ff;
+      border-left: 1px solid #a0c4ff;
+      border-right: 1px solid #0a1880;
+      height: 28px;
+    }
+
+    #paint-titlebar .paint-icon { font-size: 14px; }
+    #paint-titlebar .paint-title {
+      color: #fff; font-weight: bold; font-size: 12px; flex: 1;
+      text-shadow: 1px 1px 1px rgba(0,0,50,0.6);
+    }
+
+    #paint-body {
+      background: #d4d0c8;
+      border: 2px solid;
+      border-color: #ffffff #808080 #808080 #ffffff;
+      border-top: none;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #paint-menubar {
+      display: flex;
+      padding: 2px 4px;
+      border-bottom: 1px solid #a0a0a0;
+    }
+
+    .paint-menu {
+      padding: 2px 8px;
+      font-size: 11px;
+      color: #000;
+      cursor: pointer;
+    }
+    .paint-menu:hover { background: #0a246a; color: #fff; }
+
+    #paint-workspace {
+      display: flex;
+      flex-direction: row;
+    }
+
+    /* Left toolbar */
+    #paint-tools {
+      width: 54px;
+      background: #d4d0c8;
+      border-right: 1px solid #a0a0a0;
+      padding: 2px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      flex-shrink: 0;
+    }
+
+    #paint-tool-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+    }
+
+    .pt {
+      width: 24px;
+      height: 24px;
+      background: linear-gradient(to bottom, #e8e4dc 0%, #c4c0b8 100%);
+      border: 1px solid;
+      border-color: #fff #808080 #808080 #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .pt:hover, .pt.active {
+      border-color: #808080 #fff #fff #808080;
+      background: linear-gradient(to bottom, #c4c0b8 0%, #e8e4dc 100%);
+    }
+
+    #paint-color-preview {
+      margin: 6px 2px 2px;
+      position: relative;
+      height: 34px;
+    }
+
+    #paint-bg-color {
+      position: absolute;
+      bottom: 0; left: 12px;
+      width: 22px; height: 22px;
+      border: 1px solid #000;
+      background: #fff;
+    }
+
+    #paint-fg-color {
+      position: absolute;
+      top: 0; left: 0;
+      width: 22px; height: 22px;
+      border: 1px solid #000;
+      background: #000;
+      z-index: 1;
+    }
+
+    /* Canvas area */
+    #paint-canvas-wrap {
+      flex: 1;
+      background: #808080;
+      overflow: auto;
+      padding: 6px;
+    }
+
+    #paint-canvas {
+      display: block;
+      cursor: crosshair;
+      background: #fff;
+    }
+
+    /* Color bar */
+    #paint-colorbar {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 4px;
+      border-top: 1px solid #a0a0a0;
+      background: #d4d0c8;
+    }
+
+    #paint-palette {
+      display: grid;
+      grid-template-columns: repeat(14, 16px);
+      grid-template-rows: repeat(2, 16px);
+      gap: 1px;
+    }
+
+    .pc {
+      width: 16px;
+      height: 16px;
+      border: 1px solid #808080;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .pc:hover { border-color: #000; transform: scale(1.15); }
+
+    #paint-statusbar {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-top: 1px solid #a0a0a0;
+      color: #000;
+      background: #d4d0c8;
+    }
+
+    /* ── Notepad ── */
+    #notepad {
+      position: absolute;
+      top: 220px;
+      left: calc(37% - 40px);
+      width: 480px;
+      font-family: 'Tahoma', 'Arial', sans-serif;
+      font-size: 11px;
+      box-shadow: 3px 3px 12px rgba(0,0,0,0.6);
+      z-index: 10;
+    }
+
+    #np-titlebar {
+      background: linear-gradient(to right,
+        #0c2ec4 0%, #1a55d8 25%, #2e7ae0 55%, #4496e8 80%, #5aaef0 100%);
+      padding: 3px 5px 4px 6px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: move;
+      border-top: 1px solid #a0c4ff;
+      border-left: 1px solid #a0c4ff;
+      border-right: 1px solid #0a1880;
+      height: 28px;
+    }
+
+    #np-titlebar .np-icon { font-size: 14px; line-height: 1; }
+
+    #np-titlebar .np-title {
+      color: #fff;
+      font-weight: bold;
+      font-size: 12px;
+      flex: 1;
+      text-shadow: 1px 1px 1px rgba(0,0,50,0.6);
+    }
+
+    #np-body {
+      background: #d4d0c8;
+      border: 2px solid;
+      border-color: #ffffff #808080 #808080 #ffffff;
+      border-top: none;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #np-menubar {
+      display: flex;
+      gap: 0;
+      padding: 2px 4px;
+      border-bottom: 1px solid #a0a0a0;
+      background: #d4d0c8;
+    }
+
+    .np-menu {
+      padding: 2px 6px;
+      font-size: 11px;
+      color: #000;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+
+    .np-menu:hover {
+      background: #0a246a;
+      color: #fff;
+      border-color: #0a246a;
+    }
+
+    #np-content {
+      position: relative;
+      background: #fff;
+      border: 2px solid;
+      border-color: #808080 #ffffff #ffffff #808080;
+      margin: 4px;
+    }
+
+    #np-textarea {
+      width: 100%;
+      height: 320px;
+      border: none;
+      outline: none;
+      padding: 4px;
+      font-family: 'Lucida Console', 'Courier New', monospace;
+      font-size: 14px;
+      color: #000;
+      background: #fff;
+      display: block;
+      white-space: pre-wrap;
+      overflow-y: auto;
+      cursor: text;
+      user-select: text;
+    }
+    #np-textarea a { cursor: pointer; }
+
+    /* ── Experience Window ── */
+    #exp-window {
+      position: absolute;
+      top: 80px;
+      left: 80px;
+      width: 460px;
+      font-family: 'Tahoma', 'Arial', sans-serif;
+      font-size: 11px;
+      box-shadow: 3px 3px 12px rgba(0,0,0,0.6);
+      z-index: 10;
+    }
+
+    #exp-titlebar {
+      background: linear-gradient(to right,
+        #0c2ec4 0%, #1a55d8 25%, #2e7ae0 55%, #4496e8 80%, #5aaef0 100%);
+      padding: 3px 5px 4px 6px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: move;
+      border-top: 1px solid #a0c4ff;
+      border-left: 1px solid #a0c4ff;
+      border-right: 1px solid #0a1880;
+      height: 28px;
+    }
+
+    #exp-titlebar .exp-icon { font-size: 14px; }
+    #exp-titlebar .exp-title {
+      color: #fff; font-weight: bold; font-size: 12px; flex: 1;
+      text-shadow: 1px 1px 1px rgba(0,0,50,0.6);
+    }
+
+    #exp-body {
+      background: #d4d0c8;
+      border: 2px solid;
+      border-color: #ffffff #808080 #808080 #ffffff;
+      border-top: none;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #exp-menubar {
+      display: flex;
+      padding: 2px 4px;
+      border-bottom: 1px solid #a0a0a0;
+    }
+
+    .exp-menu {
+      padding: 2px 8px;
+      font-size: 11px;
+      color: #000;
+      cursor: pointer;
+    }
+    .exp-menu:hover { background: #0a246a; color: #fff; }
+
+    #exp-addressbar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 6px;
+      border-bottom: 1px solid #a0a0a0;
+    }
+
+    #exp-addressbar .addr-label {
+      font-size: 11px;
+      color: #000;
+      white-space: nowrap;
+    }
+
+    #exp-addressbar .addr-field {
+      flex: 1;
+      border: 2px solid;
+      border-color: #808080 #ffffff #ffffff #808080;
+      background: #fff;
+      padding: 1px 5px;
+      font-size: 11px;
+      font-family: 'Tahoma', sans-serif;
+      color: #000;
+    }
+
+    #exp-list {
+      background: #fff;
+      border: 2px solid;
+      border-color: #808080 #ffffff #ffffff #808080;
+      margin: 6px;
+      max-height: 320px;
+      overflow-y: auto;
+    }
+
+    .exp-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 9px 12px;
+      border-bottom: 1px solid #f0f0f0;
+      cursor: default;
+    }
+    .exp-row:last-child { border-bottom: none; }
+    .exp-row:hover { background: #0a246a; }
+    .exp-row:hover .exp-role,
+    .exp-row:hover .exp-desc { color: #fff; }
+
+    .exp-entry-icon {
+      font-size: 26px;
+      width: 34px;
+      text-align: center;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+
+    .exp-role {
+      font-weight: bold;
+      font-size: 12px;
+      color: #000;
+      line-height: 1.3;
+    }
+
+    .exp-desc {
+      font-size: 10px;
+      color: #555;
+      margin-top: 2px;
+      line-height: 1.4;
+    }
+
+    #exp-statusbar {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-top: 1px solid #a0a0a0;
+      color: #000;
+      background: #d4d0c8;
+    }
+
+    /* ── Loading Screen ── */
+    #loading-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: url('windowsbackground.webp') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #loading-dialog {
+      width: 300px;
+      font-family: 'Tahoma', 'Arial', sans-serif;
+      font-size: 11px;
+      box-shadow: 3px 3px 12px rgba(0,0,0,0.6);
+    }
+
+    #loading-titlebar {
+      background: linear-gradient(to right,
+        #0c2ec4 0%, #1a55d8 25%, #2e7ae0 55%, #4496e8 80%, #5aaef0 100%);
+      padding: 3px 5px 4px 6px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      border-top: 1px solid #a0c4ff;
+      border-left: 1px solid #a0c4ff;
+      border-right: 1px solid #0a1880;
+      height: 28px;
+    }
+
+    #loading-titlebar .loading-title {
+      color: #fff;
+      font-weight: bold;
+      font-size: 12px;
+      flex: 1;
+      text-shadow: 1px 1px 1px rgba(0,0,50,0.6);
+    }
+
+    #loading-body {
+      background: #d4d0c8;
+      border: 2px solid;
+      border-color: #ffffff #808080 #808080 #ffffff;
+      border-top: none;
+      padding: 20px 24px 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    #loading-label {
+      font-size: 12px;
+      color: #000;
+      align-self: flex-start;
+    }
+
+    #loading-bar-track {
+      width: 100%;
+      height: 22px;
+      border: 2px solid;
+      border-color: #808080 #ffffff #ffffff #808080;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    #loading-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: repeating-linear-gradient(
+        to right,
+        #0000c8 0px, #0000c8 12px,
+        #d4d0c8 12px, #d4d0c8 14px
+      );
+      transition: width 0.08s linear;
+    }
+
+    #loading-cancel-btn {
+      padding: 4px 28px;
+      background: linear-gradient(to bottom, #ece8e0 0%, #c4c0b8 100%);
+      border-top: 1px solid #fff;
+      border-left: 1px solid #fff;
+      border-right: 1px solid #808080;
+      border-bottom: 1px solid #808080;
+      cursor: pointer;
+      font-family: 'Tahoma', sans-serif;
+      font-size: 11px;
+      color: #000;
+    }
+
+    #loading-cancel-btn:hover { background: linear-gradient(to bottom, #f8f4ec 0%, #d8d4cc 100%); }
+    #loading-cancel-btn:active {
+      border-color: #808080 #fff #fff #808080;
+      background: linear-gradient(to bottom, #c4c0b8 0%, #ece8e0 100%);
+    }
+
+    /* ── Case Studies Window ── */
+    #cs-window {
+      position: absolute;
+      top: 450px;
+      left: 860px;
+      width: 460px;
+      font-family: 'Tahoma', 'Arial', sans-serif;
+      font-size: 11px;
+      box-shadow: 3px 3px 12px rgba(0,0,0,0.6);
+      z-index: 10;
+    }
+
+    #cs-titlebar {
+      background: linear-gradient(to right,
+        #0c2ec4 0%, #1a55d8 25%, #2e7ae0 55%, #4496e8 80%, #5aaef0 100%);
+      padding: 3px 5px 4px 6px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: move;
+      border-top: 1px solid #a0c4ff;
+      border-left: 1px solid #a0c4ff;
+      border-right: 1px solid #0a1880;
+      height: 28px;
+    }
+
+    #cs-titlebar .exp-icon { font-size: 14px; }
+    #cs-titlebar .exp-title {
+      color: #fff; font-weight: bold; font-size: 12px; flex: 1;
+      text-shadow: 1px 1px 1px rgba(0,0,50,0.6);
+    }
+
+    #cs-body {
+      background: #d4d0c8;
+      border: 2px solid;
+      border-color: #ffffff #808080 #808080 #ffffff;
+      border-top: none;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #cs-menubar {
+      display: flex;
+      padding: 2px 4px;
+      border-bottom: 1px solid #a0a0a0;
+    }
+
+    #cs-addressbar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 6px;
+      border-bottom: 1px solid #a0a0a0;
+    }
+
+    #cs-addressbar .addr-label {
+      font-size: 11px;
+      color: #000;
+      white-space: nowrap;
+    }
+
+    #cs-addressbar .addr-field {
+      flex: 1;
+      border: 2px solid;
+      border-color: #808080 #ffffff #ffffff #808080;
+      background: #fff;
+      padding: 1px 5px;
+      font-size: 11px;
+      font-family: 'Tahoma', sans-serif;
+      color: #000;
+    }
+
+    #cs-list {
+      background: #fff;
+      border: 2px solid;
+      border-color: #808080 #ffffff #ffffff #808080;
+      margin: 6px;
+    }
+
+    #cs-statusbar {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-top: 1px solid #a0a0a0;
+      color: #000;
+      background: #d4d0c8;
+    }
+
+    /* Case Study detail view (inside cs-window — kept for back-compat) */
+    #cs-detail { display: none; flex-direction: column; flex: 1; }
+    #cs-detail.open { display: flex; }
+
+    /* Full-page case study overlay */
+    #cs-fullpage {
+      display: none;
+      position: fixed;
+      top: 20px; left: 20px; right: 20px; bottom: 58px;
+      z-index: 500;
+      flex-direction: column;
+      box-shadow: 4px 4px 20px rgba(0,0,0,0.7);
+      font-family: 'Tahoma', 'Arial', sans-serif;
+      font-size: 11px;
+    }
+    #cs-fullpage.open { display: flex; }
+
+    #cs-fp-titlebar {
+      background: linear-gradient(to right,
+        #0c2ec4 0%, #1a55d8 25%, #2e7ae0 55%, #4496e8 80%, #5aaef0 100%);
+      padding: 3px 5px 4px 6px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      border-top: 1px solid #a0c4ff;
+      border-left: 1px solid #a0c4ff;
+      border-right: 1px solid #0a1880;
+      height: 28px;
+      flex-shrink: 0;
+      cursor: move;
+    }
+
+    #cs-fp-title {
+      color: #fff;
+      font-weight: bold;
+      font-size: 12px;
+      flex: 1;
+      text-shadow: 1px 1px 1px rgba(0,0,50,0.6);
+    }
+
+    #cs-fp-menubar {
+      display: flex;
+      padding: 2px 4px;
+      border-bottom: 1px solid #a0a0a0;
+      flex-shrink: 0;
+    }
+
+    #cs-fp-body {
+      background: #d4d0c8;
+      border: 2px solid;
+      border-color: #ffffff #808080 #808080 #ffffff;
+      border-top: none;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    #cs-fp-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 6px;
+      border-bottom: 1px solid #a0a0a0;
+      background: #d4d0c8;
+      flex-shrink: 0;
+    }
+
+    #cs-fp-back {
+      height: 22px;
+      padding: 0 10px;
+      background: linear-gradient(to bottom, #ece8e0 0%, #c4c0b8 100%);
+      border-top: 1px solid #fff;
+      border-left: 1px solid #fff;
+      border-right: 1px solid #808080;
+      border-bottom: 1px solid #808080;
+      font-family: 'Tahoma', sans-serif;
+      font-size: 11px;
+      cursor: pointer;
+      color: #000;
+    }
+    #cs-fp-back:hover { background: linear-gradient(to bottom, #f8f4ec 0%, #d8d4cc 100%); }
+
+    #cs-fp-addrbar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 6px;
+      border-bottom: 1px solid #a0a0a0;
+      flex-shrink: 0;
+    }
+
+    #cs-fp-addrbar .addr-label {
+      font-size: 11px;
+      color: #000;
+      white-space: nowrap;
+    }
+
+    #cs-fp-addrbar .addr-field {
+      flex: 1;
+      border: 2px solid;
+      border-color: #808080 #ffffff #ffffff #808080;
+      background: #fff;
+      padding: 1px 5px;
+      font-size: 11px;
+      font-family: 'Tahoma', sans-serif;
+      color: #000;
+    }
+
+    #cs-fp-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 20px;
+      background: #fff;
+      border: 2px solid;
+      border-color: #808080 #ffffff #ffffff #808080;
+      margin: 6px;
+      font-family: 'Tahoma', sans-serif;
+      font-size: 11px;
+      line-height: 1.6;
+      color: #000;
+    }
+
+    #cs-detail-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 6px;
+      border-bottom: 1px solid #a0a0a0;
+      background: #d4d0c8;
+    }
+
+    #cs-back-btn {
+      height: 22px;
+      padding: 0 8px;
+      background: linear-gradient(to bottom, #ece8e0 0%, #c4c0b8 100%);
+      border-top: 1px solid #fff;
+      border-left: 1px solid #fff;
+      border-right: 1px solid #808080;
+      border-bottom: 1px solid #808080;
+      font-family: 'Tahoma', sans-serif;
+      font-size: 11px;
+      cursor: pointer;
+      color: #000;
+    }
+    #cs-back-btn:hover { background: linear-gradient(to bottom, #f8f4ec 0%, #d8d4cc 100%); }
+    #cs-back-btn:active {
+      border-color: #808080 #fff #fff #808080;
+      background: linear-gradient(to bottom, #c4c0b8 0%, #ece8e0 100%);
+    }
+
+    #cs-detail-content {
+      background: #fff;
+      border: 2px solid;
+      border-color: #808080 #ffffff #ffffff #808080;
+      margin: 6px;
+      overflow-y: auto;
+      max-height: 400px;
+      padding: 12px 14px;
+      font-family: 'Tahoma', sans-serif;
+      font-size: 11px;
+      line-height: 1.6;
+      color: #000;
+    }
+
+    .cs-d-head { margin-bottom: 12px; border-bottom: 1px solid #d0ccc4; padding-bottom: 10px; }
+    .cs-d-title { font-size: 13px; font-weight: bold; color: #000; margin-bottom: 3px; }
+    .cs-d-subtitle { font-size: 11px; color: #555; }
+
+    .cs-d-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: #a0a0a0;
+      border: 1px solid #a0a0a0;
+      margin-bottom: 14px;
+      font-size: 11px;
+    }
+    .cs-d-meta-item {
+      background: #f4f2ee;
+      padding: 5px 8px;
+    }
+    .cs-d-meta-label { font-weight: bold; color: #000; margin-bottom: 1px; }
+    .cs-d-meta-val { color: #333; }
+
+    .cs-d-section { margin-bottom: 14px; }
+    .cs-d-section-hdr {
+      display: flex;
+      align-items: baseline;
+      gap: 7px;
+      margin-bottom: 5px;
+      border-bottom: 1px solid #e0dcd4;
+      padding-bottom: 3px;
+    }
+    .cs-d-num {
+      font-size: 10px;
+      font-weight: bold;
+      color: #fff;
+      background: #0a246a;
+      padding: 1px 5px;
+      flex-shrink: 0;
+    }
+    .cs-d-section-title { font-weight: bold; font-size: 12px; color: #000; }
+    .cs-d-section-intro { font-style: italic; color: #333; margin-bottom: 5px; font-size: 11px; }
+    .cs-d-body { color: #222; font-size: 11px; }
+    .cs-d-body p + p { margin-top: 6px; }
+
+    .cs-d-quote {
+      border-left: 3px solid #0a246a;
+      margin: 6px 0;
+      padding: 3px 8px;
+      color: #333;
+      font-style: italic;
+      background: #f8f6f2;
+    }
+
+    .cs-d-stat-row { display: flex; gap: 16px; margin: 6px 0; flex-wrap: wrap; }
+    .cs-d-stat { text-align: center; }
+    .cs-d-stat-num { font-size: 18px; font-weight: bold; color: #0a246a; }
+    .cs-d-stat-label { font-size: 10px; color: #555; }
+
+    .cs-d-table { width: 100%; border-collapse: collapse; font-size: 10px; margin: 6px 0; }
+    .cs-d-table th {
+      background: #0a246a; color: #fff; padding: 3px 6px;
+      text-align: left; font-weight: bold;
+    }
+    .cs-d-table td { padding: 3px 6px; border-bottom: 1px solid #e0dcd4; vertical-align: top; }
+    .cs-d-table tr:nth-child(even) td { background: #f8f6f2; }
+
+    .cs-d-bullet { margin: 3px 0 3px 14px; list-style: disc; }
+    .cs-d-bullet li { margin-bottom: 2px; }
+
+    .cs-img { width: 180px; height: 180px; object-fit: cover; display: block; margin: 8px auto 2px; border: 1px solid #d0ccc4; }
+    .cs-img-caption { font-size: 10px; color: #666; font-style: italic; margin-bottom: 8px; text-align: center; }
+    .cs-img-row { display: flex; gap: 6px; margin: 8px 0 2px; flex-wrap: wrap; justify-content: center; }
+    .cs-img-row img { width: 180px; height: 180px; object-fit: cover; border: 1px solid #d0ccc4; flex-shrink: 0; }
+
+    /* ── Projects Window ── */
+    #proj-window {
+      position: absolute;
+      top: 80px;
+      left: 80px;
+      width: 460px;
+      font-family: 'Tahoma', 'Arial', sans-serif;
+      font-size: 11px;
+      box-shadow: 3px 3px 12px rgba(0,0,0,0.6);
+      z-index: 10;
+    }
+
+    #proj-titlebar {
+      background: linear-gradient(to right,
+        #0c2ec4 0%, #1a55d8 25%, #2e7ae0 55%, #4496e8 80%, #5aaef0 100%);
+      padding: 3px 5px 4px 6px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: move;
+      border-top: 1px solid #a0c4ff;
+      border-left: 1px solid #a0c4ff;
+      border-right: 1px solid #0a1880;
+      height: 28px;
+    }
+
+    #proj-titlebar .exp-icon { font-size: 14px; }
+    #proj-titlebar .exp-title {
+      color: #fff; font-weight: bold; font-size: 12px; flex: 1;
+      text-shadow: 1px 1px 1px rgba(0,0,50,0.6);
+    }
+
+    #proj-body {
+      background: #d4d0c8;
+      border: 2px solid;
+      border-color: #ffffff #808080 #808080 #ffffff;
+      border-top: none;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #proj-menubar {
+      display: flex;
+      padding: 2px 4px;
+      border-bottom: 1px solid #a0a0a0;
+    }
+
+    #proj-addressbar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 6px;
+      border-bottom: 1px solid #a0a0a0;
+    }
+
+    #proj-addressbar .addr-label {
+      font-size: 11px;
+      color: #000;
+      white-space: nowrap;
+    }
+
+    #proj-addressbar .addr-field {
+      flex: 1;
+      border: 2px solid;
+      border-color: #808080 #ffffff #ffffff #808080;
+      background: #fff;
+      padding: 1px 5px;
+      font-size: 11px;
+      font-family: 'Tahoma', sans-serif;
+      color: #000;
+    }
+
+    #proj-list {
+      background: #fff;
+      border: 2px solid;
+      border-color: #808080 #ffffff #ffffff #808080;
+      margin: 6px;
+    }
+
+    #proj-statusbar {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-top: 1px solid #a0a0a0;
+      color: #000;
+      background: #d4d0c8;
+    }
+
+    /* ── Photos Window ── */
+    #photos-window {
+      position: absolute;
+      top: 80px;
+      left: 120px;
+      width: 500px;
+      font-family: 'Tahoma', 'Arial', sans-serif;
+      font-size: 11px;
+      box-shadow: 3px 3px 12px rgba(0,0,0,0.6);
+      z-index: 10;
+    }
+
+    #photos-titlebar {
+      background: linear-gradient(to right,
+        #0c2ec4 0%, #1a55d8 25%, #2e7ae0 55%, #4496e8 80%, #5aaef0 100%);
+      padding: 3px 5px 4px 6px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: move;
+      border-top: 1px solid #a0c4ff;
+      border-left: 1px solid #a0c4ff;
+      border-right: 1px solid #0a1880;
+      height: 28px;
+    }
+
+    #photos-titlebar .exp-title {
+      color: #fff; font-weight: bold; font-size: 12px; flex: 1;
+      text-shadow: 1px 1px 1px rgba(0,0,50,0.6);
+    }
+
+    #photos-body {
+      background: #d4d0c8;
+      border: 2px solid;
+      border-color: #ffffff #808080 #808080 #ffffff;
+      border-top: none;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #photos-menubar {
+      display: flex;
+      padding: 2px 4px;
+      border-bottom: 1px solid #a0a0a0;
+    }
+
+    #photos-addressbar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 6px;
+      border-bottom: 1px solid #a0a0a0;
+    }
+
+    #photos-addressbar .addr-label {
+      font-size: 11px;
+      color: #000;
+      white-space: nowrap;
+    }
+
+    #photos-addressbar .addr-field {
+      flex: 1;
+      border: 2px solid;
+      border-color: #808080 #ffffff #ffffff #808080;
+      background: #fff;
+      padding: 1px 5px;
+      font-size: 11px;
+      font-family: 'Tahoma', sans-serif;
+      color: #000;
+    }
+
+    #photos-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 10px;
+      background: #fff;
+      border: 2px solid;
+      border-color: #808080 #ffffff #ffffff #808080;
+      margin: 6px;
+      min-height: 160px;
+      overflow-y: auto;
+    }
+
+    .photo-thumb {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .photo-thumb:hover { background: #cce4ff; }
+    .photo-thumb:hover .photo-label { color: #000; }
+
+    .photo-thumb img {
+      width: 100px;
+      height: 80px;
+      object-fit: cover;
+      border: 1px solid #808080;
+    }
+
+    .photo-label {
+      font-size: 10px;
+      font-family: 'Tahoma', sans-serif;
+      color: #000;
+      text-align: center;
+    }
+
+    #photos-statusbar {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-top: 1px solid #a0a0a0;
+      color: #000;
+      background: #d4d0c8;
+    }
+
+    /* Lightbox */
+    #photo-lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      z-index: 300;
+      align-items: center;
+      justify-content: center;
+    }
+    #photo-lightbox.open { display: flex; }
+    #photo-lightbox img {
+      max-width: 85vw;
+      max-height: 85vh;
+      border: 3px solid #fff;
+      box-shadow: 0 0 30px rgba(0,0,0,0.8);
+    }
+    #lightbox-close {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      font-size: 28px;
+      color: #fff;
+      cursor: pointer;
+      font-family: 'Tahoma', sans-serif;
+      line-height: 1;
+    }
+    #lightbox-close:hover { color: #ffaaaa; }
+
+    /* ── Desktop Icons ── */
+    .desk-icon {
+      position: fixed;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: grab;
+      text-decoration: none;
+      z-index: 5;
+      width: 120px;
+    }
+
+    .desk-icon:active { cursor: grabbing; }
+
+    .desk-icon img {
+      width: 110px;
+      height: 110px;
+      object-fit: contain;
+      image-rendering: pixelated;
+    }
+
+    .desk-icon span {
+      margin-top: -20px;
+      font-family: 'Tahoma', sans-serif;
+      font-size: 12px;
+      color: #fff;
+      text-align: center;
+      text-shadow: 1px 1px 2px #000, -1px -1px 2px #000, 1px -1px 2px #000, -1px 1px 2px #000;
+      line-height: 1.3;
+    }
+    /* ── Mobile Layout (hidden on desktop) ── */
+    #mobile-layout { display: none; }
+
+    /* ── XP Taskbar ── */
+    #xp-taskbar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 38px;
+      border-radius: 0 !important;
+      -webkit-border-radius: 0 !important;
+      background: linear-gradient(to bottom,
+        #3a6bbf 0%, #2a57b0 18%, #1e4aa0 50%, #1a3f90 82%, #183a88 100%);
+      border-top: 1px solid #5a8ae0;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 0 6px;
+      z-index: 9998;
+      font-family: 'Tahoma', sans-serif;
+      box-shadow: 0 -1px 0 #0a1a60;
+    }
+
+    #xp-taskbar-divider {
+      width: 2px;
+      height: 26px;
+      border-left: 1px solid #1a3a80;
+      border-right: 1px solid #5a80c0;
+      margin: 0 4px;
+    }
+
+    #web-view-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      height: 26px;
+      padding: 0 10px;
+      background: linear-gradient(to bottom, #4a78cc 0%, #2a54a8 50%, #1e4494 100%);
+      border-top: 1px solid #8ab0f0;
+      border-left: 1px solid #7aa0e0;
+      border-right: 1px solid #0a2060;
+      border-bottom: 1px solid #0a2060;
+      border-radius: 0 !important;
+      -webkit-appearance: none;
+      appearance: none;
+      color: #fff;
+      font-family: 'Tahoma', sans-serif;
+      font-size: 11px;
+      font-weight: bold;
+      text-decoration: none;
+      text-shadow: 1px 1px 1px rgba(0,0,50,0.6);
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    #web-view-btn {
+      animation: taskbar-glow 2s ease-in-out infinite;
+    }
+
+    @keyframes taskbar-glow {
+      0%, 100% { box-shadow: 0 0 20px 8px rgba(120,180,255,0.55), 0 0 40px 16px rgba(80,140,255,0.25); }
+      50%       { box-shadow: 0 0 50px 20px rgba(120,180,255,1), 0 0 80px 30px rgba(80,140,255,0.5); }
+    }
+
+    #web-view-btn:hover {
+      background: linear-gradient(to bottom, #5a88dc 0%, #3a64b8 50%, #2e54a4 100%);
+      animation: none;
+      box-shadow: 0 0 60px 24px rgba(120,180,255,1), 0 0 100px 40px rgba(80,140,255,0.6);
+    }
+
+    #web-view-btn:active {
+      background: linear-gradient(to bottom, #1e4494 0%, #2a54a8 50%, #4a78cc 100%);
+    }
+
+    #web-view-btn img {
+      width: 16px;
+      height: 16px;
+      object-fit: contain;
+      image-rendering: pixelated;
+    }
+
+    #xp-taskbar-clock {
+      margin-left: auto;
+      color: #fff;
+      font-size: 11px;
+      font-weight: bold;
+      text-shadow: 1px 1px 1px rgba(0,0,50,0.5);
+      padding: 0 10px;
+      border-left: 1px solid #3a5aa0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      background: rgba(0,0,0,0.15);
+      white-space: nowrap;
+    }
+
+    @media (max-width: 768px) {
+      /* Hide all desktop elements */
+      #bg, #cdplayer, #mspaint, #notepad, #exp-window, #proj-window,
+      #cs-window, #photos-window, #loading-overlay,
+      .desk-icon, #xp-taskbar { display: none !important; }
+
+      html, body { overflow: auto; background: #000; }
+
+      #mobile-layout {
+        display: block;
+        min-height: 100%;
+        background: url('mobile background.png') center center / cover fixed;
+        font-family: 'Tahoma', 'Arial', sans-serif;
+        font-size: 11px;
+        padding: 10px;
+        box-sizing: border-box;
+      }
+
+      /* Window chrome */
+      .mob-win {
+        margin-bottom: 10px;
+        box-shadow: 3px 3px 12px rgba(0,0,0,0.6);
+      }
+
+      .mob-win-bar {
+        background: linear-gradient(to right,
+          #0c2ec4 0%, #1a55d8 25%, #2e7ae0 55%, #4496e8 80%, #5aaef0 100%);
+        padding: 3px 6px 4px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        height: 28px;
+        border-top: 1px solid #a0c4ff;
+        border-left: 1px solid #a0c4ff;
+        border-right: 1px solid #0a1880;
+      }
+
+      .mob-win-icon {
+        width: 18px;
+        height: 18px;
+        object-fit: contain;
+        flex-shrink: 0;
+      }
+
+      .mob-win-title {
+        color: #fff;
+        font-weight: bold;
+        font-size: 12px;
+        text-shadow: 1px 1px 1px rgba(0,0,50,0.6);
+        flex: 1;
+      }
+
+      .mob-win-body {
+        background: #d4d0c8;
+        border: 2px solid;
+        border-color: #ffffff #808080 #808080 #ffffff;
+        border-top: none;
+      }
+
+      /* Menubar */
+      .mob-menubar {
+        display: flex;
+        padding: 2px 4px;
+        border-bottom: 1px solid #a0a0a0;
+        gap: 2px;
+      }
+      .mob-menu-item {
+        font-size: 11px;
+        padding: 1px 6px;
+        color: #000;
+        cursor: default;
+      }
+
+      /* Address bar */
+      .mob-addrbar {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 3px 6px;
+        border-bottom: 1px solid #a0a0a0;
+      }
+      .mob-addr-label {
+        font-size: 11px;
+        color: #000;
+        white-space: nowrap;
+      }
+      .mob-addr-field {
+        flex: 1;
+        border: 2px solid;
+        border-color: #808080 #ffffff #ffffff #808080;
+        background: #fff;
+        padding: 1px 5px;
+        font-size: 11px;
+        font-family: 'Tahoma', sans-serif;
+        color: #000;
+      }
+
+      /* White list area */
+      .mob-list {
+        background: #fff;
+        border: 2px solid;
+        border-color: #808080 #ffffff #ffffff #808080;
+        margin: 6px;
+        overflow: hidden;
+      }
+
+      /* Explorer rows */
+      .mob-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 6px 8px;
+        border-bottom: 1px solid #e0dcd4;
+        text-decoration: none;
+        color: #000;
+        background: #fff;
+      }
+      .mob-row:last-child { border-bottom: none; }
+      .mob-row:active { background: #0a246a; }
+      .mob-row:active .mob-row-title,
+      .mob-row:active .mob-row-desc { color: #fff; }
+
+      .mob-row-icon {
+        width: 28px;
+        height: 28px;
+        object-fit: contain;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+
+      .mob-row-title {
+        font-weight: bold;
+        font-size: 11px;
+        color: #000;
+        margin-bottom: 2px;
+      }
+
+      .mob-row-desc {
+        font-size: 11px;
+        color: #444;
+        line-height: 1.5;
+      }
+
+      /* Status bar */
+      .mob-statusbar {
+        font-size: 10px;
+        padding: 2px 6px;
+        border-top: 1px solid #a0a0a0;
+        color: #000;
+        background: #d4d0c8;
+      }
+
+      /* About / notepad body */
+      .mob-text-area {
+        background: #fff;
+        border: 2px solid;
+        border-color: #808080 #ffffff #ffffff #808080;
+        margin: 6px;
+        padding: 8px;
+        font-family: 'Courier New', monospace;
+        font-size: 11px;
+        color: #000;
+        line-height: 1.6;
+      }
+      .mob-text-area p + p { margin-top: 8px; }
+
+      /* Header window: avatar row */
+      #mob-avatar-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 10px;
+      }
+      #mob-avatar {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid;
+        border-color: #808080 #ffffff #ffffff #808080;
+        flex-shrink: 0;
+      }
+      #mob-avatar-name {
+        font-weight: bold;
+        font-size: 13px;
+        color: #000;
+      }
+      #mob-avatar-sub {
+        font-size: 11px;
+        color: #555;
+        margin-top: 2px;
+      }
+
+      /* Photos gallery */
+      #mob-gallery {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 4px;
+        margin: 6px;
+      }
+      .mob-photo {
+        width: 100%;
+        aspect-ratio: 1;
+        object-fit: cover;
+        border: 2px solid;
+        border-color: #808080 #ffffff #ffffff #808080;
+        cursor: pointer;
+        display: block;
+      }
+
+      /* Links buttons */
+      .mob-btns {
+        display: flex;
+        gap: 6px;
+        padding: 8px;
+      }
+      .mob-btn {
+        flex: 1;
+        text-align: center;
+        padding: 6px 4px;
+        background: linear-gradient(to bottom, #ece8e0 0%, #c4c0b8 100%);
+        border-top: 1px solid #fff;
+        border-left: 1px solid #fff;
+        border-right: 1px solid #808080;
+        border-bottom: 1px solid #808080;
+        color: #000;
+        text-decoration: none;
+        font-size: 11px;
+        font-family: 'Tahoma', sans-serif;
+      }
+      .mob-btn:active {
+        border-color: #808080 #fff #fff #808080;
+        background: linear-gradient(to bottom, #c4c0b8 0%, #ece8e0 100%);
+      }
+
+      #mob-footer {
+        text-align: center;
+        font-size: 10px;
+        color: #fff;
+        padding: 14px 0 4px;
+        text-shadow: 1px 1px 2px #000;
+      }
+
+      /* Lightbox still works on mobile */
+      #photo-lightbox.open { display: flex !important; }
+
+      /* Mobile case study overlay */
+      #mob-cs-overlay {
+        display: none;
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: #fff;
+        z-index: 9999;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      #mob-cs-overlay-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        background: #0a246a;
+        color: #fff;
+        font-size: 12px;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+      #mob-cs-back {
+        background: none;
+        border: 1px solid rgba(255,255,255,0.6);
+        color: #fff;
+        font-size: 11px;
+        padding: 3px 10px;
+        cursor: pointer;
+        font-family: 'Tahoma', sans-serif;
+      }
+      #mob-cs-overlay-body {
+        padding: 10px;
+        overflow-x: hidden;
+      }
+      #mob-cs-overlay-body img,
+      #mob-cs-overlay-body video {
+        max-width: 100% !important;
+        height: auto !important;
+      }
+      #mob-cs-overlay-body table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Loading Screen -->
+  <div id="loading-overlay">
+    <div id="loading-dialog">
+      <div id="loading-titlebar">
+        <img src="icon-projects.png" style="width:20px;height:20px;object-fit:contain;" />
+        <span class="loading-title">Loading Natasha's Portfolio...</span>
+        <div class="win-btns">
+          <button class="win-btn close" id="loading-x">&#10005;</button>
+        </div>
+      </div>
+      <div id="loading-body">
+        <div id="loading-label">Loading...</div>
+        <div id="loading-bar-track">
+          <div id="loading-bar-fill"></div>
+        </div>
+        <button id="loading-cancel-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <img id="bg" src="windowsbackground.webp" alt="" />
+
+  <div id="cdplayer">
+
+    <div id="cd-titlebar">
+      <img class="title-icon" src="music.png" style="width:20px;height:20px;object-fit:contain;" />
+      <span class="title-text">CD Player</span>
+      <div class="win-btns">
+        <button class="win-btn min" id="cd-min-btn">&#8212;</button>
+        <button class="win-btn max">&#9633;</button>
+        <button class="win-btn close" id="cd-close-btn">&#10005;</button>
+      </div>
+    </div>
+
+    <div id="cd-body">
+
+      <!-- Album art -->
+      <div id="cd-art">
+        <img id="album-art" src="album.jpg" alt="album" style="width:100%;height:100%;object-fit:cover;display:block;" />
+      </div>
+
+      <div id="cd-info">
+
+        <div class="cd-row">
+          <span class="cd-label">Artist:</span>
+          <div class="cd-field-wrap">
+            <span class="cd-field-text" id="artist-name">BTS</span>
+            <span class="cd-drive">&#8249;D:&#8250;</span>
+          </div>
+          <div class="cd-dropdown">&#9660;</div>
+        </div>
+
+        <div class="cd-row" style="position:relative;">
+          <span class="cd-label">Track:</span>
+          <div class="cd-field-wrap" id="track-field" style="cursor:default;">
+            <span class="cd-field-text" id="track-name">134340</span>
+            <span class="cd-drive">&#8249;D:&#8250;</span>
+          </div>
+          <div class="cd-dropdown" id="track-dropdown-arrow">&#9660;</div>
+          <div id="track-dropdown-list"></div>
+        </div>
+
+        <div id="cd-progress-wrap">
+          <input type="range" id="progress" min="0" max="100" value="0" />
+        </div>
+
+        <div id="cd-transport">
+          <button class="t-btn" id="btn-prev">&#9664;&#9664;</button>
+          <button class="t-btn" id="btn-play" title="Play">&#9654;</button>
+          <button class="t-btn" id="btn-next">&#9654;&#9654;</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- MS Paint -->
+  <div id="mspaint">
+    <div id="paint-titlebar">
+      <img class="paint-icon" src="icon-personalwork.png" style="width:20px;height:20px;object-fit:contain;" />
+      <span class="paint-title">Self Portrait - Paint</span>
+      <div class="win-btns">
+        <button class="win-btn paint-min">&#8212;</button>
+        <button class="win-btn paint-max">&#9633;</button>
+        <button class="win-btn paint-close close">&#10005;</button>
+      </div>
+    </div>
+    <div id="paint-body">
+      <div id="paint-menubar">
+        <span class="paint-menu">File</span>
+        <span class="paint-menu">Edit</span>
+        <span class="paint-menu">View</span>
+        <span class="paint-menu">Image</span>
+        <span class="paint-menu">Options</span>
+        <span class="paint-menu" id="paint-undo" style="margin-left:auto;">↩ Undo</span>
+      </div>
+      <div id="paint-workspace">
+        <div id="paint-tools">
+          <div id="paint-tool-grid">
+            <div class="pt" data-tool="select" title="Select">⬚</div>
+            <div class="pt" data-tool="freeselect" title="Free Select">⬡</div>
+            <div class="pt active" data-tool="pencil" title="Pencil">✏</div>
+            <div class="pt" data-tool="fill" title="Fill">🪣</div>
+            <div class="pt" data-tool="eyedrop" title="Pick Color">💉</div>
+            <div class="pt" data-tool="zoom" title="Zoom">🔍</div>
+            <div class="pt" data-tool="brush" title="Brush">🖌</div>
+            <div class="pt" data-tool="eraser" title="Eraser">◻</div>
+            <div class="pt" data-tool="airbrush" title="Airbrush">💨</div>
+            <div class="pt" data-tool="text" title="Text">A</div>
+            <div class="pt" data-tool="line" title="Line">/</div>
+            <div class="pt" data-tool="curve" title="Curve">∫</div>
+            <div class="pt" data-tool="rect" title="Rectangle">□</div>
+            <div class="pt" data-tool="poly" title="Polygon">⬠</div>
+            <div class="pt" data-tool="ellipse" title="Ellipse">○</div>
+            <div class="pt" data-tool="rrect" title="Rounded Rect">▭</div>
+          </div>
+          <div id="paint-color-preview">
+            <div id="paint-bg-color"></div>
+            <div id="paint-fg-color"></div>
+          </div>
+        </div>
+        <div id="paint-canvas-wrap">
+          <canvas id="paint-canvas" width="280" height="280"></canvas>
+        </div>
+      </div>
+      <div id="paint-colorbar">
+        <div style="display:flex;flex-direction:column;gap:1px;margin-right:4px;">
+          <div style="width:22px;height:14px;background:#000;border:1px solid #808080;"></div>
+          <div style="width:22px;height:14px;background:#fff;border:1px solid #808080;"></div>
+        </div>
+        <div id="paint-palette"></div>
+      </div>
+      <div id="paint-statusbar">For Help, click Help Topics on the Options Menu.</div>
+    </div>
+  </div>
+
+  <!-- Notepad -->
+  <div id="notepad">
+    <div id="np-titlebar">
+      <img class="np-icon" src="icon-blog.png" style="width:20px;height:20px;object-fit:contain;" />
+      <span class="np-title">About Me - Notepad</span>
+      <div class="win-btns">
+        <button class="win-btn np-min">&#8212;</button>
+        <button class="win-btn np-max">&#9633;</button>
+        <button class="win-btn np-close close">&#10005;</button>
+      </div>
+    </div>
+    <div id="np-body">
+      <div id="np-menubar">
+        <span class="np-menu">File</span>
+        <span class="np-menu">Edit</span>
+        <span class="np-menu">Search</span>
+        <span class="np-menu">Help</span>
+      </div>
+      <div id="np-content">
+        <div id="np-textarea" contenteditable="true" spellcheck="false"><b>Hello, my name is Natasha. Welcome to my portfolio!</b>
+
+I study computer information systems at Georgia State University, building my career in <b>product management</b>. I've spent my time <b>leading a programming club, marketing early-stage products, organizing large-scale events, and turning vague ideas into launched products.</b> Somewhere in all of that, I figured out that I love taking messy, undefined problems and turning them into something that actually works. This site is where I document all of it!
+
+
+<b>email: <a href="https://mail.google.com/mail/?view=cm&to=nb.narine@gmail.com" style="color:#000;">nb.narine@gmail.com</a></b>
+<b>linkedin: <a href="https://www.linkedin.com/in/natasha-narine" target="_blank" rel="noopener noreferrer" style="color:#000;">linkedin.com/in/natasha-narine</a></b></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Desktop Icons -->
+  <!-- Row 1: Experience, Case Studies -->
+  <a class="desk-icon" id="icon-exp" href="#" style="left:10px; bottom:695px;">
+    <img src="icon-experience.png" alt="Experience" />
+    <span>Experience</span>
+  </a>
+  <a class="desk-icon" id="icon-casestudies" href="#" style="left:10px; bottom:585px;">
+    <img src="icon-casestudies.png" alt="Case Studies" />
+    <span>Case Studies</span>
+  </a>
+  <a class="desk-icon" id="icon-projects" href="#" style="left:10px; bottom:475px;">
+    <img src="icon-projects.png" alt="Projects" style="width:100px;height:100px;margin-top:-15px;" />
+    <span>Projects</span>
+  </a>
+  <a class="desk-icon" href="#" data-url="https://natashanarine.substack.com/" style="left:10px; bottom:365px;">
+    <img src="icon-blog.png" alt="Blog" />
+    <span>Blog</span>
+  </a>
+  <a class="desk-icon" href="#" data-url="https://www.instagram.com/tashasoutlet/" style="left:10px; bottom:255px;">
+    <img src="icon-personalwork.png" alt="Personal Work" />
+    <span>Personal Work</span>
+  </a>
+  <a class="desk-icon" href="#" id="icon-photos" style="left:10px; bottom:145px;">
+    <img src="icon-photos.png" alt="Photos" />
+    <span>Photos</span>
+  </a>
+
+  <!-- Experience Window -->
+  <div id="exp-window" style="display:none;">
+    <div id="exp-titlebar">
+      <img class="exp-icon" src="icon-experience.png" style="width:20px;height:20px;object-fit:contain;" />
+      <span class="exp-title">Experience</span>
+      <div class="win-btns">
+        <button class="win-btn exp-min">&#8212;</button>
+        <button class="win-btn exp-max">&#9633;</button>
+        <button class="win-btn exp-close close">&#10005;</button>
+      </div>
+    </div>
+    <div id="exp-body">
+      <div id="exp-menubar">
+        <span class="exp-menu">File</span>
+        <span class="exp-menu">Edit</span>
+        <span class="exp-menu">View</span>
+        <span class="exp-menu">Help</span>
+      </div>
+      <div id="exp-addressbar">
+        <span class="addr-label">Address</span>
+        <span class="addr-field">C:\Natasha\Experience</span>
+      </div>
+      <div id="exp-list">
+        <div class="exp-row" style="cursor:pointer;" onclick="window.open('https://www.progsu.com/','_blank','noopener,noreferrer')">
+          <img class="exp-entry-icon" src="progsu.png" style="width:30px;height:30px;object-fit:contain;flex-shrink:0;" />
+          <div>
+            <div class="exp-role">Founder - progsu </div>
+            <div class="exp-desc">Turned a dormant club into GSU's most prominent student tech org. Led Hacklanta, a student-run hackathon with 400+ attendees and $20K in sponsorships — owning the end-to-end marketing campaign from strategy to execution. Built a 0-to-1 incubation program that moved 14 student startups from idea to launch. Placed 40+ students into roles. Kept cross-functional teams aligned across every initiative.</div>
+          </div>
+        </div>
+        <div class="exp-row" style="cursor:pointer;" onclick="window.open('https://remindmetrace.com/','_blank','noopener,noreferrer')">
+          <img class="exp-entry-icon" src="trace logo.png" style="width:30px;height:30px;object-fit:contain;flex-shrink:0;" />
+          <div>
+            <div class="exp-role">CMO — Trace</div>
+            <div class="exp-desc">Pre-launch marketing owner for a conversational reminders iOS app. Built the brand system from zero: logo, typeface, and product display format. Developed and managed the organic and paid Instagram strategy, oversaw UGC, and owned all launch creative. Operated as the sole designer and marketing decision-maker across an async team.</div>
+          </div>
+        </div>
+        <div class="exp-row" style="cursor:pointer;" onclick="window.open('https://create-x.gatech.edu/','_blank','noopener,noreferrer')">
+          <img class="exp-entry-icon" src="createx.png" style="width:30px;height:30px;object-fit:contain;flex-shrink:0;" />
+          <div>
+            <div class="exp-role">CREATE-X Pre-Accelerator — Georgia Tech</div>
+            <div class="exp-desc">Selected for one of the top startup programs in the country. Building a 0 to 1 product using core PM methodology: user interviews, pain point synthesis, and assumption testing before writing a line of code.</div>
+          </div>
+        </div>
+        <div class="exp-row" style="cursor:pointer;" onclick="window.open('https://www.wecreatetech.org/','_blank','noopener,noreferrer')">
+          <img class="exp-entry-icon" src="techrise.png" style="width:30px;height:30px;object-fit:contain;flex-shrink:0;" />
+          <div>
+            <div class="exp-role">UX/UI & Creative Design Apprentice — We Create Tech</div>
+            <div class="exp-desc">Redesigned the flow and UI of TechRise Launchpad based on direct user feedback, driving a 100-student increase in active usage. Separately owned the brand identity work for We Create Tech, running multiple iterations with the team to align visuals with the organization's mission and voice until it was right. Work was featured in the Atlanta Journal-Constitution.</div>
+          </div>
+        </div>
+        <div class="exp-row" style="cursor:pointer;" onclick="window.open('https://www.theassemblydc.com/','_blank','noopener,noreferrer')">
+          <img class="exp-entry-icon" src="tadc.png" style="width:30px;height:30px;object-fit:contain;flex-shrink:0;" />
+          <div>
+            <div class="exp-role">Event Planning & Experiential Production Intern — The Assembly DC</div>
+            <div class="exp-desc">Own end-to-end production for live events. Drive all sponsor and vendor outreach from identification through close. Built the internal tracking system used across all events.</div>
+          </div>
+        </div>
+        <div class="exp-row" style="cursor:pointer;" onclick="window.open('https://www.adobeforeducation.com/student-ambassador-program','_blank','noopener,noreferrer')">
+          <img class="exp-entry-icon" src="adobe.png" style="width:30px;height:30px;object-fit:contain;flex-shrink:0;" />
+          <div>
+            <div class="exp-role">Student Ambassador — Adobe</div>
+            <div class="exp-desc">On-campus product evangelist for Adobe Creative Cloud at a 50,000+ student campus. Drove adoption through workshops and partnerships, and served as a feedback channel between student users and Adobe.</div>
+          </div>
+        </div>
+        <div class="exp-row" style="cursor:pointer;" onclick="window.open('https://learn.wecreatetech.org/','_blank','noopener,noreferrer')">
+          <img class="exp-entry-icon" src="wct.png" style="width:30px;height:30px;object-fit:contain;flex-shrink:0;" />
+          <div>
+            <div class="exp-role">CreativX Volunteer — We Create Tech</div>
+            <div class="exp-desc">Guided high school students through hands-on exploration of coding, digital design, and tech career pathways via We Create Tech's CreativX Lab program. Helped redesign lessons based on direct student feedback, improving fit and ensuring students could complete work within the allotted time.</div>
+          </div>
+        </div>
+      </div>
+      <div id="exp-statusbar">6 object(s)</div>
+    </div>
+  </div>
+
+  <!-- Projects Window -->
+  <div id="proj-window" style="display:none;">
+    <div id="proj-titlebar">
+      <img class="exp-icon" src="icon-projects.png" style="width:20px;height:20px;object-fit:contain;" />
+      <span class="exp-title">Projects</span>
+      <div class="win-btns">
+        <button class="win-btn proj-min">&#8212;</button>
+        <button class="win-btn proj-max">&#9633;</button>
+        <button class="win-btn proj-close close">&#10005;</button>
+      </div>
+    </div>
+    <div id="proj-body">
+      <div id="proj-menubar">
+        <span class="exp-menu">File</span>
+        <span class="exp-menu">Edit</span>
+        <span class="exp-menu">View</span>
+        <span class="exp-menu">Help</span>
+      </div>
+      <div id="proj-addressbar">
+        <span class="addr-label">Address</span>
+        <span class="addr-field">C:\Natasha\Projects</span>
+      </div>
+      <div id="proj-list">
+        <div class="exp-row" style="cursor:pointer;" onclick="window.open('https://memebooth.vercel.app/','_blank','noopener,noreferrer')">
+          <img class="exp-entry-icon" src="meme booth.png" style="width:30px;height:30px;object-fit:contain;flex-shrink:0;" />
+          <div>
+            <div class="exp-role">Meme Booth</div>
+            <div class="exp-desc">Spotted a rising trend of people recreating meme poses in photo booths, but sharing required manually editing the meme and photo strip together before posting. After hearing a friend describe the friction firsthand, I built Meme Booth: a web app using real-time pose detection to snap a photo the moment the user matches each respective pose, then layers them together for an instant, shareable result.
+            </div>
+          </div>
+        </div>
+        <div class="exp-row" style="cursor:pointer;" onclick="window.open('https://ideathon-opal.vercel.app/','_blank','noopener,noreferrer')">
+          <img class="exp-entry-icon" src="pace.png" style="width:30px;height:30px;object-fit:contain;flex-shrink:0;" />
+          <div>
+            <div class="exp-role">Pace</div>
+            <div class="exp-desc">Collaborated on a team to define and ship a concept product addressing gaps in assistive reading technology. Scoped an AI-native smart glasses system that adapts in real-time to a reader's speed, comprehension, and eye movement, built with a 9-agent architecture across edge, mobile, and cloud tiers.</div>
+          </div>
+        </div>
+      </div>
+      <div id="proj-statusbar">2 object(s)</div>
+    </div>
+  </div>
+
+  <!-- Case Studies Window -->
+  <div id="cs-window" style="display:block;">
+    <div id="cs-titlebar">
+      <img class="exp-icon" src="icon-casestudies.png" style="width:20px;height:20px;object-fit:contain;" />
+      <span class="exp-title">Case Studies</span>
+      <div class="win-btns">
+        <button class="win-btn cs-min">&#8212;</button>
+        <button class="win-btn cs-max">&#9633;</button>
+        <button class="win-btn cs-close close">&#10005;</button>
+      </div>
+    </div>
+    <div id="cs-body">
+      <div id="cs-menubar">
+        <span class="exp-menu">File</span>
+        <span class="exp-menu">Edit</span>
+        <span class="exp-menu">View</span>
+        <span class="exp-menu">Help</span>
+      </div>
+      <div id="cs-addressbar">
+        <span class="addr-label">Address</span>
+        <span class="addr-field" id="cs-addr-field">C:\Natasha\Case Studies</span>
+      </div>
+
+      <!-- List view -->
+      <div id="cs-list">
+        <div class="exp-row" style="cursor:pointer;" onclick="openCaseStudy(1)">
+          <img class="exp-entry-icon" src="trace logo.png" style="width:30px;height:30px;object-fit:contain;flex-shrink:0;" />
+          <div>
+            <div class="exp-role">Trace Brand Identity</div>
+            <div class="exp-desc">No logo, no typeface, no way to run ads or submit to the app store. I identified the three decisions blocking launch, drove alignment across an async team, and delivered a repeatable brand system in one week.</div>
+          </div>
+        </div>
+        <div class="exp-row" style="cursor:pointer;" onclick="openCaseStudy(0)">
+          <img class="exp-entry-icon" src="techrise.png" style="width:30px;height:30px;object-fit:contain;flex-shrink:0;" />
+          <div>
+            <div class="exp-role">TechRise App UI/UX Redesign</div>
+            <div class="exp-desc">The app had real utility but students weren't using it. I ran the end-to-end process: user research, problem reframing, scope prioritization, and a full redesign that drove a 6x increase in active usage.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detail view -->
+      <div id="cs-detail">
+        <div id="cs-detail-toolbar">
+          <button id="cs-back-btn" onclick="closeCaseStudy()">&#9664; Back</button>
+        </div>
+        <div id="cs-detail-content">
+          <div id="cs-content-0" class="cs-content">
+
+          <div class="cs-d-head">
+            <div class="cs-d-title">TechRise</div>
+            <div class="cs-d-subtitle">redesigning a student productivity app to actually get used</div>
+          </div>
+
+          <div class="cs-d-meta">
+            <div class="cs-d-meta-item"><div class="cs-d-meta-label">Timeline</div><div class="cs-d-meta-val">4 weeks</div></div>
+            <div class="cs-d-meta-item"><div class="cs-d-meta-label">My Role</div><div class="cs-d-meta-val">UI/UX Designer, PM-led process</div></div>
+            <div class="cs-d-meta-item"><div class="cs-d-meta-label">Collaborators</div><div class="cs-d-meta-val">Francis Ganya (engineer)</div></div>
+            <div class="cs-d-meta-item"><div class="cs-d-meta-label">Deliverables</div><div class="cs-d-meta-val">Research synthesis, user flows, wireframes, final UI, advisor variant</div></div>
+          </div>
+
+          <div class="cs-d-section">
+            <div class="cs-d-section-hdr"><span class="cs-d-num">01</span><span class="cs-d-section-title">context</span></div>
+            <div class="cs-d-section-intro">the app existed. the problem was adoption.</div>
+            <div class="cs-d-body">TechRise is a student-focused platform with two core jobs: help students book advisor appointments and surface relevant internship opportunities. the product had real utility on paper. but engagement was low, and the team had a hunch the interface was the reason.<br><br>i came in to diagnose whether that was true and if so, where exactly the experience was breaking down.<br><br>my role was scoped as UI/UX but the engagement required PM work from day one: diagnosing the real problem, running research, making prioritization calls, and owning scope decisions through handoff.</div>
+          </div>
+
+          <div class="cs-d-section">
+            <div class="cs-d-section-hdr"><span class="cs-d-num">02</span><span class="cs-d-section-title">problem framing</span></div>
+            <div class="cs-d-section-intro">what we were actually solving for</div>
+            <div class="cs-d-body">before touching anything, i needed to separate the symptoms from the real problem. the app being "cluttered" was a description, not a problem statement.<br><br><div class="cs-d-quote">students aren't engaging with TechRise because the cost of navigating the app exceeds the perceived value of what they'll find when they get there, especially for time-sensitive actions like booking appointments or finding internship deadlines.</div>this reframe mattered because it shifted the design goal. the question wasn't "how do we clean this up?" it was "how do we make the highest-value actions feel effortless and fast?"</div>
+          </div>
+
+          <div class="cs-d-section">
+            <div class="cs-d-section-hdr"><span class="cs-d-num">03</span><span class="cs-d-section-title">research</span></div>
+            <div class="cs-d-section-intro">what students actually said</div>
+            <div class="cs-d-body">i ran 6 user interviews and distributed a survey to 40+ students to understand where the friction was coming from. i recruited through the TechRise user base directly. i also did a competitive teardown of advisor booking and internship tools to understand what the bar looked like.<br><br><strong>user interviews: recurring quotes:</strong><ul class="cs-d-bullet"><li>"it's hard to find advisors that have time to help me."</li><li>"by the time i find the posting, it's too late to apply."</li><li>"switching between different platforms for internship postings gets frustrating."</li></ul><br>the interviews kept surfacing the same two pain points: advisor availability was invisible until you were already deep in the booking flow, and internship deadlines weren't visible until you opened each posting individually. those two findings shaped everything downstream.<br><br><strong>survey data:</strong><div class="cs-d-stat-row"><div class="cs-d-stat"><div class="cs-d-stat-num">60%</div><div class="cs-d-stat-label">struggle to book appointments</div></div><div class="cs-d-stat"><div class="cs-d-stat-num">90%</div><div class="cs-d-stat-label">want internships easier to access</div></div><div class="cs-d-stat"><div class="cs-d-stat-num">50%</div><div class="cs-d-stat-label">find the interface confusing</div></div><div class="cs-d-stat"><div class="cs-d-stat-num">30%</div><div class="cs-d-stat-label">want meeting reminders</div></div></div><br><strong>competitive analysis takeaways:</strong><ul class="cs-d-bullet"><li>existing advisor booking tools are functional but built for admin convenience, not student speed</li><li>Handshake has volume but weak filtering; students waste time before finding relevant postings</li><li>common theme: students value speed and clarity over feature richness. this informed a direct decision: surface advisor availability at the browse level, and move deadlines to the card level. both were zero-engineering-cost fixes via information hierarchy alone.</li></ul></div>
+          </div>
+
+          <div class="cs-d-section">
+            <div class="cs-d-section-hdr"><span class="cs-d-num">04</span><span class="cs-d-section-title">synthesis & prioritization</span></div>
+            <div class="cs-d-section-intro">turning findings into a focused scope</div>
+            <div class="cs-d-body">
+              <table class="cs-d-table">
+                <tr><th>Problem</th><th>Severity</th><th>In Scope?</th><th>Rationale</th></tr>
+                <tr><td>Confusing navigation / IA</td><td>High</td><td>✓ Yes</td><td>Root cause of most friction</td></tr>
+                <tr><td>Advisor availability not visible</td><td>High</td><td>✓ Yes</td><td>Directly impacts core use case</td></tr>
+                <tr><td>Internship deadline visibility</td><td>High</td><td>✓ Yes</td><td>Zero-cost fix via info hierarchy</td></tr>
+                <tr><td>Notification system</td><td>Medium</td><td>Future</td><td>Backend dependency</td></tr>
+                <tr><td>Cross-platform aggregation</td><td>High (complex)</td><td>Future</td><td>Out of sprint feasibility</td></tr>
+              </table>
+              the call to scope out notifications and integrations was deliberate. trying to solve everything in 4 weeks would have compromised the structural redesign.
+            </div>
+          </div>
+
+          <div class="cs-d-section">
+            <div class="cs-d-section-hdr"><span class="cs-d-num">05</span><span class="cs-d-section-title">design decisions</span></div>
+            <div class="cs-d-section-intro">the choices i made and why</div>
+            <div class="cs-d-body">each decision maps directly to a finding from research. nothing in here was a taste call.<br><br>i mapped the three core user flows before touching UI: booking an advisor, finding and applying to an internship, and tracking active tasks/deadlines.<ul class="cs-d-bullet"><li><strong>restructured navigation hierarchy:</strong> 50% of surveyed students found the interface confusing. the root cause was too many top-level items with no clear hierarchy. reduced nav items and moved highest-frequency actions to persistent nav.</li><li><strong>advisor availability surfaced on browse:</strong> 60% of students struggled to book appointments. the friction was that open slots weren't visible until 4+ taps in. surfaced availability in the directory view, reducing booking to 2 taps.</li><li><strong>deadline prominence on internship cards:</strong> "by the time i find the posting, it's too late to apply" was the most consistent interview quote. moved deadlines from the detail page to the card-level summary so students see them before clicking in.</li><li><strong>task tracking simplified:</strong> students were getting stuck on complexity, not lack of features. categorization reduced to three buckets (to-do, in progress, done) based on what students actually described doing with tasks.</li></ul></div>
+          </div>
+
+          <div class="cs-d-section">
+            <div class="cs-d-section-hdr"><span class="cs-d-num">06</span><span class="cs-d-section-title">tradeoffs</span></div>
+            <div class="cs-d-section-intro">what i gave up to get here</div>
+            <div class="cs-d-body"><ul class="cs-d-bullet"><li><strong>simplified task states vs. power user flexibility:</strong> students who wanted granular project tracking lost some customization. i accepted this because the majority were getting stuck on complexity.</li><li><strong>no onboarding flow redesign:</strong> first-run experience had friction but was a week of work alone. documented and flagged for a follow-up sprint.</li><li><strong>advisor UI as a variant, not a separate product:</strong> advisor-facing screens share the same component logic with the student view; kept engineering scope tight while unlocking a future use case.</li></ul></div>
+          </div>
+
+          <div class="cs-d-section">
+            <div class="cs-d-section-hdr"><span class="cs-d-num">07</span><span class="cs-d-section-title">output</span></div>
+            <div class="cs-d-section-intro">what shipped and what moved</div>
+            <div class="cs-d-body"><ul class="cs-d-bullet"><li>redesigned navigation and information architecture across student-facing screens</li><li>new advisor booking flow: reduced steps, availability visible upfront</li><li>internship board with deadline-forward card design</li><li>simplified task tracker with three-state categorization</li><li>advisor-facing UI variant for future engineering use</li></ul>designs were handed off to Francis Ganya and implemented in the live TechRise app. active usage grew from ~25 students to 156 following the redesign, a 6x increase in the months after handoff.<br><br><div class="cs-d-stat-row"><div class="cs-d-stat"><div class="cs-d-stat-num">6x</div><div class="cs-d-stat-label">increase in active usage post-redesign</div></div><div class="cs-d-stat"><div class="cs-d-stat-num">25 to 156</div><div class="cs-d-stat-label">students actively using the app</div></div><div class="cs-d-stat"><div class="cs-d-stat-num">4 to 2</div><div class="cs-d-stat-label">taps reduced in advisor booking flow</div></div></div></div>
+          </div>
+
+          <div class="cs-d-section">
+            <div class="cs-d-section-hdr"><span class="cs-d-num">08</span><span class="cs-d-section-title">reflection</span></div>
+            <div class="cs-d-section-intro">what i'd do differently</div>
+            <div class="cs-d-body"><ul class="cs-d-bullet"><li><strong>validate the reframe earlier:</strong> i reframed the problem as "cost of navigation exceeds perceived value" based on my read of the research, but never pressure-tested that framing with the TechRise team before designing against it. if the reframe had been wrong, i would have spent 4 weeks solving the wrong problem. next time that framing gets validated before any wireframes open.</li><li><strong>define the north star before touching the brief:</strong> i had no agreed success metric going in. i designed toward "feels easier" instead of something measurable like time-to-book or appointment completion rate. if i'd locked a north star with the team in week one, every scope decision would have been sharper and the outcome would have been easier to evaluate.</li><li><strong>document scope decisions as written artifacts:</strong> i made deliberate calls to descope notifications and cross-platform aggregation. those decisions were right, but they lived in my head. francis had no visibility into why those weren't in the handoff. a one-page scope doc would have made the engineering relationship cleaner and protected both of us if priorities shifted.</li></ul></div>
+          </div>
+
+          </div><!-- end cs-content-0 -->
+
+          <div id="cs-content-1" class="cs-content" style="display:none;">
+
+          <div class="cs-d-head">
+            <div class="cs-d-title">Trace</div>
+            <div class="cs-d-subtitle">defining the brand system that makes launch possible</div>
+          </div>
+
+          <div class="cs-d-meta">
+            <div class="cs-d-meta-item"><div class="cs-d-meta-label">Timeline</div><div class="cs-d-meta-val">1 week</div></div>
+            <div class="cs-d-meta-item"><div class="cs-d-meta-label">My Role</div><div class="cs-d-meta-val">CMO</div></div>
+            <div class="cs-d-meta-item"><div class="cs-d-meta-label">Collaborators</div><div class="cs-d-meta-val">Arhaan Keshwani, Joey Zhang, Nina Kilidzhiyska</div></div>
+            <div class="cs-d-meta-item"><div class="cs-d-meta-label">Deliverables</div><div class="cs-d-meta-val">Logo, typeface, product display format, launch assets</div></div>
+          </div>
+
+          <div class="cs-d-section">
+            <div class="cs-d-section-hdr"><span class="cs-d-num">01</span><span class="cs-d-section-title">context</span></div>
+            <div class="cs-d-section-intro">the reminder app you can talk to</div>
+            <div class="cs-d-body">trace is a conversational reminders iOS app. users talk to it naturally, and it handles the structure. i'm the cmo, working alongside arhaan keshwani, joey zhang, and nina kilidzhiyska.<br><br>we had a working product but no visual language. no logo, no typeface, no defined way to show the app to people. that wasn't a design gap, it was a launch blocker. without a locked brand system, we couldn't run paid ads, build the app store listing, or post consistently. every downstream asset was blocked until these decisions were made.<br><br>i owned the brand system end-to-end: scoping the decision set, driving alignment, and shipping a visual language the whole team could build on, in one week, with no design budget.<br><br><table class="cs-d-table"><tr><th>constraint</th><th>detail</th></tr><tr><td>timeline</td><td>1 week</td></tr><tr><td>budget</td><td>$0</td></tr><tr><td>team structure</td><td>async, gc-based feedback</td></tr><tr><td>design resources</td><td>sole designer</td></tr></table></div>
+          </div>
+
+          <div class="cs-d-section">
+            <div class="cs-d-section-hdr"><span class="cs-d-num">02</span><span class="cs-d-section-title">problem framing — scoping what actually needed to be decided</span></div>
+            <div class="cs-d-section-intro">the real problem wasn't "we don't have a logo."</div>
+            <div class="cs-d-body">without a shared visual system, every asset we produce reads as disconnected, and we can't run ads, publish consistently, or submit to the app store.<br><br>three decisions were blocking everything downstream: logo, typeface, and product display format. until those were locked, nothing was repeatable or scalable.<br><br><div class="cs-d-quote">i explicitly scoped out brand voice, color system, and motion guidelines. not because they didn't matter, but because none of them were on the critical path to launch. shipping those decisions in week one would have consumed the timeline without unblocking anything. the call was: solve what's blocking launch first, document everything else for a post-launch brand sprint.</div><br>that scope boundary kept the team focused and the timeline intact. it also gave us a clear definition of done: three decisions locked, all downstream assets unblocked.</div>
+          </div>
+
+          <div class="cs-d-section">
+            <div class="cs-d-section-hdr"><span class="cs-d-num">03</span><span class="cs-d-section-title">decision 01: logo — why this came first</span></div>
+            <div class="cs-d-section-intro">logo came first because every other asset depended on it. typeface choices and product display layouts couldn't be finalized without knowing what mark they'd sit next to.</div>
+            <div class="cs-d-body">the filter for every option wasn't "does this look good." it was "does this give trace a mark it can grow into without explaining what the product does."<br><br>the only alignment we had going in was that we wanted the brand to feel simplistic. the first logo attempt was a glowing abstract waveform mark: white on black, soft-edged, radiating outward. it looked striking in isolation but immediately read as too complex and too heavy. it didn't feel like trace.<br><br><img src="IMG_2324.jpg" class="cs-img" alt="first logo attempt: glowing waveform mark" /><div class="cs-img-caption">first logo attempt: glowing waveform mark</div><br>that reaction was useful data. it told us what we didn't want and gave us a clearer direction to move toward. from there, the team moved toward a geometric mark, but i pushed back: without a brand identity established yet, something that abstract gave no signal about what trace actually did. i suggested the voice memo waveform direction and put together multiple variations to pressure-test it.<br><br>we ran those variations by a small group of users. the feedback was positive on clarity — people understood the voice connection — but the more the rest of the brand system developed, the less the logo needed to do that work. the font and product displays were already communicating the product. that shifted the decision criteria: if the rest of the system carries the message, the logo just needs to be a mark worth owning.<br><br><img src="finaltracelogo.JPEG" class="cs-img" alt="final logo: hexagon mark" /><div class="cs-img-caption">final logo: hexagon mark</div><br><div class="cs-img-row"><img src="pwave.JPG" alt="voice memo iteration 1" /><img src="wave1.JPG" alt="voice memo iteration 2" /><img src="wave2.JPG" alt="voice memo iteration 3" /><img src="wave3.JPG" alt="voice memo iteration 4" /></div><div class="cs-img-caption">voice memo waveform iterations tested with users</div><br><table class="cs-d-table"><tr><th>option</th><th>rationale</th><th>user feedback</th><th>verdict</th></tr><tr><td>glowing waveform mark</td><td>too ornate. contradicted the simplistic direction we had aligned on</td><td>not tested; cut before feedback round</td><td>cut</td></tr><tr><td>voice memo waveform (multiple iterations)</td><td>cleaner, referenced the app's core voice interaction directly. tested multiple variations</td><td>positive on clarity. users understood the voice connection. but felt too literal once the brand system developed</td><td>cut</td></tr><tr><td>abstract hexagon mark</td><td>geometric, clean, distinctive. not tied to any single feature, giving trace room to build its own identity around the mark over time</td><td>tested well with team once brand system was established. logo didn't need to explain the product</td><td>chosen</td></tr></table><br><strong>final thoughts:</strong> the voice memo iterations were a necessary middle step. they clarified what the logo needed to do, and then helped us realize it didn't need to do as much as we thought. that freed us to go fully abstract. the hexagon mark is simple enough to sit small without losing its shape, and flexible enough to grow with the brand.</div>
+          </div>
+
+          <div class="cs-d-section">
+            <div class="cs-d-section-hdr"><span class="cs-d-num">04</span><span class="cs-d-section-title">decision 02: typeface — why this came second</span></div>
+            <div class="cs-d-section-intro">typeface came second because it determined the wordmark, which anchored every marketing asset. without it, product display work would have to be redone after the font was locked.</div>
+            <div class="cs-d-body">the filter: find the middle ground between minimalist and personality-forward. something that sells the product to a stranger without overexplaining it.<br><br>the team's instinct was to go fully minimalist. i pushed back on that from a user acquisition standpoint: minimalism alone doesn't sell a product to someone who's never heard of it. trace needed enough personality to create a first impression. the question was how much.<br><br>we anchored off the font already on the trace website (a clean sans used for body), then focused the search on a display face that could carry the wordmark and headers.<br><br><img src="firstsuggestionfont.png" style="max-width:180px;display:block;margin:8px auto 2px;border:1px solid #d0ccc4;" alt="first font suggestion" /><div class="cs-img-caption">first font suggestion: building point</div><br><div style="display:flex;gap:10px;margin:8px 0 2px;flex-wrap:wrap;justify-content:center;align-items:flex-start;">
+  <div style="display:flex;flex-direction:column;align-items:center;gap:3px;max-width:120px;">
+    <img src="satoshithin.jpeg" style="width:120px;border:1px solid #d0ccc4;" alt="satoshi medium" />
+    <span class="cs-img-caption" style="margin:0;">satoshi medium: not enough character</span>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:3px;max-width:120px;">
+    <img src="satoshithick.jpeg" style="width:120px;border:1px solid #d0ccc4;" alt="satoshi black italic" />
+    <span class="cs-img-caption" style="margin:0;">satoshi black italic: too heavy</span>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:3px;max-width:120px;">
+    <img src="coolvetica.jpeg" style="width:120px;border:1px solid #d0ccc4;" alt="coolvetica rg" />
+    <span class="cs-img-caption" style="margin:0;">coolvetica: too elementary</span>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:3px;max-width:120px;">
+    <img src="apollo.jpeg" style="width:120px;border:1px solid #d0ccc4;" alt="apollo otf" />
+    <span class="cs-img-caption" style="margin:0;">apollo otf: the middle ground</span>
+  </div>
+</div><br><table class="cs-d-table"><tr><th>option</th><th>notes</th><th>verdict</th></tr><tr><td>website serif (first suggestion)</td><td>too corporate. wouldn't sell the product to a consumer. flagged and cut early</td><td>cut</td></tr><tr><td>satoshi medium</td><td>clean geometric sans. not enough character for what trace needed at the wordmark level</td><td>cut</td></tr><tr><td>satoshi black italic</td><td>too heavy. didn't match the simplistic direction</td><td>cut</td></tr><tr><td>coolvetica rg</td><td>rounded and informal but read too elementary for the brand we were building</td><td>cut</td></tr><tr><td>apollo otf</td><td>editorial serif with real character. hit the middle ground between minimalist and playful. team aligned immediately</td><td>chosen</td></tr></table><br>with apollo locked, we tested uppercase vs lowercase for the wordmark. uppercase read too formal and corporate. lowercase felt intentional and matched the conversational nature of the product. we locked in all lowercase.<br><br><img src="finalfont.png" style="max-width:180px;display:block;margin:8px auto 2px;border:1px solid #d0ccc4;" alt="final font: apollo otf" /><div class="cs-img-caption">final font: apollo otf, lowercase</div></div>
+          </div>
+
+          <div class="cs-d-section">
+            <div class="cs-d-section-hdr"><span class="cs-d-num">05</span><span class="cs-d-section-title">decision 03: product display — why this came last</span></div>
+            <div class="cs-d-section-intro">product display came last because it depended on both the logo and typeface being final. building it earlier would have meant rebuilding it twice.</div>
+            <div class="cs-d-body">the filter: does this format work as a repeatable template across social posts, paid ads, and the app store listing? if we couldn't reuse the same layout across all three surfaces, it wasn't the right format.<br><br><strong>phase 1: pre-rebrand</strong><br>the first attempts used a "hey trace" headline format with a single angled phone mockup on a light starburst background. the copy and layout were attention-grabbing but the visual didn't feel like the product. without the brand system finalized, nothing was anchoring it to trace specifically. i flagged this early: these assets couldn't go live until the brand was locked, or we'd be remaking them anyway.<br><br><div style="display:flex;gap:8px;margin:8px 0 8px;flex-wrap:wrap;justify-content:center;align-items:flex-start;"><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:160px;"><img src="4.png" style="width:160px;border:1px solid #d0ccc4;" alt="hey trace post v1" /><span class="cs-img-caption" style="margin:0;">post 1: hey trace</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:160px;"><img src="5.png" style="width:160px;border:1px solid #d0ccc4;" alt="hey trace post v2 with tagline" /><span class="cs-img-caption" style="margin:0;">post 2: with tagline</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:160px;"><img src="7.png" style="width:160px;border:1px solid #d0ccc4;" alt="stop juggling start living post" /><span class="cs-img-caption" style="margin:0;">post 3: CTA</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:160px;"><video src="firstvidmockup.mov" controls style="width:160px;border:1px solid #d0ccc4;display:block;"></video><span class="cs-img-caption" style="margin:0;">first video mockup</span></div></div><br><strong>phase 2: post-rebrand iterations</strong><br>once the font and logo were locked, i rebuilt the product display around the finalized brand. the format shifted to a dark background with three angled phone mockups showing the app in context. this immediately felt more like trace. the team responded positively but it still took a few passes to get the hierarchy right.<br><br><div style="display:flex;gap:8px;margin:8px 0 8px;flex-wrap:wrap;justify-content:center;align-items:flex-start;"><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:160px;"><img src="2.png" style="width:160px;border:1px solid #d0ccc4;" alt="phase 2 iteration 1" /><span class="cs-img-caption" style="margin:0;">iteration 1</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:160px;"><img src="3.png" style="width:160px;border:1px solid #d0ccc4;" alt="phase 2 iteration 2" /><span class="cs-img-caption" style="margin:0;">iteration 2</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:160px;"><img src="4 copy.png" style="width:160px;border:1px solid #d0ccc4;" alt="phase 2 iteration 3" /><span class="cs-img-caption" style="margin:0;">iteration 3</span></div></div><br><strong>phase 2b: incorporating feedback</strong><br>after the initial iterations, two clear pieces of feedback came back: visual hierarchy needed work and the logo was missing. the wordmark was either too large and competing with the phones, or absent altogether, leaving the display unanchored from the brand. i took that feedback, brought the sizing down, repositioned the elements, and reintroduced the logo in a way that complemented the product shots rather than competing with them.<br><br><div style="display:flex;gap:8px;margin:8px 0 8px;flex-wrap:wrap;justify-content:center;align-items:flex-start;"><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:160px;"><img src="3 2.png" style="width:160px;border:1px solid #d0ccc4;" alt="font size and placement adjusted" /><span class="cs-img-caption" style="margin:0;">font size + placement adjusted</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:160px;"><img src="trace preview (1).png" style="width:160px;border:1px solid #d0ccc4;" alt="logo incorporated v1" /><span class="cs-img-caption" style="margin:0;">logo incorporated</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:160px;"><img src="trace preview (2).png" style="width:160px;border:1px solid #d0ccc4;" alt="logo incorporated v2" /><span class="cs-img-caption" style="margin:0;">logo incorporated</span></div></div><br><strong>top choices</strong><br>after evaluating the iterations against the filter (repeatable across social, ads, and app store), two formats came out on top. both balance the product, the wordmark, and the logo without any one element overpowering the others.<br><br><div style="display:flex;gap:8px;margin:8px 0 8px;flex-wrap:wrap;justify-content:center;align-items:flex-start;"><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:160px;"><img src="4 copy.png" style="width:160px;border:1px solid #d0ccc4;" alt="top choice 1" /><span class="cs-img-caption" style="margin:0;">top choice 1</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:160px;"><img src="trace preview (1).png" style="width:160px;border:1px solid #d0ccc4;" alt="top choice 2" /><span class="cs-img-caption" style="margin:0;">top choice 2</span></div></div></div>
+          </div>
+
+          <div class="cs-d-section">
+            <div class="cs-d-section-hdr"><span class="cs-d-num">06</span><span class="cs-d-section-title">outcome</span></div>
+            <div class="cs-d-section-intro">what shipped and what it unblocked</div>
+            <div class="cs-d-body">by end of week we had a working brand system: hexagon icon mark, apollo otf wordmark in lowercase, and a repeatable product display format.<br><br>more importantly, we unblocked everything that had been blocked:<br><ul class="cs-d-bullet"><li><strong>paid ad assets:</strong> first creative ready to run within 48 hours of brand lock</li><li><strong>app store listing:</strong> visual assets complete and submitted</li><li><strong>social posting:</strong> consistent template in use across all posts from launch week onward</li><li><strong>team alignment:</strong> brand decisions documented, no re-litigating on every new asset</li></ul><br>the geometric precision of the hexagon paired with the editorial character of apollo reads as minimal but intentional. together they establish what trace looks and feels like before a single feature gets explained, which is exactly what a pre-launch brand needs to do.<br><br><div class="cs-d-stat-row" style="justify-content:center;"><div class="cs-d-stat"><div class="cs-d-stat-num">3</div><div class="cs-d-stat-label">launch blockers resolved</div></div><div class="cs-d-stat"><div class="cs-d-stat-num">48hr</div><div class="cs-d-stat-label">to first paid ad asset after brand lock</div></div><div class="cs-d-stat"><div class="cs-d-stat-num">0</div><div class="cs-d-stat-label">brand decisions re-litigated post-lock</div></div></div><br><div class="cs-d-stat-row" style="justify-content:center;"><div class="cs-d-stat"><div class="cs-d-stat-num">1</div><div class="cs-d-stat-label">wordmark locked (apollo otf)</div><img src="tracenamelogo.png" style="width:140px;display:block;margin:8px auto 0;border:1px solid #d0ccc4;" alt="tracenamelogo" /></div><div class="cs-d-stat"><div class="cs-d-stat-num">1</div><div class="cs-d-stat-label">icon mark locked (hexagon)</div><img src="finaltracelogo.JPEG" style="width:140px;height:140px;object-fit:cover;display:block;margin:8px auto 0;border:1px solid #d0ccc4;" alt="hexagon icon mark" /></div><div class="cs-d-stat"><div class="cs-d-stat-num">1</div><div class="cs-d-stat-label">product display format locked</div><img src="4 copy.png" style="width:140px;display:block;margin:8px auto 0;border:1px solid #d0ccc4;" alt="product display format" /></div></div></div>
+          </div>
+
+          <div class="cs-d-section">
+            <div class="cs-d-section-hdr"><span class="cs-d-num">07</span><span class="cs-d-section-title">reflections</span></div>
+            <div class="cs-d-section-intro">what i'd do differently</div>
+            <div class="cs-d-body"><ul class="cs-d-bullet"><li><strong>scoping is a product decision:</strong> explicitly cutting color system and motion guidelines from this sprint kept us on track. knowing what not to solve is as important as knowing what to solve. i'd document that scope boundary as a written artifact next time, not just a verbal call.</li><li><strong>decisions need a filter, not a vote:</strong> every option moved faster once i framed it around what trace needs to communicate to a stranger. aesthetic preference is noise; user perception is signal.</li><li><strong>structure the user feedback:</strong> we got useful signal from testing logo options, but "tested well" isn't a methodology. next time i'd define who we're testing with, what we're measuring, and what feedback would actually change the decision before running the test.</li><li><strong>pushing back is part of the role:</strong> i disagreed on two directions the team initially favored. both pushbacks led to better outcomes. holding the brand standard even when something "looks fine" is part of the cmo job.</li><li><strong>async feedback is fast but incomplete:</strong> gc consensus isn't a substitute for structured user feedback. for a v2 brand refresh i'd want actual target users reacting to options, not just team alignment.</li></ul></div>
+          </div>
+
+          </div><!-- end cs-content-1 -->
+
+        </div>
+      </div>
+
+      <div id="cs-statusbar">2 object(s)</div>
+    </div>
+  </div>
+
+  <!-- Photos Window -->
+  <div id="photos-window" style="display:none;">
+    <div id="photos-titlebar">
+      <img class="exp-icon" src="icon-photos.png" style="width:20px;height:20px;object-fit:contain;" />
+      <span class="exp-title">Photos</span>
+      <div class="win-btns">
+        <button class="win-btn photos-min">&#8212;</button>
+        <button class="win-btn photos-max">&#9633;</button>
+        <button class="win-btn photos-close close">&#10005;</button>
+      </div>
+    </div>
+    <div id="photos-body">
+      <div id="photos-menubar">
+        <span class="exp-menu">File</span>
+        <span class="exp-menu">Edit</span>
+        <span class="exp-menu">View</span>
+        <span class="exp-menu">Help</span>
+      </div>
+      <div id="photos-addressbar">
+        <span class="addr-label">Address</span>
+        <span class="addr-field">C:\Natasha\Photos</span>
+      </div>
+      <div id="photos-gallery">
+        <div class="photo-thumb" onclick="openLightbox('progteam.jpg')">
+          <img src="progteam.jpg" alt="Prog Team" />
+          <span class="photo-label">progteam.jpg</span>
+        </div>
+        <div class="photo-thumb" onclick="openLightbox('progirls.jpg')">
+          <img src="progirls.jpg" alt="Prog Girls" />
+          <span class="photo-label">progirls.jpg</span>
+        </div>
+        <div class="photo-thumb" onclick="openLightbox('winners.jpg')">
+          <img src="winners.jpg" alt="Winners" />
+          <span class="photo-label">winners.jpg</span>
+        </div>
+      </div>
+      <div id="photos-statusbar">3 object(s)</div>
+    </div>
+  </div>
+
+  <!-- Lightbox -->
+  <div id="photo-lightbox">
+    <span id="lightbox-close" onclick="closeLightbox()">&#10005;</span>
+    <img id="lightbox-img" src="" alt="" />
+  </div>
+
+  <!-- ── Mobile Layout ── -->
+  <div id="mobile-layout">
+
+    <!-- About / header window -->
+    <div class="mob-win">
+      <div class="mob-win-bar">
+        <img src="icon-blog.png" class="mob-win-icon" />
+        <span class="mob-win-title">About Me — Notepad</span>
+      </div>
+      <div class="mob-win-body">
+        <div id="mob-avatar-row">
+          <img src="avatar.png" alt="Natasha" id="mob-avatar" />
+          <div>
+            <div id="mob-avatar-name">Natasha Narine</div>
+            <div id="mob-avatar-sub">Product · Design · Tech</div>
+          </div>
+        </div>
+        <div class="mob-text-area">
+          <p>Hello, my name is Natasha. Welcome to my portfolio!</p>
+          <p>I study computer information systems at Georgia State University, building my career in product management. I've spent my time leading a programming club, marketing early-stage products, organizing large-scale events, and turning vague ideas into launched products. Somewhere in all of that, I figured out that I love taking messy, undefined problems and turning them into something that actually works. This site is where I document all of it!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Links window -->
+    <div class="mob-win">
+      <div class="mob-win-bar">
+        <img src="icon-personalwork.png" class="mob-win-icon" />
+        <span class="mob-win-title">Links</span>
+      </div>
+      <div class="mob-win-body">
+        <div class="mob-btns">
+          <a class="mob-btn" href="mailto:nb.narine@gmail.com">Email</a>
+          <a class="mob-btn" href="https://www.linkedin.com/in/natasha-narine" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div>
+        <div class="mob-btns" style="padding-top:0;">
+          <a class="mob-btn" href="https://www.instagram.com/tashasoutlet/" target="_blank" rel="noopener noreferrer">Personal Work</a>
+          <a class="mob-btn" href="https://natasha.substack.com" target="_blank" rel="noopener noreferrer">Blog</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Experience window -->
+    <div class="mob-win">
+      <div class="mob-win-bar">
+        <img src="icon-experience.png" class="mob-win-icon" />
+        <span class="mob-win-title">Experience</span>
+      </div>
+      <div class="mob-win-body">
+        <div class="mob-menubar">
+          <span class="mob-menu-item">File</span>
+          <span class="mob-menu-item">Edit</span>
+          <span class="mob-menu-item">View</span>
+          <span class="mob-menu-item">Help</span>
+        </div>
+        <div class="mob-addrbar">
+          <span class="mob-addr-label">Address</span>
+          <span class="mob-addr-field">C:\Natasha\Experience</span>
+        </div>
+        <div class="mob-list">
+          <a class="mob-row" href="https://www.progsu.com/" target="_blank" rel="noopener noreferrer">
+            <img src="progsu.png" class="mob-row-icon" />
+            <div><div class="mob-row-title">Founder — progsu</div><div class="mob-row-desc">Turned a dormant club into GSU's most prominent student tech org. Led Hacklanta, a student-run hackathon with 400+ attendees and $20K in sponsorships — owning the end-to-end marketing campaign from strategy to execution. Built a 0-to-1 incubation program that moved 14 student startups from idea to launch. Placed 40+ students into roles. Kept cross-functional teams aligned across every initiative.</div></div>
+          </a>
+          <a class="mob-row" href="https://remindmetrace.com/" target="_blank" rel="noopener noreferrer">
+            <img src="trace logo.png" class="mob-row-icon" />
+            <div><div class="mob-row-title">CMO — Trace</div><div class="mob-row-desc">Pre-launch marketing owner for a conversational reminders iOS app. Built the brand system from zero: logo, typeface, and product display format. Developed and managed the organic and paid Instagram strategy, oversaw UGC, and owned all launch creative. Operated as the sole designer and marketing decision-maker across an async team.</div></div>
+          </a>
+          <a class="mob-row" href="https://create-x.gatech.edu/" target="_blank" rel="noopener noreferrer">
+            <img src="createx.png" class="mob-row-icon" />
+            <div><div class="mob-row-title">CREATE-X Pre-Accelerator — Georgia Tech</div><div class="mob-row-desc">Selected for one of the top startup programs in the country. Building a 0 to 1 product using core PM methodology: user interviews, pain point synthesis, and assumption testing before writing a line of code.</div></div>
+          </a>
+          <a class="mob-row" href="https://www.wecreatetech.org/" target="_blank" rel="noopener noreferrer">
+            <img src="techrise.png" class="mob-row-icon" />
+            <div><div class="mob-row-title">UX/UI & Creative Design Apprentice — We Create Tech</div><div class="mob-row-desc">Redesigned the flow and UI of TechRise Launchpad based on direct user feedback, driving a 100-student increase in active usage. Separately owned the brand identity work for We Create Tech, running multiple iterations with the team to align visuals with the organization's mission and voice until it was right. Work was featured in the Atlanta Journal-Constitution.</div></div>
+          </a>
+          <a class="mob-row" href="https://www.theassemblydc.com/" target="_blank" rel="noopener noreferrer">
+            <img src="tadc.png" class="mob-row-icon" />
+            <div><div class="mob-row-title">Event Planning & Experiential Production Intern — The Assembly DC</div><div class="mob-row-desc">Own end-to-end production for live events. Drive all sponsor and vendor outreach from identification through close. Built the internal tracking system used across all events.</div></div>
+          </a>
+          <a class="mob-row" href="https://www.adobeforeducation.com/student-ambassador-program" target="_blank" rel="noopener noreferrer">
+            <img src="adobe.png" class="mob-row-icon" />
+            <div><div class="mob-row-title">Student Ambassador — Adobe</div><div class="mob-row-desc">On-campus product evangelist for Adobe Creative Cloud at a 50,000+ student campus. Drove adoption through workshops and partnerships, and served as a feedback channel between student users and Adobe.</div></div>
+          </a>
+          <a class="mob-row" href="https://learn.wecreatetech.org/" target="_blank" rel="noopener noreferrer">
+            <img src="wct.png" class="mob-row-icon" />
+            <div><div class="mob-row-title">CreativX Volunteer — We Create Tech</div><div class="mob-row-desc">Guided high school students through hands-on exploration of coding, digital design, and tech career pathways via We Create Tech's CreativX Lab program. Helped redesign lessons based on direct student feedback, improving fit and ensuring students could complete work within the allotted time.</div></div>
+          </a>
+        </div>
+        <div class="mob-statusbar">6 object(s)</div>
+      </div>
+    </div>
+
+    <!-- Case Studies window -->
+    <div class="mob-win">
+      <div class="mob-win-bar">
+        <img src="icon-casestudies.png" class="mob-win-icon" />
+        <span class="mob-win-title">Case Studies</span>
+      </div>
+      <div class="mob-win-body">
+        <div class="mob-menubar">
+          <span class="mob-menu-item">File</span>
+          <span class="mob-menu-item">Edit</span>
+          <span class="mob-menu-item">View</span>
+          <span class="mob-menu-item">Help</span>
+        </div>
+        <div class="mob-addrbar">
+          <span class="mob-addr-label">Address</span>
+          <span class="mob-addr-field">C:\Natasha\Case Studies</span>
+        </div>
+        <div class="mob-list">
+          <div class="mob-row" style="cursor:pointer;" onclick="openMobCaseStudy(1)">
+            <img src="trace logo.png" class="mob-row-icon" />
+            <div><div class="mob-row-title">Trace Brand Identity</div><div class="mob-row-desc">No logo, no typeface, no way to run ads or submit to the app store. I identified the three decisions blocking launch, drove alignment across an async team, and delivered a repeatable brand system in one week.</div></div>
+          </div>
+          <div class="mob-row" style="cursor:pointer;" onclick="openMobCaseStudy(0)">
+            <img src="techrise.png" class="mob-row-icon" />
+            <div><div class="mob-row-title">TechRise App UI/UX Redesign</div><div class="mob-row-desc">The app had real utility but students weren't using it. I ran the end-to-end process: user research, problem reframing, scope prioritization, and a full redesign that drove a 6x increase in active usage.</div></div>
+          </div>
+        </div>
+        <div class="mob-statusbar">2 object(s)</div>
+      </div>
+    </div>
+
+    <!-- Projects window -->
+    <div class="mob-win">
+      <div class="mob-win-bar">
+        <img src="icon-projects.png" class="mob-win-icon" />
+        <span class="mob-win-title">Projects</span>
+      </div>
+      <div class="mob-win-body">
+        <div class="mob-menubar">
+          <span class="mob-menu-item">File</span>
+          <span class="mob-menu-item">Edit</span>
+          <span class="mob-menu-item">View</span>
+          <span class="mob-menu-item">Help</span>
+        </div>
+        <div class="mob-addrbar">
+          <span class="mob-addr-label">Address</span>
+          <span class="mob-addr-field">C:\Natasha\Projects</span>
+        </div>
+        <div class="mob-list">
+          <a class="mob-row" href="https://memebooth.vercel.app/" target="_blank" rel="noopener noreferrer">
+            <img src="meme booth.png" class="mob-row-icon" />
+            <div><div class="mob-row-title">Meme Booth</div><div class="mob-row-desc">Spotted a rising trend of people recreating meme poses in photo booths, but sharing required manually editing the meme and photo strip together before posting. After hearing a friend describe the friction firsthand, I built Meme Booth: a web app using real-time pose detection to snap a photo the moment the user matches each respective pose, then layers them together for an instant, shareable result.</div></div>
+          </a>
+          <a class="mob-row" href="https://ideathon-opal.vercel.app/" target="_blank" rel="noopener noreferrer">
+            <img src="pace.png" class="mob-row-icon" />
+            <div><div class="mob-row-title">Pace</div><div class="mob-row-desc">Collaborated on a team to define and ship a concept product addressing gaps in assistive reading technology. Scoped an AI-native smart glasses system that adapts in real-time to a reader's speed, comprehension, and eye movement, built with a 9-agent architecture across edge, mobile, and cloud tiers.</div></div>
+          </a>
+        </div>
+        <div class="mob-statusbar">2 object(s)</div>
+      </div>
+    </div>
+
+    <!-- Photos window -->
+    <div class="mob-win">
+      <div class="mob-win-bar">
+        <img src="icon-photos.png" class="mob-win-icon" />
+        <span class="mob-win-title">Photos</span>
+      </div>
+      <div class="mob-win-body">
+        <div class="mob-menubar">
+          <span class="mob-menu-item">File</span>
+          <span class="mob-menu-item">Edit</span>
+          <span class="mob-menu-item">View</span>
+          <span class="mob-menu-item">Help</span>
+        </div>
+        <div class="mob-addrbar">
+          <span class="mob-addr-label">Address</span>
+          <span class="mob-addr-field">C:\Natasha\Photos</span>
+        </div>
+        <div id="mob-gallery">
+          <img src="progteam.jpg" class="mob-photo" onclick="openLightbox('progteam.jpg')" />
+          <img src="progirls.jpg" class="mob-photo" onclick="openLightbox('progirls.jpg')" />
+          <img src="winners.jpg"  class="mob-photo" onclick="openLightbox('winners.jpg')" />
+        </div>
+        <div class="mob-statusbar">3 object(s)</div>
+      </div>
+    </div>
+
+
+    <!-- Mobile case study overlay -->
+    <div id="mob-cs-overlay">
+      <div id="mob-cs-overlay-bar">
+        <button id="mob-cs-back" onclick="closeMobCaseStudy()">&#9664; Back</button>
+        <span id="mob-cs-overlay-title"></span>
+      </div>
+      <div id="mob-cs-overlay-body"></div>
+    </div>
+
+  </div>
+
+  <audio id="audio" src="134340.mp3" preload="auto"></audio>
+
+  <!-- Full-page case study overlay -->
+  <div id="cs-fullpage">
+    <div id="cs-fp-titlebar">
+      <img class="exp-icon" src="icon-casestudies.png" style="width:20px;height:20px;object-fit:contain;" alt="" />
+      <span id="cs-fp-title" class="exp-title">Case Studies</span>
+      <div class="win-btns">
+        <button class="win-btn fp-min">&#8212;</button>
+        <button class="win-btn fp-max">&#9633;</button>
+        <button class="win-btn close" onclick="closeCsFullpage()">&#10005;</button>
+      </div>
+    </div>
+    <div id="cs-fp-body">
+      <div id="cs-fp-menubar">
+        <span class="exp-menu">File</span>
+        <span class="exp-menu">Edit</span>
+        <span class="exp-menu">View</span>
+        <span class="exp-menu">Help</span>
+      </div>
+      <div id="cs-fp-toolbar">
+        <button id="cs-fp-back" onclick="closeCsFullpage()">&#8592; Back</button>
+      </div>
+      <div id="cs-fp-addrbar">
+        <span class="addr-label">Address</span>
+        <span class="addr-field" id="cs-fp-addr-field">C:\Natasha\Case Studies</span>
+      </div>
+      <div id="cs-fp-content"></div>
+    </div>
+  </div>
+
+  <!-- XP Taskbar -->
+  <div id="xp-taskbar">
+    <div id="xp-taskbar-divider"></div>
+    <a href="index.html" id="web-view-btn">
+      <img src="webicon.png" alt="" />
+      Switch to Web Version
+    </a>
+    <div id="xp-taskbar-clock"></div>
+  </div>
+
+  <script>
+    /* ── Loading Screen ── */
+    (function () {
+      const overlay  = document.getElementById('loading-overlay');
+      const fill     = document.getElementById('loading-bar-fill');
+      const label    = document.getElementById('loading-label');
+      let pct = 0;
+
+      function dismiss() {
+        overlay.style.display = 'none';
+      }
+
+      document.getElementById('loading-cancel-btn').addEventListener('click', () => { clearInterval(timer); dismiss(); });
+      document.getElementById('loading-x').addEventListener('click',          () => { clearInterval(timer); dismiss(); });
+
+      const messages = ['Loading...', 'Loading resources...', 'Almost there...', 'Finalizing...'];
+      const timer = setInterval(() => {
+        pct += Math.random() * 4 + 2;
+        if (pct >= 100) {
+          pct = 100;
+          fill.style.width = '100%';
+          clearInterval(timer);
+          setTimeout(dismiss, 150);
+          return;
+        }
+        fill.style.width = pct + '%';
+        label.textContent = messages[Math.min(Math.floor(pct / 25), messages.length - 1)];
+      }, 60);
+    })();
+
+    /* ── Drag ── */
+    const player   = document.getElementById('cdplayer');
+    const titlebar = document.getElementById('cd-titlebar');
+    let dragging = false, ox = 0, oy = 0;
+
+    titlebar.addEventListener('mousedown', e => {
+      if (e.target.classList.contains('win-btn')) return;
+      dragging = true;
+      ox = e.clientX - player.getBoundingClientRect().left;
+      oy = e.clientY - player.getBoundingClientRect().top;
+      e.preventDefault();
+    });
+    document.addEventListener('mousemove', e => {
+      if (!dragging) return;
+      player.style.left  = (e.clientX - ox) + 'px';
+      player.style.top   = (e.clientY - oy) + 'px';
+      player.style.right = 'auto';
+    });
+    document.addEventListener('mouseup', () => dragging = false);
+
+    /* ── Audio ── */
+    const audio    = document.getElementById('audio');
+    const progress = document.getElementById('progress');
+    const playBtn  = document.getElementById('btn-play');
+    let playing = false;
+
+    const playlist = [
+      { src: '134340.mp3', artist: 'BTS', track: '134340', album: 'album.jpg' },
+      { src: 'Every Breath You Take.mp3', artist: 'The Police', track: 'Every Breath You Take', album: 'everybreathyoutake.jpeg' },
+      { src: 'A Cappella.mp3', artist: 'Daniel Caesar', track: 'A Cappella', album: 'acapella.jpg' },
+      { src: 'Cest la vie.mp3', artist: 'Khaled', track: "C'est la vie", album: 'Cest-la-vie-album-khaled.jpg' },
+      { src: 'goodnight n go.mp3', artist: 'Ariana Grande', track: 'goodnight n go', album: 'goodnightngo.png' },
+      { src: 'What is Love_.mp3', artist: 'TWICE', track: 'What is Love?', album: 'whatislove.jpg' },
+    ];
+    let currentTrack = 0;
+
+    const trackList  = document.getElementById('track-dropdown-list');
+    const trackArrow = document.getElementById('track-dropdown-arrow');
+    const trackField = document.getElementById('track-field');
+
+    playlist.forEach((t, i) => {
+      const item = document.createElement('div');
+      item.className = 'track-option' + (i === 0 ? ' active' : '');
+      item.textContent = t.track;
+      item.addEventListener('mousedown', e => {
+        e.preventDefault();
+        loadTrack(i, playing);
+        trackList.classList.remove('open');
+      });
+      trackList.appendChild(item);
+    });
+
+    function toggleTrackList() {
+      trackList.classList.toggle('open');
+    }
+    trackArrow.addEventListener('click', toggleTrackList);
+    trackField.addEventListener('click',  toggleTrackList);
+    document.addEventListener('click', e => {
+      if (!trackField.contains(e.target) && !trackArrow.contains(e.target)) {
+        trackList.classList.remove('open');
+      }
+    });
+
+    function loadTrack(index, autoplay) {
+      currentTrack = ((index % playlist.length) + playlist.length) % playlist.length;
+      const t = playlist[currentTrack];
+      audio.src = t.src;
+      document.getElementById('artist-name').textContent = t.artist;
+      document.getElementById('track-name').textContent  = t.track;
+      document.getElementById('album-art').src           = t.album;
+      trackList.querySelectorAll('.track-option').forEach((el, i) => {
+        el.classList.toggle('active', i === currentTrack);
+      });
+      progress.value = 0;
+      if (autoplay) { audio.play().catch(() => {}); }
+    }
+
+    playBtn.addEventListener('click', () => {
+      if (playing) {
+        audio.pause();
+        playBtn.innerHTML = '&#9654;';
+        playBtn.classList.remove('pressed');
+        playing = false;
+      } else {
+        audio.play().catch(() => {});
+        playBtn.innerHTML = '&#9646;&#9646;';
+        playBtn.classList.add('pressed');
+        playing = true;
+      }
+    });
+
+    document.getElementById('btn-prev').addEventListener('click', () => {
+      loadTrack(currentTrack - 1, playing);
+    });
+
+    document.getElementById('btn-next').addEventListener('click', () => {
+      loadTrack(currentTrack + 1, playing);
+    });
+
+    let seeking = false;
+    let durationFixed = false;
+
+    /* Some MP3s report Infinity duration when streamed — force the browser
+       to scan to the end so it can determine the real duration. */
+    audio.addEventListener('loadedmetadata', () => {
+      durationFixed = false;
+      if (!isFinite(audio.duration)) {
+        audio.currentTime = 1e101;
+      }
+    });
+
+    audio.addEventListener('durationchange', () => {
+      if (!durationFixed && isFinite(audio.duration) && audio.duration > 0) {
+        durationFixed = true;
+        if (!playing) audio.currentTime = 0;
+      }
+    });
+
+    function seekDuration() {
+      if (isFinite(audio.duration) && audio.duration > 0) return audio.duration;
+      if (audio.seekable && audio.seekable.length > 0) return audio.seekable.end(audio.seekable.length - 1);
+      return null;
+    }
+
+    audio.addEventListener('timeupdate', () => {
+      const dur = seekDuration();
+      if (!seeking && dur) progress.value = (audio.currentTime / dur) * 100;
+    });
+
+    function doSeek() {
+      const dur = seekDuration();
+      if (dur) audio.currentTime = (parseFloat(progress.value) / 100) * dur;
+    }
+
+    progress.addEventListener('mousedown',  () => { seeking = true; });
+    progress.addEventListener('touchstart', () => { seeking = true; }, { passive: true });
+    progress.addEventListener('input', doSeek);
+    progress.addEventListener('mouseup',  () => { doSeek(); seeking = false; });
+    progress.addEventListener('touchend', () => { doSeek(); seeking = false; }, { passive: true });
+
+    audio.addEventListener('ended', () => {
+      loadTrack(currentTrack + 1, true);
+      playing = true;
+      playBtn.innerHTML = '&#9646;&#9646;';
+      playBtn.classList.add('pressed');
+    });
+
+    /* ── MS Paint ── */
+    const paintEl    = document.getElementById('mspaint');
+    const paintBar   = document.getElementById('paint-titlebar');
+    const paintCanvas = document.getElementById('paint-canvas');
+    const ctx        = paintCanvas.getContext('2d');
+    let paintDrag = false, pdOx = 0, pdOy = 0;
+
+    // Load avatar image as base layer
+    const avatarImg = new Image();
+    avatarImg.src = 'avatar.png';
+    avatarImg.onload = () => {
+      ctx.drawImage(avatarImg, 0, 0, paintCanvas.width, paintCanvas.height);
+    };
+
+    // Titlebar drag
+    paintBar.addEventListener('mousedown', e => {
+      if (e.target.classList.contains('win-btn')) return;
+      paintDrag = true;
+      pdOx = e.clientX - paintEl.getBoundingClientRect().left;
+      pdOy = e.clientY - paintEl.getBoundingClientRect().top;
+      e.preventDefault();
+    });
+    document.addEventListener('mousemove', e => {
+      if (!paintDrag) return;
+      paintEl.style.left = (e.clientX - pdOx) + 'px';
+      paintEl.style.top  = (e.clientY - pdOy) + 'px';
+    });
+    document.addEventListener('mouseup', () => { paintDrag = false; });
+
+    // Window buttons
+    document.querySelector('.paint-close').addEventListener('click', () => paintEl.style.display = 'none');
+    document.querySelector('.paint-min').addEventListener('click', () => {
+      const b = document.getElementById('paint-body');
+      b.style.display = b.style.display === 'none' ? 'flex' : 'none';
+    });
+
+    // Color palette
+    const colors = [
+      '#000000','#808080','#800000','#808000','#008000','#008080','#000080','#800080','#808040','#004040','#0080FF','#004080','#8000FF','#804000',
+      '#FFFFFF','#C0C0C0','#FF0000','#FFFF00','#00FF00','#00FFFF','#0000FF','#FF00FF','#FFFF80','#00FF80','#80FFFF','#8080FF','#FF0080','#FF8040'
+    ];
+    const palette = document.getElementById('paint-palette');
+    let drawColor = '#000000';
+
+    colors.forEach(c => {
+      const swatch = document.createElement('div');
+      swatch.className = 'pc';
+      swatch.style.background = c;
+      swatch.addEventListener('click', () => {
+        drawColor = c;
+        document.getElementById('paint-fg-color').style.background = c;
+      });
+      palette.appendChild(swatch);
+    });
+
+    // Tool selection
+    let activeTool = 'pencil';
+    let polyPoints = [];
+    document.querySelectorAll('.pt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.pt').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeTool = btn.dataset.tool;
+        const cursors = { eraser: 'cell', eyedrop: 'crosshair', zoom: 'zoom-in', text: 'text' };
+        paintCanvas.style.cursor = cursors[activeTool] || 'crosshair';
+        if (activeTool !== 'poly') polyPoints = [];
+      });
+    });
+
+    // Undo stack
+    const undoStack = [];
+    function saveSnapshot() {
+      undoStack.push(ctx.getImageData(0, 0, paintCanvas.width, paintCanvas.height));
+      if (undoStack.length > 30) undoStack.shift();
+    }
+
+    document.getElementById('paint-undo').addEventListener('click', () => {
+      if (undoStack.length === 0) return;
+      ctx.putImageData(undoStack.pop(), 0, 0);
+    });
+
+    // Flood fill
+    function hexToRgb(hex) {
+      const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return m ? [parseInt(m[1],16), parseInt(m[2],16), parseInt(m[3],16)] : [0,0,0];
+    }
+    function floodFill(px, py, fillHex) {
+      const img = ctx.getImageData(0, 0, paintCanvas.width, paintCanvas.height);
+      const d = img.data, w = paintCanvas.width, h = paintCanvas.height;
+      const i0 = (py * w + px) * 4;
+      const tr = d[i0], tg = d[i0+1], tb = d[i0+2], ta = d[i0+3];
+      const [fr, fg, fb] = hexToRgb(fillHex);
+      if (tr===fr && tg===fg && tb===fb) return;
+      const visited = new Uint8Array(w * h);
+      const stack = [px + py * w];
+      while (stack.length) {
+        const pos = stack.pop();
+        const x = pos % w, y = (pos / w) | 0;
+        if (x < 0 || x >= w || y < 0 || y >= h || visited[pos]) continue;
+        const i = pos * 4;
+        if (d[i]!==tr || d[i+1]!==tg || d[i+2]!==tb || d[i+3]!==ta) continue;
+        visited[pos] = 1;
+        d[i]=fr; d[i+1]=fg; d[i+2]=fb; d[i+3]=255;
+        stack.push(pos+1, pos-1, pos+w, pos-w);
+      }
+      ctx.putImageData(img, 0, 0);
+    }
+
+    // Drawing
+    let painting = false, lastX = 0, lastY = 0, startX = 0, startY = 0;
+    let shapeSnapshot = null;
+
+    paintCanvas.addEventListener('mousedown', e => {
+      const r = paintCanvas.getBoundingClientRect();
+      const x = e.clientX - r.left, y = e.clientY - r.top;
+
+      if (activeTool === 'eyedrop') {
+        const px = ctx.getImageData(Math.round(x), Math.round(y), 1, 1).data;
+        drawColor = '#' + [px[0],px[1],px[2]].map(v => v.toString(16).padStart(2,'0')).join('');
+        document.getElementById('paint-fg-color').style.background = drawColor;
+        return;
+      }
+
+      if (activeTool === 'text') {
+        const inp = document.createElement('input');
+        inp.style.cssText = `position:fixed;left:${e.clientX}px;top:${e.clientY}px;font-size:14px;font-family:Tahoma,sans-serif;border:1px dashed #555;background:transparent;outline:none;z-index:9999;min-width:60px;color:${drawColor};`;
+        document.body.appendChild(inp);
+        inp.focus();
+        inp.addEventListener('keydown', ev => {
+          if (ev.key === 'Enter') {
+            saveSnapshot();
+            ctx.font = '14px Tahoma, sans-serif';
+            ctx.fillStyle = drawColor;
+            ctx.fillText(inp.value, x, y + 14);
+            document.body.removeChild(inp);
+          } else if (ev.key === 'Escape') {
+            document.body.removeChild(inp);
+          }
+        });
+        inp.addEventListener('blur', () => { if (document.body.contains(inp)) document.body.removeChild(inp); });
+        return;
+      }
+
+      if (activeTool === 'poly') {
+        if (e.detail === 2 && polyPoints.length > 1) {
+          const last = polyPoints[polyPoints.length-1];
+          ctx.strokeStyle = drawColor; ctx.lineWidth = 2;
+          ctx.beginPath(); ctx.moveTo(last[0], last[1]); ctx.lineTo(polyPoints[0][0], polyPoints[0][1]); ctx.stroke();
+          polyPoints = []; shapeSnapshot = null;
+        } else if (e.detail < 2) {
+          if (polyPoints.length === 0) saveSnapshot();
+          if (polyPoints.length > 0) {
+            const last = polyPoints[polyPoints.length-1];
+            ctx.strokeStyle = drawColor; ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(last[0], last[1]); ctx.lineTo(x, y); ctx.stroke();
+          }
+          polyPoints.push([x, y]);
+          shapeSnapshot = ctx.getImageData(0, 0, paintCanvas.width, paintCanvas.height);
+        }
+        return;
+      }
+
+      if (['select','freeselect','zoom'].includes(activeTool)) return;
+
+      saveSnapshot();
+      painting = true;
+      startX = lastX = x;
+      startY = lastY = y;
+
+      if (activeTool === 'fill') {
+        floodFill(Math.round(x), Math.round(y), drawColor);
+        painting = false;
+        return;
+      }
+
+      if (['line','rect','ellipse','rrect','curve'].includes(activeTool)) {
+        shapeSnapshot = ctx.getImageData(0, 0, paintCanvas.width, paintCanvas.height);
+      }
+    });
+
+    paintCanvas.addEventListener('mousemove', e => {
+      if (!painting) return;
+      const r = paintCanvas.getBoundingClientRect();
+      const x = e.clientX - r.left, y = e.clientY - r.top;
+      ctx.strokeStyle = drawColor; ctx.fillStyle = drawColor;
+      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+
+      switch (activeTool) {
+        case 'pencil':
+          ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(x, y); ctx.stroke();
+          break;
+        case 'brush':
+          ctx.lineWidth = 6;
+          ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(x, y); ctx.stroke();
+          break;
+        case 'eraser':
+          ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 12;
+          ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(x, y); ctx.stroke();
+          break;
+        case 'airbrush':
+          for (let i = 0; i < 12; i++) {
+            const ax = x + (Math.random()-0.5)*24, ay = y + (Math.random()-0.5)*24;
+            ctx.beginPath(); ctx.arc(ax, ay, 0.5, 0, Math.PI*2); ctx.fill();
+          }
+          break;
+        case 'line':
+          ctx.putImageData(shapeSnapshot, 0, 0); ctx.lineWidth = 2;
+          ctx.beginPath(); ctx.moveTo(startX, startY); ctx.lineTo(x, y); ctx.stroke();
+          break;
+        case 'curve':
+          ctx.putImageData(shapeSnapshot, 0, 0); ctx.lineWidth = 2;
+          ctx.beginPath(); ctx.moveTo(startX, startY);
+          ctx.quadraticCurveTo((startX+x)/2, Math.min(startY,y)-40, x, y); ctx.stroke();
+          break;
+        case 'rect':
+          ctx.putImageData(shapeSnapshot, 0, 0); ctx.lineWidth = 2;
+          ctx.strokeRect(startX, startY, x-startX, y-startY);
+          break;
+        case 'ellipse':
+          ctx.putImageData(shapeSnapshot, 0, 0); ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.ellipse((startX+x)/2, (startY+y)/2, Math.abs(x-startX)/2, Math.abs(y-startY)/2, 0, 0, Math.PI*2);
+          ctx.stroke();
+          break;
+        case 'rrect':
+          ctx.putImageData(shapeSnapshot, 0, 0); ctx.lineWidth = 2;
+          ctx.beginPath(); ctx.roundRect(startX, startY, x-startX, y-startY, 8); ctx.stroke();
+          break;
+      }
+      lastX = x; lastY = y;
+    });
+
+    paintCanvas.addEventListener('mouseup',   () => { painting = false; shapeSnapshot = null; });
+    paintCanvas.addEventListener('mouseleave', () => { painting = false; });
+
+    /* ── Notepad drag ── */
+    const notepad   = document.getElementById('notepad');
+    const npTitlebar = document.getElementById('np-titlebar');
+    let npDragging = false, npOx = 0, npOy = 0;
+
+    npTitlebar.addEventListener('mousedown', e => {
+      if (e.target.classList.contains('win-btn')) return;
+      npDragging = true;
+      npOx = e.clientX - notepad.getBoundingClientRect().left;
+      npOy = e.clientY - notepad.getBoundingClientRect().top;
+      e.preventDefault();
+    });
+    document.addEventListener('mousemove', e => {
+      if (!npDragging) return;
+      notepad.style.left  = (e.clientX - npOx) + 'px';
+      notepad.style.top   = (e.clientY - npOy) + 'px';
+    });
+    document.addEventListener('mouseup', () => { npDragging = false; });
+
+    document.querySelector('.np-close').addEventListener('click', () => {
+      notepad.style.display = 'none';
+    });
+    document.querySelector('.np-min').addEventListener('click', () => {
+      const body = document.getElementById('np-body');
+      body.style.display = body.style.display === 'none' ? 'flex' : 'none';
+    });
+
+    /* ── Draggable Icons ── */
+    let dragIcon = null, ix = 0, iy = 0;
+
+    document.querySelectorAll('.desk-icon').forEach(icon => {
+      icon.addEventListener('mousedown', e => {
+        e.preventDefault();
+        dragIcon = icon;
+        const r = icon.getBoundingClientRect();
+        // Lock to left/top so dragging works correctly
+        icon.style.left   = r.left + 'px';
+        icon.style.top    = r.top  + 'px';
+        icon.style.right  = 'auto';
+        icon.style.bottom = 'auto';
+        ix = e.clientX - r.left;
+        iy = e.clientY - r.top;
+        icon.style.zIndex = 20;
+      });
+    });
+
+    document.addEventListener('mousemove', e => {
+      if (!dragIcon) return;
+      dragIcon.style.left = (e.clientX - ix) + 'px';
+      dragIcon.style.top  = (e.clientY - iy) + 'px';
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (dragIcon) dragIcon.style.zIndex = 5;
+      dragIcon = null;
+    });
+
+    // Block single click, open on double click
+    document.querySelectorAll('.desk-icon').forEach(icon => {
+      icon.addEventListener('click', e => e.preventDefault());
+      icon.addEventListener('dblclick', e => {
+        e.preventDefault();
+        const url = icon.dataset.url;
+        if (url) window.open(url, '_blank', 'noopener,noreferrer');
+      });
+    });
+
+    /* ── Taskbar clock ── */
+    function updateClock() {
+      const now = new Date();
+      const h = now.getHours(), m = now.getMinutes();
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      const hh = h % 12 || 12;
+      const mm = String(m).padStart(2, '0');
+      document.getElementById('xp-taskbar-clock').textContent = `${hh}:${mm} ${ampm}`;
+    }
+    updateClock();
+    setInterval(updateClock, 10000);
+
+    /* ── Experience Window ── */
+    const expWin = document.getElementById('exp-window');
+    const expBar = document.getElementById('exp-titlebar');
+    let expDrag = false, exOx = 0, exOy = 0;
+
+    expBar.addEventListener('mousedown', e => {
+      if (e.target.classList.contains('win-btn')) return;
+      expDrag = true;
+      exOx = e.clientX - expWin.getBoundingClientRect().left;
+      exOy = e.clientY - expWin.getBoundingClientRect().top;
+      e.preventDefault();
+    });
+    document.addEventListener('mousemove', e => {
+      if (!expDrag) return;
+      expWin.style.left = (e.clientX - exOx) + 'px';
+      expWin.style.top  = (e.clientY - exOy) + 'px';
+    });
+    document.addEventListener('mouseup', () => { expDrag = false; });
+
+    document.querySelector('.exp-close').addEventListener('click', () => expWin.style.display = 'none');
+    document.querySelector('.exp-min').addEventListener('click', () => {
+      const b = document.getElementById('exp-body');
+      b.style.display = b.style.display === 'none' ? 'flex' : 'none';
+    });
+
+    document.getElementById('icon-exp').addEventListener('dblclick', e => {
+      e.preventDefault();
+      expWin.style.display = 'block';
+      expWin.style.left = (window.innerWidth / 2 - 230) + 'px';
+      expWin.style.top  = '100px';
+      expWin.style.zIndex = 25;
+    });
+
+    /* ── Case Studies Window ── */
+    const csWin = document.getElementById('cs-window');
+    const csBar = document.getElementById('cs-titlebar');
+    let csDrag = false, csOx = 0, csOy = 0;
+
+    csBar.addEventListener('mousedown', e => {
+      if (e.target.classList.contains('win-btn')) return;
+      csDrag = true;
+      csOx = e.clientX - csWin.getBoundingClientRect().left;
+      csOy = e.clientY - csWin.getBoundingClientRect().top;
+      e.preventDefault();
+    });
+    document.addEventListener('mousemove', e => {
+      if (!csDrag) return;
+      csWin.style.left = (e.clientX - csOx) + 'px';
+      csWin.style.top  = (e.clientY - csOy) + 'px';
+    });
+    document.addEventListener('mouseup', () => { csDrag = false; });
+
+    document.querySelector('.cs-close').addEventListener('click', () => csWin.style.display = 'none');
+    document.querySelector('.cs-min').addEventListener('click', () => {
+      const b = document.getElementById('cs-body');
+      b.style.display = b.style.display === 'none' ? 'flex' : 'none';
+    });
+
+    document.getElementById('icon-casestudies').addEventListener('dblclick', e => {
+      e.preventDefault();
+      csWin.style.display = 'block';
+      csWin.style.zIndex = 25;
+    });
+
+    const csTitles = ['TechRise', 'Trace'];
+
+    function openMobCaseStudy(idx) {
+      const content = document.getElementById('cs-content-' + idx);
+      document.getElementById('mob-cs-overlay-body').innerHTML = content.innerHTML;
+      document.getElementById('mob-cs-overlay-title').textContent = csTitles[idx];
+      const overlay = document.getElementById('mob-cs-overlay');
+      overlay.style.display = 'block';
+      overlay.scrollTop = 0;
+    }
+    function closeMobCaseStudy() {
+      document.getElementById('mob-cs-overlay').style.display = 'none';
+    }
+
+    function openCaseStudy(idx) {
+      const content = document.getElementById('cs-content-' + idx);
+      document.getElementById('cs-fp-content').innerHTML = content.innerHTML;
+      document.getElementById('cs-fp-title').textContent = 'Case Studies — ' + csTitles[idx];
+      document.getElementById('cs-fp-addr-field').textContent = 'C:\\Natasha\\Case Studies\\' + csTitles[idx];
+      document.getElementById('cs-fp-content').scrollTop = 0;
+      document.getElementById('cs-fullpage').classList.add('open');
+    }
+
+    function closeCsFullpage() {
+      document.getElementById('cs-fullpage').classList.remove('open');
+    }
+
+    function closeCaseStudy() {
+      document.getElementById('cs-detail').classList.remove('open');
+      document.getElementById('cs-list').style.display   = '';
+      document.getElementById('cs-addr-field').textContent = 'C:\\Natasha\\Case Studies';
+      document.getElementById('cs-statusbar').textContent  = '2 object(s)';
+    }
+
+    /* ── Projects Window ── */
+    const projWin = document.getElementById('proj-window');
+    const projBar = document.getElementById('proj-titlebar');
+    let projDrag = false, prOx = 0, prOy = 0;
+
+    projBar.addEventListener('mousedown', e => {
+      if (e.target.classList.contains('win-btn')) return;
+      projDrag = true;
+      prOx = e.clientX - projWin.getBoundingClientRect().left;
+      prOy = e.clientY - projWin.getBoundingClientRect().top;
+      e.preventDefault();
+    });
+    document.addEventListener('mousemove', e => {
+      if (!projDrag) return;
+      projWin.style.left = (e.clientX - prOx) + 'px';
+      projWin.style.top  = (e.clientY - prOy) + 'px';
+    });
+    document.addEventListener('mouseup', () => { projDrag = false; });
+
+    document.querySelector('.proj-close').addEventListener('click', () => projWin.style.display = 'none');
+    document.querySelector('.proj-min').addEventListener('click', () => {
+      const b = document.getElementById('proj-body');
+      b.style.display = b.style.display === 'none' ? 'flex' : 'none';
+    });
+
+    document.getElementById('icon-projects').addEventListener('dblclick', e => {
+      e.preventDefault();
+      projWin.style.display = 'block';
+      projWin.style.left = (window.innerWidth / 2 - 230) + 'px';
+      projWin.style.top  = '120px';
+      projWin.style.zIndex = 25;
+    });
+
+    /* ── Maximize / Restore ── */
+    function makeMaximizable(winEl, maxBtn, onToggle) {
+      let maximized = false, saved = {};
+      maxBtn.addEventListener('click', () => {
+        if (!maximized) {
+          const r = winEl.getBoundingClientRect();
+          saved = { left: r.left, top: r.top, width: r.width };
+          Object.assign(winEl.style, {
+            position: 'fixed', left: '0', top: '0', right: 'auto', bottom: 'auto',
+            width: '100vw', height: '100vh',
+            display: 'flex', flexDirection: 'column', zIndex: '50'
+          });
+          if (onToggle) onToggle(true);
+          maxBtn.innerHTML = '&#10697;';
+          maximized = true;
+        } else {
+          Object.assign(winEl.style, {
+            position: 'absolute', left: saved.left + 'px', top: saved.top + 'px',
+            right: 'auto', bottom: 'auto', width: saved.width + 'px', height: '',
+            display: '', flexDirection: '', zIndex: '10'
+          });
+          if (onToggle) onToggle(false);
+          maxBtn.innerHTML = '&#9633;';
+          maximized = false;
+        }
+      });
+    }
+
+    makeMaximizable(player, document.querySelector('#cd-titlebar .win-btn.max'), max => {
+      document.getElementById('cd-body').style.flex = max ? '1' : '';
+    });
+
+    makeMaximizable(paintEl, document.querySelector('.paint-max'), max => {
+      document.getElementById('paint-body').style.flex = max ? '1' : '';
+      document.getElementById('paint-canvas-wrap').style.flex = max ? '1' : '';
+    });
+
+    makeMaximizable(notepad, document.querySelector('.np-max'), max => {
+      document.getElementById('np-body').style.flex = max ? '1' : '';
+      const nc = document.getElementById('np-content');
+      nc.style.flex = max ? '1' : '';
+      nc.style.display = max ? 'flex' : '';
+      nc.style.flexDirection = max ? 'column' : '';
+      document.getElementById('np-textarea').style.height = max ? '100%' : '320px';
+    });
+
+    makeMaximizable(expWin, document.querySelector('.exp-max'), max => {
+      document.getElementById('exp-body').style.flex = max ? '1' : '';
+      const el = document.getElementById('exp-list');
+      el.style.flex = max ? '1' : '';
+      el.style.maxHeight = max ? 'none' : '320px';
+    });
+
+    makeMaximizable(projWin, document.querySelector('.proj-max'), max => {
+      document.getElementById('proj-body').style.flex = max ? '1' : '';
+      const pl = document.getElementById('proj-list');
+      pl.style.flex = max ? '1' : '';
+      pl.style.maxHeight = max ? 'none' : '';
+    });
+
+    makeMaximizable(csWin, document.querySelector('.cs-max'), max => {
+      document.getElementById('cs-body').style.flex = max ? '1' : '';
+      document.getElementById('cs-body').style.minHeight = max ? '0' : '';
+      const cl = document.getElementById('cs-list');
+      cl.style.flex = max ? '1' : '';
+      cl.style.maxHeight = max ? 'none' : '';
+      const cd = document.getElementById('cs-detail');
+      cd.style.flex = max ? '1' : '';
+      cd.style.minHeight = max ? '0' : '';
+      const dc = document.getElementById('cs-detail-content');
+      dc.style.flex = max ? '1' : '';
+      dc.style.minHeight = max ? '0' : '';
+      dc.style.maxHeight = max ? 'none' : '400px';
+    });
+
+    /* ── Photos Window ── */
+    const photosWin = document.getElementById('photos-window');
+    const photosBar = document.getElementById('photos-titlebar');
+    let photosDrag = false, phOx = 0, phOy = 0;
+
+    photosBar.addEventListener('mousedown', e => {
+      if (e.target.classList.contains('win-btn')) return;
+      photosDrag = true;
+      phOx = e.clientX - photosWin.getBoundingClientRect().left;
+      phOy = e.clientY - photosWin.getBoundingClientRect().top;
+      e.preventDefault();
+    });
+    document.addEventListener('mousemove', e => {
+      if (!photosDrag) return;
+      photosWin.style.left = (e.clientX - phOx) + 'px';
+      photosWin.style.top  = (e.clientY - phOy) + 'px';
+    });
+    document.addEventListener('mouseup', () => { photosDrag = false; });
+
+    document.querySelector('.photos-close').addEventListener('click', () => photosWin.style.display = 'none');
+    document.querySelector('.photos-min').addEventListener('click', () => {
+      const b = document.getElementById('photos-body');
+      b.style.display = b.style.display === 'none' ? 'flex' : 'none';
+    });
+
+    document.getElementById('icon-photos').addEventListener('dblclick', e => {
+      e.preventDefault();
+      photosWin.style.display = 'block';
+      photosWin.style.left = (window.innerWidth / 2 - 250) + 'px';
+      photosWin.style.top  = '100px';
+      photosWin.style.zIndex = 25;
+    });
+
+    makeMaximizable(photosWin, document.querySelector('.photos-max'), max => {
+      document.getElementById('photos-body').style.flex = max ? '1' : '';
+      const gl = document.getElementById('photos-gallery');
+      gl.style.flex = max ? '1' : '';
+      gl.style.maxHeight = max ? 'none' : '';
+    });
+
+    function openLightbox(src) {
+      document.getElementById('lightbox-img').src = src;
+      document.getElementById('photo-lightbox').classList.add('open');
+    }
+    function closeLightbox() {
+      document.getElementById('photo-lightbox').classList.remove('open');
+    }
+    document.getElementById('photo-lightbox').addEventListener('click', e => {
+      if (e.target === document.getElementById('photo-lightbox')) closeLightbox();
+    });
+
+    /* ── Window buttons ── */
+    document.getElementById('np-textarea').addEventListener('click', function(e) {
+      const a = e.target.closest('a');
+      if (a) { e.preventDefault(); window.open(a.href, a.target || '_blank'); }
+    });
+
+    document.getElementById('cd-close-btn').addEventListener('click', () => {
+      player.style.display = 'none';
+      audio.pause();
+      playing = false;
+    });
+
+    document.getElementById('cd-min-btn').addEventListener('click', () => {
+      const body = document.getElementById('cd-body');
+      body.style.display = body.style.display === 'none' ? 'flex' : 'none';
+    });
+
+  </script>
+
+</body>
+</html>
