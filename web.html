@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Natasha Narine — Portfolio</title>
+  <link rel="icon" type="image/png" href="avatar.png" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Tahoma', 'Segoe UI', 'Arial', sans-serif;
+      font-size: 12px;
+      background: #3a6ea5;
+      min-height: 100vh;
+      padding-top: 44px;
+    }
+
+    /* ── Taskbar ── */
+    #taskbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 44px;
+      background: linear-gradient(to bottom, #1f3f7a 0%, #1a2f60 40%, #1c3570 60%, #1f4080 100%);
+      border-bottom: 2px solid #0a1840;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      z-index: 100;
+      padding: 0 12px;
+    }
+
+    #taskbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 4px 14px 4px 6px;
+      background: linear-gradient(to right, #2a5298, #1a3a80);
+      border-right: 1px solid #0a1840;
+      margin-right: 12px;
+      height: 100%;
+    }
+
+    #taskbar-brand img {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid #a0b8e0;
+    }
+
+    #taskbar-brand span {
+      color: #fff;
+      font-weight: bold;
+      font-size: 13px;
+      font-style: italic;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+      white-space: nowrap;
+    }
+
+    #taskbar-nav {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      flex: 1;
+    }
+
+    .tb-link {
+      color: #d8e8ff;
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: bold;
+      padding: 5px 10px;
+      border: 1px solid transparent;
+      border-radius: 2px;
+      white-space: nowrap;
+      transition: background 0.1s;
+    }
+
+    .tb-link:hover {
+      background: rgba(255,255,255,0.15);
+      border-color: rgba(255,255,255,0.3);
+    }
+
+    #desktop-switch {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(to bottom, #4a7cc4 0%, #2a5298 100%);
+      border: 1px solid #8ab0e0;
+      border-bottom-color: #0a2060;
+      border-right-color: #0a2060;
+      color: #fff;
+      font-family: 'Tahoma', sans-serif;
+      font-size: 11px;
+      font-weight: bold;
+      padding: 5px 12px;
+      cursor: pointer;
+      border-radius: 2px;
+      text-decoration: none;
+      white-space: nowrap;
+      text-shadow: 1px 1px 1px rgba(0,0,50,0.5);
+      margin-left: auto;
+    }
+
+    #desktop-switch:hover {
+      background: linear-gradient(to bottom, #5a8cd4 0%, #3a62a8 100%);
+    }
+
+    /* ── Page content ── */
+    #page {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* ── XP Window shell ── */
+    .xp-win {
+      background: #d4d0c8;
+      border: 2px solid;
+      border-color: #ffffff #808080 #808080 #ffffff;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.4);
+    }
+
+    .xp-titlebar {
+      background: linear-gradient(to right,
+        #0c2ec4 0%, #1a55d8 25%, #2e7ae0 55%, #4496e8 80%, #5aaef0 100%);
+      padding: 3px 5px 4px 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-top: 1px solid #a0c4ff;
+      border-left: 1px solid #a0c4ff;
+      border-right: 1px solid #0a1880;
+      height: 28px;
+    }
+
+    .xp-titlebar img {
+      width: 16px;
+      height: 16px;
+      object-fit: contain;
+    }
+
+    .xp-titlebar-text {
+      color: #fff;
+      font-weight: bold;
+      font-size: 12px;
+      flex: 1;
+      text-shadow: 1px 1px 1px rgba(0,0,50,0.6);
+      letter-spacing: 0.2px;
+    }
+
+    .xp-win-btns { display: flex; gap: 2px; }
+
+    .xp-win-btn {
+      width: 21px;
+      height: 20px;
+      background: linear-gradient(to bottom, #dce8fc 0%, #a8c0e8 100%);
+      border-top: 1px solid #e8f0ff;
+      border-left: 1px solid #e8f0ff;
+      border-right: 1px solid #3060a0;
+      border-bottom: 1px solid #3060a0;
+      cursor: default;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: bold;
+      color: #000;
+      user-select: none;
+    }
+
+    .xp-menubar {
+      background: #d4d0c8;
+      border-bottom: 1px solid #808080;
+      padding: 2px 6px;
+      display: flex;
+      gap: 2px;
+    }
+
+    .xp-menu-item {
+      font-size: 11px;
+      padding: 2px 6px;
+      cursor: default;
+    }
+
+    .xp-menu-item:hover { background: #0a246a; color: #fff; }
+
+    .xp-addrbar {
+      background: #d4d0c8;
+      border-bottom: 1px solid #808080;
+      padding: 3px 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+    }
+
+    .xp-addr-label {
+      color: #000;
+      font-size: 11px;
+    }
+
+    .xp-addr-field {
+      background: #fff;
+      border: 1px solid;
+      border-color: #808080 #d4d0c8 #d4d0c8 #808080;
+      padding: 1px 6px;
+      font-size: 11px;
+      flex: 1;
+    }
+
+    .xp-body {
+      padding: 14px 16px;
+    }
+
+    .xp-statusbar {
+      border-top: 1px solid #808080;
+      padding: 3px 8px;
+      font-size: 11px;
+      color: #444;
+      background: #d4d0c8;
+    }
+
+    /* ── About window ── */
+    #about-text {
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      background: #fff;
+      border: 1px solid;
+      border-color: #808080 #d4d0c8 #d4d0c8 #808080;
+      padding: 14px 16px;
+      white-space: pre-wrap;
+    }
+
+    #about-links {
+      margin-top: 12px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      line-height: 2;
+    }
+
+    #about-links a {
+      color: #000;
+      text-decoration: underline;
+    }
+
+    /* ── Case studies ── */
+    .cs-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .cs-card {
+      border: 1px solid #808080;
+      background: #fff;
+    }
+
+    .cs-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      cursor: pointer;
+      background: #ecebe4;
+      border-bottom: 1px solid #d0ccc4;
+      user-select: none;
+    }
+
+    .cs-card-header:hover { background: #e0dfd8; }
+
+    .cs-card-icon {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    .cs-card-info { flex: 1; }
+    .cs-card-title { font-weight: bold; font-size: 13px; margin-bottom: 2px; }
+    .cs-card-desc { font-size: 11px; color: #555; }
+
+    .cs-card-toggle {
+      font-size: 16px;
+      color: #666;
+      width: 20px;
+      text-align: center;
+      transition: transform 0.15s;
+      flex-shrink: 0;
+    }
+
+    .cs-card-toggle.open { transform: rotate(90deg); }
+
+    .cs-card-body {
+      display: none;
+      padding: 16px;
+      border-top: 1px solid #d0ccc4;
+      background: #fafaf8;
+    }
+
+    .cs-card-body.open { display: block; }
+
+    /* Case study inner styles (same as desktop) */
+    .cs-d-head { margin-bottom: 14px; }
+    .cs-d-title { font-size: 20px; font-weight: bold; color: #1a1a1a; letter-spacing: -0.3px; }
+    .cs-d-subtitle { font-size: 12px; color: #666; margin-top: 3px; }
+
+    .cs-d-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 20px;
+      background: #f0efe8;
+      border: 1px solid #d0ccc4;
+      padding: 10px 12px;
+      margin-bottom: 16px;
+    }
+
+    .cs-d-meta-item { display: flex; flex-direction: column; gap: 2px; min-width: 120px; }
+    .cs-d-meta-label { font-size: 9px; text-transform: uppercase; color: #888; letter-spacing: 0.5px; }
+    .cs-d-meta-val { font-size: 11px; font-weight: bold; color: #222; }
+
+    .cs-d-section { margin-bottom: 20px; }
+
+    .cs-d-section-hdr {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      border-bottom: 1px solid #d0ccc4;
+      padding-bottom: 4px;
+      margin-bottom: 8px;
+    }
+
+    .cs-d-num { font-size: 10px; color: #aaa; font-weight: bold; }
+    .cs-d-section-title { font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; color: #333; }
+    .cs-d-section-intro { font-size: 13px; font-style: italic; color: #555; margin-bottom: 8px; }
+    .cs-d-body { font-size: 12px; line-height: 1.7; color: #222; }
+
+    .cs-d-quote {
+      border-left: 3px solid #2e7ae0;
+      background: #eef3fc;
+      padding: 10px 14px;
+      font-style: italic;
+      color: #333;
+      margin: 10px 0;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .cs-d-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0;
+      font-size: 11px;
+    }
+
+    .cs-d-table th {
+      background: #d4d0c8;
+      border: 1px solid #808080;
+      padding: 5px 8px;
+      text-align: left;
+      font-weight: bold;
+    }
+
+    .cs-d-table td {
+      border: 1px solid #c0bcb4;
+      padding: 5px 8px;
+      vertical-align: top;
+      background: #fff;
+    }
+
+    .cs-d-bullet { padding-left: 20px; margin: 6px 0; }
+    .cs-d-bullet li { margin-bottom: 5px; line-height: 1.6; }
+
+    .cs-d-stat-row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin: 12px 0;
+    }
+
+    .cs-d-stat {
+      background: #f0efe8;
+      border: 1px solid #d0ccc4;
+      padding: 10px 14px;
+      text-align: center;
+      flex: 1;
+      min-width: 100px;
+    }
+
+    .cs-d-stat-num { font-size: 22px; font-weight: bold; color: #1a55d8; }
+    .cs-d-stat-label { font-size: 10px; color: #666; margin-top: 3px; }
+
+    .cs-img {
+      width: 180px;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+      margin: 8px auto 2px;
+      border: 1px solid #d0ccc4;
+    }
+
+    .cs-img-caption {
+      text-align: center;
+      font-size: 10px;
+      color: #888;
+      font-style: italic;
+    }
+
+    .cs-img-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 8px 0 2px;
+      justify-content: center;
+    }
+
+    .cs-img-row img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border: 1px solid #d0ccc4;
+    }
+
+    /* ── Experience list ── */
+    .exp-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .exp-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 12px;
+      background: #fff;
+      border: 1px solid #d0ccc4;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .exp-row:hover { background: #eef3fc; }
+
+    .exp-row-icon {
+      width: 30px;
+      height: 30px;
+      object-fit: contain;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .exp-role { font-size: 12px; font-weight: bold; margin-bottom: 3px; }
+    .exp-desc { font-size: 11px; color: #444; line-height: 1.6; }
+
+    /* ── Projects list ── */
+    .proj-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    /* ── Photos grid ── */
+    .photos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 8px;
+      padding: 4px;
+    }
+
+    .photo-item img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border: 2px solid;
+      border-color: #808080 #fff #fff #808080;
+      display: block;
+      cursor: pointer;
+    }
+
+    .photo-item img:hover { border-color: #0a246a #fff #fff #0a246a; }
+
+    .photo-label {
+      font-size: 10px;
+      text-align: center;
+      margin-top: 3px;
+      color: #444;
+      display: block;
+    }
+
+    /* ── Lightbox ── */
+    #lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #lightbox.open { display: flex; }
+
+    #lightbox img {
+      max-width: 90vw;
+      max-height: 85vh;
+      object-fit: contain;
+      border: 3px solid #d4d0c8;
+    }
+
+    #lightbox-close-btn {
+      position: absolute;
+      top: 16px; right: 20px;
+      color: #fff;
+      font-size: 28px;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    /* ── Mobile ── */
+    @media (max-width: 600px) {
+      #taskbar-brand span { display: none; }
+      .tb-link { padding: 5px 7px; font-size: 10px; }
+      #desktop-switch { padding: 5px 8px; font-size: 10px; }
+      #page { padding: 16px 8px 40px; gap: 16px; }
+      .cs-img { width: 120px; height: 120px; }
+      .cs-img-row img { width: 60px; height: 60px; }
+      .cs-d-stat { min-width: 80px; }
+    }
+
+    @media (max-width: 400px) {
+      #taskbar-nav .tb-link:nth-child(n+4) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Taskbar ── -->
+  <div id="taskbar">
+    <div id="taskbar-brand">
+      <img src="avatar.png" alt="Natasha" />
+      <span>Natasha Narine</span>
+    </div>
+    <nav id="taskbar-nav">
+      <a class="tb-link" href="#about">About</a>
+      <a class="tb-link" href="#case-studies">Case Studies</a>
+      <a class="tb-link" href="#experience">Experience</a>
+      <a class="tb-link" href="#projects">Projects</a>
+      <a class="tb-link" href="#photos">Photos</a>
+    </nav>
+    <a id="desktop-switch" href="index.html">&#128187; Desktop View</a>
+  </div>
+
+  <div id="page">
+
+    <!-- ── About ── -->
+    <div class="xp-win" id="about">
+      <div class="xp-titlebar">
+        <img src="icon-blog.png" alt="" />
+        <span class="xp-titlebar-text">About Me — Notepad</span>
+        <div class="xp-win-btns">
+          <button class="xp-win-btn">&#8212;</button>
+          <button class="xp-win-btn">&#9633;</button>
+          <button class="xp-win-btn">&#10005;</button>
+        </div>
+      </div>
+      <div class="xp-menubar">
+        <span class="xp-menu-item">File</span>
+        <span class="xp-menu-item">Edit</span>
+        <span class="xp-menu-item">Search</span>
+        <span class="xp-menu-item">Help</span>
+      </div>
+      <div class="xp-body">
+        <div id="about-text"><b>Hello, my name is Natasha. Welcome to my portfolio!</b>
+
+I study computer information systems at Georgia State University, building my career in <b>product management</b>. I've spent my time <b>leading a programming club, marketing early-stage products, organizing large-scale events, and turning vague ideas into launched products.</b> Somewhere in all of that, I figured out that I love taking messy, undefined problems and turning them into something that actually works. This site is where I document all of it!
+
+Feel free to click around, everything functions like a real desktop :)</div>
+        <div id="about-links">
+<b>email: <a href="https://mail.google.com/mail/?view=cm&to=nb.narine@gmail.com">nb.narine@gmail.com</a></b>
+<b>linkedin: <a href="https://www.linkedin.com/in/natasha-narine" target="_blank" rel="noopener noreferrer">linkedin.com/in/natasha-narine</a></b>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Case Studies ── -->
+    <div class="xp-win" id="case-studies">
+      <div class="xp-titlebar">
+        <img src="icon-casestudies.png" alt="" />
+        <span class="xp-titlebar-text">Case Studies</span>
+        <div class="xp-win-btns">
+          <button class="xp-win-btn">&#8212;</button>
+          <button class="xp-win-btn">&#9633;</button>
+          <button class="xp-win-btn">&#10005;</button>
+        </div>
+      </div>
+      <div class="xp-menubar">
+        <span class="xp-menu-item">File</span>
+        <span class="xp-menu-item">Edit</span>
+        <span class="xp-menu-item">View</span>
+        <span class="xp-menu-item">Help</span>
+      </div>
+      <div class="xp-addrbar">
+        <span class="xp-addr-label">Address</span>
+        <span class="xp-addr-field">C:\Natasha\Case Studies</span>
+      </div>
+      <div class="xp-body" style="padding:12px;">
+        <div class="cs-list">
+
+          <!-- TechRise -->
+          <div class="cs-card">
+            <div class="cs-card-header" onclick="toggleCS(this)">
+              <img class="cs-card-icon" src="techrise.png" alt="TechRise" />
+              <div class="cs-card-info">
+                <div class="cs-card-title">TechRise App UI/UX Redesign</div>
+                <div class="cs-card-desc">The app had real utility but students weren't using it. I ran the end-to-end process: user research, problem reframing, scope prioritization, and a full redesign that drove a 6x increase in active usage.</div>
+              </div>
+              <span class="cs-card-toggle">&#9654;</span>
+            </div>
+            <div class="cs-card-body">
+
+              <div class="cs-d-head">
+                <div class="cs-d-title">TechRise</div>
+                <div class="cs-d-subtitle">redesigning a student productivity app to actually get used</div>
+              </div>
+
+              <div class="cs-d-meta">
+                <div class="cs-d-meta-item"><div class="cs-d-meta-label">Timeline</div><div class="cs-d-meta-val">4 weeks</div></div>
+                <div class="cs-d-meta-item"><div class="cs-d-meta-label">My Role</div><div class="cs-d-meta-val">UI/UX Designer, PM-led process</div></div>
+                <div class="cs-d-meta-item"><div class="cs-d-meta-label">Collaborators</div><div class="cs-d-meta-val">Francis Ganya (engineer)</div></div>
+                <div class="cs-d-meta-item"><div class="cs-d-meta-label">Deliverables</div><div class="cs-d-meta-val">Research synthesis, user flows, wireframes, final UI, advisor variant</div></div>
+              </div>
+
+              <div class="cs-d-section">
+                <div class="cs-d-section-hdr"><span class="cs-d-num">01</span><span class="cs-d-section-title">context</span></div>
+                <div class="cs-d-section-intro">the app existed. the problem was adoption.</div>
+                <div class="cs-d-body">TechRise is a student-focused platform with two core jobs: help students book advisor appointments and surface relevant internship opportunities. the product had real utility on paper. but engagement was low, and the team had a hunch the interface was the reason.<br><br>i came in to diagnose whether that was true and if so, where exactly the experience was breaking down.<br><br>my role was scoped as UI/UX but the engagement required PM work from day one: diagnosing the real problem, running research, making prioritization calls, and owning scope decisions through handoff.</div>
+              </div>
+
+              <div class="cs-d-section">
+                <div class="cs-d-section-hdr"><span class="cs-d-num">02</span><span class="cs-d-section-title">problem framing</span></div>
+                <div class="cs-d-section-intro">what we were actually solving for</div>
+                <div class="cs-d-body">before touching anything, i needed to separate the symptoms from the real problem. the app being "cluttered" was a description, not a problem statement.<br><br><div class="cs-d-quote">students aren't engaging with TechRise because the cost of navigating the app exceeds the perceived value of what they'll find when they get there, especially for time-sensitive actions like booking appointments or finding internship deadlines.</div>this reframe mattered because it shifted the design goal. the question wasn't "how do we clean this up?" it was "how do we make the highest-value actions feel effortless and fast?"</div>
+              </div>
+
+              <div class="cs-d-section">
+                <div class="cs-d-section-hdr"><span class="cs-d-num">03</span><span class="cs-d-section-title">research</span></div>
+                <div class="cs-d-section-intro">what students actually said</div>
+                <div class="cs-d-body">i ran 6 user interviews and distributed a survey to 40+ students to understand where the friction was coming from. i recruited through the TechRise user base directly. i also did a competitive teardown of advisor booking and internship tools to understand what the bar looked like.<br><br><strong>user interviews: recurring quotes:</strong><ul class="cs-d-bullet"><li>"it's hard to find advisors that have time to help me."</li><li>"by the time i find the posting, it's too late to apply."</li><li>"switching between different platforms for internship postings gets frustrating."</li></ul><br>the interviews kept surfacing the same two pain points: advisor availability was invisible until you were already deep in the booking flow, and internship deadlines weren't visible until you opened each posting individually. those two findings shaped everything downstream.<br><br><strong>survey data:</strong><div class="cs-d-stat-row"><div class="cs-d-stat"><div class="cs-d-stat-num">60%</div><div class="cs-d-stat-label">struggle to book appointments</div></div><div class="cs-d-stat"><div class="cs-d-stat-num">90%</div><div class="cs-d-stat-label">want internships easier to access</div></div><div class="cs-d-stat"><div class="cs-d-stat-num">50%</div><div class="cs-d-stat-label">find the interface confusing</div></div><div class="cs-d-stat"><div class="cs-d-stat-num">30%</div><div class="cs-d-stat-label">want meeting reminders</div></div></div><br><strong>competitive analysis takeaways:</strong><ul class="cs-d-bullet"><li>existing advisor booking tools are functional but built for admin convenience, not student speed</li><li>Handshake has volume but weak filtering; students waste time before finding relevant postings</li><li>common theme: students value speed and clarity over feature richness. this informed a direct decision: surface advisor availability at the browse level, and move deadlines to the card level. both were zero-engineering-cost fixes via information hierarchy alone.</li></ul></div>
+              </div>
+
+              <div class="cs-d-section">
+                <div class="cs-d-section-hdr"><span class="cs-d-num">04</span><span class="cs-d-section-title">synthesis &amp; prioritization</span></div>
+                <div class="cs-d-section-intro">turning findings into a focused scope</div>
+                <div class="cs-d-body">
+                  <table class="cs-d-table">
+                    <tr><th>Problem</th><th>Severity</th><th>In Scope?</th><th>Rationale</th></tr>
+                    <tr><td>Confusing navigation / IA</td><td>High</td><td>✓ Yes</td><td>Root cause of most friction</td></tr>
+                    <tr><td>Advisor availability not visible</td><td>High</td><td>✓ Yes</td><td>Directly impacts core use case</td></tr>
+                    <tr><td>Internship deadline visibility</td><td>High</td><td>✓ Yes</td><td>Zero-cost fix via info hierarchy</td></tr>
+                    <tr><td>Notification system</td><td>Medium</td><td>Future</td><td>Backend dependency</td></tr>
+                    <tr><td>Cross-platform aggregation</td><td>High (complex)</td><td>Future</td><td>Out of sprint feasibility</td></tr>
+                  </table>
+                  the call to scope out notifications and integrations was deliberate. trying to solve everything in 4 weeks would have compromised the structural redesign.
+                </div>
+              </div>
+
+              <div class="cs-d-section">
+                <div class="cs-d-section-hdr"><span class="cs-d-num">05</span><span class="cs-d-section-title">design decisions</span></div>
+                <div class="cs-d-section-intro">the choices i made and why</div>
+                <div class="cs-d-body">each decision maps directly to a finding from research. nothing in here was a taste call.<br><br>i mapped the three core user flows before touching UI: booking an advisor, finding and applying to an internship, and tracking active tasks/deadlines.<ul class="cs-d-bullet"><li><strong>restructured navigation hierarchy:</strong> 50% of surveyed students found the interface confusing. the root cause was too many top-level items with no clear hierarchy. reduced nav items and moved highest-frequency actions to persistent nav.</li><li><strong>advisor availability surfaced on browse:</strong> 60% of students struggled to book appointments. the friction was that open slots weren't visible until 4+ taps in. surfaced availability in the directory view, reducing booking to 2 taps.</li><li><strong>deadline prominence on internship cards:</strong> "by the time i find the posting, it's too late to apply" was the most consistent interview quote. moved deadlines from the detail page to the card-level summary so students see them before clicking in.</li><li><strong>task tracking simplified:</strong> students were getting stuck on complexity, not lack of features. categorization reduced to three buckets (to-do, in progress, done) based on what students actually described doing with tasks.</li></ul></div>
+              </div>
+
+              <div class="cs-d-section">
+                <div class="cs-d-section-hdr"><span class="cs-d-num">06</span><span class="cs-d-section-title">tradeoffs</span></div>
+                <div class="cs-d-section-intro">what i gave up to get here</div>
+                <div class="cs-d-body"><ul class="cs-d-bullet"><li><strong>simplified task states vs. power user flexibility:</strong> students who wanted granular project tracking lost some customization. i accepted this because the majority were getting stuck on complexity.</li><li><strong>no onboarding flow redesign:</strong> first-run experience had friction but was a week of work alone. documented and flagged for a follow-up sprint.</li><li><strong>advisor UI as a variant, not a separate product:</strong> advisor-facing screens share the same component logic with the student view; kept engineering scope tight while unlocking a future use case.</li></ul></div>
+              </div>
+
+              <div class="cs-d-section">
+                <div class="cs-d-section-hdr"><span class="cs-d-num">07</span><span class="cs-d-section-title">output</span></div>
+                <div class="cs-d-section-intro">what shipped and what moved</div>
+                <div class="cs-d-body"><ul class="cs-d-bullet"><li>redesigned navigation and information architecture across student-facing screens</li><li>new advisor booking flow: reduced steps, availability visible upfront</li><li>internship board with deadline-forward card design</li><li>simplified task tracker with three-state categorization</li><li>advisor-facing UI variant for future engineering use</li></ul>designs were handed off to Francis Ganya and implemented in the live TechRise app. active usage grew from ~25 students to 156 following the redesign, a 6x increase in the months after handoff.<br><br><div class="cs-d-stat-row"><div class="cs-d-stat"><div class="cs-d-stat-num">6x</div><div class="cs-d-stat-label">increase in active usage post-redesign</div></div><div class="cs-d-stat"><div class="cs-d-stat-num">25 to 156</div><div class="cs-d-stat-label">students actively using the app</div></div><div class="cs-d-stat"><div class="cs-d-stat-num">4 to 2</div><div class="cs-d-stat-label">taps reduced in advisor booking flow</div></div></div></div>
+              </div>
+
+              <div class="cs-d-section">
+                <div class="cs-d-section-hdr"><span class="cs-d-num">08</span><span class="cs-d-section-title">reflection</span></div>
+                <div class="cs-d-section-intro">what i'd do differently</div>
+                <div class="cs-d-body"><ul class="cs-d-bullet"><li><strong>validate the reframe earlier:</strong> i reframed the problem as "cost of navigation exceeds perceived value" based on my read of the research, but never pressure-tested that framing with the TechRise team before designing against it. if the reframe had been wrong, i would have spent 4 weeks solving the wrong problem. next time that framing gets validated before any wireframes open.</li><li><strong>define the north star before touching the brief:</strong> i had no agreed success metric going in. i designed toward "feels easier" instead of something measurable like time-to-book or appointment completion rate. if i'd locked a north star with the team in week one, every scope decision would have been sharper and the outcome would have been easier to evaluate.</li><li><strong>document scope decisions as written artifacts:</strong> i made deliberate calls to descope notifications and cross-platform aggregation. those decisions were right, but they lived in my head. francis had no visibility into why those weren't in the handoff. a one-page scope doc would have made the engineering relationship cleaner and protected both of us if priorities shifted.</li></ul></div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Trace -->
+          <div class="cs-card">
+            <div class="cs-card-header" onclick="toggleCS(this)">
+              <img class="cs-card-icon" src="trace logo.png" alt="Trace" />
+              <div class="cs-card-info">
+                <div class="cs-card-title">Trace Brand Identity</div>
+                <div class="cs-card-desc">No logo, no typeface, no way to run ads or submit to the app store. I identified the three decisions blocking launch, drove alignment across an async team, and delivered a repeatable brand system in one week.</div>
+              </div>
+              <span class="cs-card-toggle">&#9654;</span>
+            </div>
+            <div class="cs-card-body">
+
+              <div class="cs-d-head">
+                <div class="cs-d-title">Trace</div>
+                <div class="cs-d-subtitle">defining the brand system that makes launch possible</div>
+              </div>
+
+              <div class="cs-d-meta">
+                <div class="cs-d-meta-item"><div class="cs-d-meta-label">Timeline</div><div class="cs-d-meta-val">1 week</div></div>
+                <div class="cs-d-meta-item"><div class="cs-d-meta-label">My Role</div><div class="cs-d-meta-val">CMO</div></div>
+                <div class="cs-d-meta-item"><div class="cs-d-meta-label">Collaborators</div><div class="cs-d-meta-val">Arhaan Keshwani, Joey Zhang, Nina Kilidzhiyska</div></div>
+                <div class="cs-d-meta-item"><div class="cs-d-meta-label">Deliverables</div><div class="cs-d-meta-val">Logo, typeface, product display format, launch assets</div></div>
+              </div>
+
+              <div class="cs-d-section">
+                <div class="cs-d-section-hdr"><span class="cs-d-num">01</span><span class="cs-d-section-title">context</span></div>
+                <div class="cs-d-section-intro">the reminder app you can talk to</div>
+                <div class="cs-d-body">trace is a conversational reminders iOS app. users talk to it naturally, and it handles the structure. i'm the cmo, working alongside arhaan keshwani, joey zhang, and nina kilidzhiyska.<br><br>we had a working product but no visual language. no logo, no typeface, no defined way to show the app to people. that wasn't a design gap, it was a launch blocker. without a locked brand system, we couldn't run paid ads, build the app store listing, or post consistently. every downstream asset was blocked until these decisions were made.<br><br>i owned the brand system end-to-end: scoping the decision set, driving alignment, and shipping a visual language the whole team could build on, in one week, with no design budget.<br><br><table class="cs-d-table"><tr><th>constraint</th><th>detail</th></tr><tr><td>timeline</td><td>1 week</td></tr><tr><td>budget</td><td>$0</td></tr><tr><td>team structure</td><td>async, gc-based feedback</td></tr><tr><td>design resources</td><td>sole designer</td></tr></table></div>
+              </div>
+
+              <div class="cs-d-section">
+                <div class="cs-d-section-hdr"><span class="cs-d-num">02</span><span class="cs-d-section-title">problem framing — scoping what actually needed to be decided</span></div>
+                <div class="cs-d-section-intro">the real problem wasn't "we don't have a logo."</div>
+                <div class="cs-d-body">without a shared visual system, every asset we produce reads as disconnected, and we can't run ads, publish consistently, or submit to the app store.<br><br>three decisions were blocking everything downstream: logo, typeface, and product display format. until those were locked, nothing was repeatable or scalable.<br><br><div class="cs-d-quote">i explicitly scoped out brand voice, color system, and motion guidelines. not because they didn't matter, but because none of them were on the critical path to launch. shipping those decisions in week one would have consumed the timeline without unblocking anything. the call was: solve what's blocking launch first, document everything else for a post-launch brand sprint.</div><br>that scope boundary kept the team focused and the timeline intact. it also gave us a clear definition of done: three decisions locked, all downstream assets unblocked.</div>
+              </div>
+
+              <div class="cs-d-section">
+                <div class="cs-d-section-hdr"><span class="cs-d-num">03</span><span class="cs-d-section-title">decision 01: logo — why this came first</span></div>
+                <div class="cs-d-section-intro">logo came first because every other asset depended on it. typeface choices and product display layouts couldn't be finalized without knowing what mark they'd sit next to.</div>
+                <div class="cs-d-body">the filter for every option wasn't "does this look good." it was "does this give trace a mark it can grow into without explaining what the product does."<br><br>the only alignment we had going in was that we wanted the brand to feel simplistic. the first logo attempt was a glowing abstract waveform mark: white on black, soft-edged, radiating outward. it looked striking in isolation but immediately read as too complex and too heavy. it didn't feel like trace.<br><br><img src="IMG_2324.jpg" class="cs-img" alt="first logo attempt: glowing waveform mark" /><div class="cs-img-caption">first logo attempt: glowing waveform mark</div><br>that reaction was useful data. it told us what we didn't want and gave us a clearer direction to move toward. from there, the team moved toward a geometric mark, but i pushed back: without a brand identity established yet, something that abstract gave no signal about what trace actually did. i suggested the voice memo waveform direction and put together multiple variations to pressure-test it.<br><br>we ran those variations by a small group of users. the feedback was positive on clarity — people understood the voice connection — but the more the rest of the brand system developed, the less the logo needed to do that work. the font and product displays were already communicating the product. that shifted the decision criteria: if the rest of the system carries the message, the logo just needs to be a mark worth owning.<br><br><img src="finaltracelogo.JPEG" class="cs-img" alt="final logo: hexagon mark" /><div class="cs-img-caption">final logo: hexagon mark</div><br><div class="cs-img-row"><img src="pwave.JPG" alt="voice memo iteration 1" /><img src="wave1.JPG" alt="voice memo iteration 2" /><img src="wave2.JPG" alt="voice memo iteration 3" /><img src="wave3.JPG" alt="voice memo iteration 4" /></div><div class="cs-img-caption">voice memo waveform iterations tested with users</div><br><table class="cs-d-table"><tr><th>option</th><th>rationale</th><th>user feedback</th><th>verdict</th></tr><tr><td>glowing waveform mark</td><td>too ornate. contradicted the simplistic direction we had aligned on</td><td>not tested; cut before feedback round</td><td>cut</td></tr><tr><td>voice memo waveform (multiple iterations)</td><td>cleaner, referenced the app's core voice interaction directly. tested multiple variations</td><td>positive on clarity. users understood the voice connection. but felt too literal once the brand system developed</td><td>cut</td></tr><tr><td>abstract hexagon mark</td><td>geometric, clean, distinctive. not tied to any single feature, giving trace room to build its own identity around the mark over time</td><td>tested well with team once brand system was established. logo didn't need to explain the product</td><td>chosen</td></tr></table><br><strong>final thoughts:</strong> the voice memo iterations were a necessary middle step. they clarified what the logo needed to do, and then helped us realize it didn't need to do as much as we thought. that freed us to go fully abstract. the hexagon mark is simple enough to sit small without losing its shape, and flexible enough to grow with the brand.</div>
+              </div>
+
+              <div class="cs-d-section">
+                <div class="cs-d-section-hdr"><span class="cs-d-num">04</span><span class="cs-d-section-title">decision 02: typeface — why this came second</span></div>
+                <div class="cs-d-section-intro">typeface came second because it determined the wordmark, which anchored every marketing asset. without it, product display work would have to be redone after the font was locked.</div>
+                <div class="cs-d-body">the filter: find the middle ground between minimalist and personality-forward. something that sells the product to a stranger without overexplaining it.<br><br>the team's instinct was to go fully minimalist. i pushed back on that from a user acquisition standpoint: minimalism alone doesn't sell a product to someone who's never heard of it. trace needed enough personality to create a first impression. the question was how much.<br><br>we anchored off the font already on the trace website (a clean sans used for body), then focused the search on a display face that could carry the wordmark and headers.<br><br><table class="cs-d-table"><tr><th>option</th><th>notes</th><th>verdict</th></tr><tr><td>website serif (first suggestion)</td><td>too corporate. wouldn't sell the product to a consumer. flagged and cut early</td><td>cut</td></tr><tr><td>satoshi medium</td><td>clean geometric sans. not enough character for what trace needed at the wordmark level</td><td>cut</td></tr><tr><td>satoshi black italic</td><td>too heavy. didn't match the simplistic direction</td><td>cut</td></tr><tr><td>coolvetica rg</td><td>rounded and informal but read too elementary for the brand we were building</td><td>cut</td></tr><tr><td>apollo otf</td><td>editorial serif with real character. hit the middle ground between minimalist and playful. team aligned immediately</td><td>chosen</td></tr></table><br>with apollo locked, we tested uppercase vs lowercase for the wordmark. uppercase read too formal and corporate. lowercase felt intentional and matched the conversational nature of the product. we locked in all lowercase.</div>
+              </div>
+
+              <div class="cs-d-section">
+                <div class="cs-d-section-hdr"><span class="cs-d-num">05</span><span class="cs-d-section-title">decision 03: product display — why this came last</span></div>
+                <div class="cs-d-section-intro">product display came last because it depended on both the logo and typeface being final. building it earlier would have meant rebuilding it twice.</div>
+                <div class="cs-d-body">the filter: does this format work as a repeatable template across social posts, paid ads, and the app store listing? if we couldn't reuse the same layout across all three surfaces, it wasn't the right format.<br><br><strong>phase 1: pre-rebrand</strong><br>the first attempts used a "hey trace" headline format with a single angled phone mockup on a light starburst background. the copy and layout were attention-grabbing but the visual didn't feel like the product. without the brand system finalized, nothing was anchoring it to trace specifically.<br><br><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:8px 0;"><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:140px;"><img src="4.png" style="width:140px;border:1px solid #d0ccc4;" /><span class="cs-img-caption">post 1: hey trace</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:140px;"><img src="5.png" style="width:140px;border:1px solid #d0ccc4;" /><span class="cs-img-caption">post 2: with tagline</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:140px;"><img src="7.png" style="width:140px;border:1px solid #d0ccc4;" /><span class="cs-img-caption">post 3: CTA</span></div></div><br><strong>phase 2: post-rebrand iterations</strong><br>once the font and logo were locked, i rebuilt the product display around the finalized brand. the format shifted to a dark background with three angled phone mockups showing the app in context.<br><br><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:8px 0;"><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:140px;"><img src="2.png" style="width:140px;border:1px solid #d0ccc4;" /><span class="cs-img-caption">iteration 1</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:140px;"><img src="3.png" style="width:140px;border:1px solid #d0ccc4;" /><span class="cs-img-caption">iteration 2</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:140px;"><img src="4 copy.png" style="width:140px;border:1px solid #d0ccc4;" /><span class="cs-img-caption">iteration 3</span></div></div><br><strong>top choices</strong><br><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:8px 0;"><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:140px;"><img src="4 copy.png" style="width:140px;border:1px solid #d0ccc4;" /><span class="cs-img-caption">top choice 1</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:140px;"><img src="trace preview (1).png" style="width:140px;border:1px solid #d0ccc4;" /><span class="cs-img-caption">top choice 2</span></div></div></div>
+              </div>
+
+              <div class="cs-d-section">
+                <div class="cs-d-section-hdr"><span class="cs-d-num">06</span><span class="cs-d-section-title">outcome</span></div>
+                <div class="cs-d-section-intro">what shipped and what it unblocked</div>
+                <div class="cs-d-body">by end of week we had a working brand system: hexagon icon mark, apollo otf wordmark in lowercase, and a repeatable product display format.<br><br>more importantly, we unblocked everything that had been blocked:<br><ul class="cs-d-bullet"><li><strong>paid ad assets:</strong> first creative ready to run within 48 hours of brand lock</li><li><strong>app store listing:</strong> visual assets complete and submitted</li><li><strong>social posting:</strong> consistent template in use across all posts from launch week onward</li><li><strong>team alignment:</strong> brand decisions documented, no re-litigating on every new asset</li></ul><br><div class="cs-d-stat-row"><div class="cs-d-stat"><div class="cs-d-stat-num">3</div><div class="cs-d-stat-label">launch blockers resolved</div></div><div class="cs-d-stat"><div class="cs-d-stat-num">48hr</div><div class="cs-d-stat-label">to first paid ad asset after brand lock</div></div><div class="cs-d-stat"><div class="cs-d-stat-num">0</div><div class="cs-d-stat-label">brand decisions re-litigated post-lock</div></div></div></div>
+              </div>
+
+              <div class="cs-d-section">
+                <div class="cs-d-section-hdr"><span class="cs-d-num">07</span><span class="cs-d-section-title">reflections</span></div>
+                <div class="cs-d-section-intro">what i'd do differently</div>
+                <div class="cs-d-body"><ul class="cs-d-bullet"><li><strong>scoping is a product decision:</strong> explicitly cutting color system and motion guidelines from this sprint kept us on track. knowing what not to solve is as important as knowing what to solve. i'd document that scope boundary as a written artifact next time, not just a verbal call.</li><li><strong>decisions need a filter, not a vote:</strong> every option moved faster once i framed it around what trace needs to communicate to a stranger. aesthetic preference is noise; user perception is signal.</li><li><strong>structure the user feedback:</strong> we got useful signal from testing logo options, but "tested well" isn't a methodology. next time i'd define who we're testing with, what we're measuring, and what feedback would actually change the decision before running the test.</li><li><strong>pushing back is part of the role:</strong> i disagreed on two directions the team initially favored. both pushbacks led to better outcomes. holding the brand standard even when something "looks fine" is part of the cmo job.</li><li><strong>async feedback is fast but incomplete:</strong> gc consensus isn't a substitute for structured user feedback. for a v2 brand refresh i'd want actual target users reacting to options, not just team alignment.</li></ul></div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="xp-statusbar">2 object(s)</div>
+    </div>
+
+    <!-- ── Experience ── -->
+    <div class="xp-win" id="experience">
+      <div class="xp-titlebar">
+        <img src="icon-experience.png" alt="" />
+        <span class="xp-titlebar-text">Experience</span>
+        <div class="xp-win-btns">
+          <button class="xp-win-btn">&#8212;</button>
+          <button class="xp-win-btn">&#9633;</button>
+          <button class="xp-win-btn">&#10005;</button>
+        </div>
+      </div>
+      <div class="xp-menubar">
+        <span class="xp-menu-item">File</span>
+        <span class="xp-menu-item">Edit</span>
+        <span class="xp-menu-item">View</span>
+        <span class="xp-menu-item">Help</span>
+      </div>
+      <div class="xp-addrbar">
+        <span class="xp-addr-label">Address</span>
+        <span class="xp-addr-field">C:\Natasha\Experience</span>
+      </div>
+      <div class="xp-body" style="padding:8px;">
+        <div class="exp-list">
+          <a class="exp-row" href="https://www.progsu.com/" target="_blank" rel="noopener noreferrer">
+            <img class="exp-row-icon" src="progsu.png" alt="progsu" />
+            <div><div class="exp-role">Founder — progsu</div><div class="exp-desc">Turned a dormant club into GSU's most prominent student tech org. Led Hacklanta, a student-run hackathon with 400+ attendees and $20K in sponsorships — owning the end-to-end marketing campaign from strategy to execution. Built a 0-to-1 incubation program that moved 14 student startups from idea to launch. Placed 40+ students into roles. Kept cross-functional teams aligned across every initiative.</div></div>
+          </a>
+          <a class="exp-row" href="https://remindmetrace.com/" target="_blank" rel="noopener noreferrer">
+            <img class="exp-row-icon" src="trace logo.png" alt="Trace" />
+            <div><div class="exp-role">CMO — Trace</div><div class="exp-desc">Pre-launch marketing owner for a conversational reminders iOS app. Built the brand system from zero: logo, typeface, and product display format. Developed and managed the organic and paid Instagram strategy, oversaw UGC, and owned all launch creative. Operated as the sole designer and marketing decision-maker across an async team.</div></div>
+          </a>
+          <a class="exp-row" href="https://create-x.gatech.edu/" target="_blank" rel="noopener noreferrer">
+            <img class="exp-row-icon" src="createx.png" alt="CREATE-X" />
+            <div><div class="exp-role">CREATE-X Pre-Accelerator — Georgia Tech</div><div class="exp-desc">Selected for one of the top startup programs in the country. Building a 0 to 1 product using core PM methodology: user interviews, pain point synthesis, and assumption testing before writing a line of code.</div></div>
+          </a>
+          <a class="exp-row" href="https://www.wecreatetech.org/" target="_blank" rel="noopener noreferrer">
+            <img class="exp-row-icon" src="techrise.png" alt="We Create Tech" />
+            <div><div class="exp-role">UX/UI &amp; Creative Design Apprentice — We Create Tech</div><div class="exp-desc">Redesigned the flow and UI of TechRise Launchpad based on direct user feedback, driving a 100-student increase in active usage. Separately owned the brand identity work for We Create Tech, running multiple iterations with the team to align visuals with the organization's mission and voice until it was right. Work was featured in the Atlanta Journal-Constitution.</div></div>
+          </a>
+          <a class="exp-row" href="https://www.theassemblydc.com/" target="_blank" rel="noopener noreferrer">
+            <img class="exp-row-icon" src="tadc.png" alt="The Assembly DC" />
+            <div><div class="exp-role">Event Planning &amp; Experiential Production Intern — The Assembly DC</div><div class="exp-desc">Own end-to-end production for live events. Drive all sponsor and vendor outreach from identification through close. Built the internal tracking system used across all events.</div></div>
+          </a>
+          <a class="exp-row" href="https://www.adobeforeducation.com/student-ambassador-program" target="_blank" rel="noopener noreferrer">
+            <img class="exp-row-icon" src="adobe.png" alt="Adobe" />
+            <div><div class="exp-role">Student Ambassador — Adobe</div><div class="exp-desc">On-campus product evangelist for Adobe Creative Cloud at a 50,000+ student campus. Drove adoption through workshops and partnerships, and served as a feedback channel between student users and Adobe.</div></div>
+          </a>
+          <a class="exp-row" href="https://learn.wecreatetech.org/" target="_blank" rel="noopener noreferrer">
+            <img class="exp-row-icon" src="wct.png" alt="We Create Tech" />
+            <div><div class="exp-role">CreativX Volunteer — We Create Tech</div><div class="exp-desc">Guided high school students through hands-on exploration of coding, digital design, and tech career pathways via We Create Tech's CreativX Lab program. Helped redesign lessons based on direct student feedback, improving fit and ensuring students could complete work within the allotted time.</div></div>
+          </a>
+        </div>
+      </div>
+      <div class="xp-statusbar">7 object(s)</div>
+    </div>
+
+    <!-- ── Projects ── -->
+    <div class="xp-win" id="projects">
+      <div class="xp-titlebar">
+        <img src="icon-projects.png" alt="" />
+        <span class="xp-titlebar-text">Projects</span>
+        <div class="xp-win-btns">
+          <button class="xp-win-btn">&#8212;</button>
+          <button class="xp-win-btn">&#9633;</button>
+          <button class="xp-win-btn">&#10005;</button>
+        </div>
+      </div>
+      <div class="xp-menubar">
+        <span class="xp-menu-item">File</span>
+        <span class="xp-menu-item">Edit</span>
+        <span class="xp-menu-item">View</span>
+        <span class="xp-menu-item">Help</span>
+      </div>
+      <div class="xp-addrbar">
+        <span class="xp-addr-label">Address</span>
+        <span class="xp-addr-field">C:\Natasha\Projects</span>
+      </div>
+      <div class="xp-body" style="padding:8px;">
+        <div class="proj-list">
+          <a class="exp-row" href="https://memebooth.vercel.app/" target="_blank" rel="noopener noreferrer">
+            <img class="exp-row-icon" src="meme booth.png" alt="Meme Booth" />
+            <div><div class="exp-role">Meme Booth</div><div class="exp-desc">Spotted a rising trend of people recreating meme poses in photo booths, but sharing required manually editing the meme and photo strip together before posting. After hearing a friend describe the friction firsthand, I built Meme Booth: a web app using real-time pose detection to snap a photo the moment the user matches each respective pose, then layers them together for an instant, shareable result.</div></div>
+          </a>
+          <a class="exp-row" href="https://ideathon-opal.vercel.app/" target="_blank" rel="noopener noreferrer">
+            <img class="exp-row-icon" src="pace.png" alt="Pace" />
+            <div><div class="exp-role">Pace</div><div class="exp-desc">Collaborated on a team to define and ship a concept product addressing gaps in assistive reading technology. Scoped an AI-native smart glasses system that adapts in real-time to a reader's speed, comprehension, and eye movement, built with a 9-agent architecture across edge, mobile, and cloud tiers.</div></div>
+          </a>
+        </div>
+      </div>
+      <div class="xp-statusbar">2 object(s)</div>
+    </div>
+
+    <!-- ── Photos ── -->
+    <div class="xp-win" id="photos">
+      <div class="xp-titlebar">
+        <img src="icon-photos.png" alt="" />
+        <span class="xp-titlebar-text">Photos</span>
+        <div class="xp-win-btns">
+          <button class="xp-win-btn">&#8212;</button>
+          <button class="xp-win-btn">&#9633;</button>
+          <button class="xp-win-btn">&#10005;</button>
+        </div>
+      </div>
+      <div class="xp-menubar">
+        <span class="xp-menu-item">File</span>
+        <span class="xp-menu-item">Edit</span>
+        <span class="xp-menu-item">View</span>
+        <span class="xp-menu-item">Help</span>
+      </div>
+      <div class="xp-addrbar">
+        <span class="xp-addr-label">Address</span>
+        <span class="xp-addr-field">C:\Natasha\Photos</span>
+      </div>
+      <div class="xp-body">
+        <div class="photos-grid">
+          <div class="photo-item" onclick="openLB('progteam.jpg')">
+            <img src="progteam.jpg" alt="Prog Team" />
+            <span class="photo-label">progteam.jpg</span>
+          </div>
+          <div class="photo-item" onclick="openLB('progirls.jpg')">
+            <img src="progirls.jpg" alt="Prog Girls" />
+            <span class="photo-label">progirls.jpg</span>
+          </div>
+          <div class="photo-item" onclick="openLB('winners.jpg')">
+            <img src="winners.jpg" alt="Winners" />
+            <span class="photo-label">winners.jpg</span>
+          </div>
+        </div>
+      </div>
+      <div class="xp-statusbar">3 object(s)</div>
+    </div>
+
+  </div>
+
+  <!-- Lightbox -->
+  <div id="lightbox" onclick="closeLB()">
+    <span id="lightbox-close-btn">&#10005;</span>
+    <img id="lightbox-img" src="" alt="" onclick="event.stopPropagation()" />
+  </div>
+
+  <script>
+    function toggleCS(header) {
+      const body = header.nextElementSibling;
+      const arrow = header.querySelector('.cs-card-toggle');
+      const isOpen = body.classList.contains('open');
+      body.classList.toggle('open', !isOpen);
+      arrow.classList.toggle('open', !isOpen);
+    }
+
+    function openLB(src) {
+      document.getElementById('lightbox-img').src = src;
+      document.getElementById('lightbox').classList.add('open');
+    }
+
+    function closeLB() {
+      document.getElementById('lightbox').classList.remove('open');
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeLB();
+    });
+  </script>
+</body>
+</html>
