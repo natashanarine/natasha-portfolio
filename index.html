@@ -556,6 +556,17 @@
       45%       { transform: translateY(-14px); }
     }
 
+    .wave-text {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .wave-text span {
+      display: inline-block;
+      animation: load-wave 1s ease-in-out infinite;
+    }
+
     .load-dots {
       display: flex;
       gap: 8px;
@@ -744,7 +755,7 @@
 
     <!-- ── Contact ── -->
     <section id="contact" style="text-align: center;">
-      <h2 style="font-family: var(--sans); font-size: clamp(36px, 5vw, 64px); font-weight: 700; text-transform: lowercase; letter-spacing: -1px; margin-bottom: 24px;">let's connect!</h2>
+      <h2 class="wave-text" style="font-family: var(--sans); font-size: clamp(36px, 5vw, 64px); font-weight: 700; text-transform: lowercase; letter-spacing: -1px; margin-bottom: 24px;"><span style="animation-delay:0s">l</span><span style="animation-delay:0.07s">e</span><span style="animation-delay:0.14s">t</span><span style="animation-delay:0.21s">'</span><span style="animation-delay:0.28s">s</span><span style="animation-delay:0.35s">&nbsp;</span><span style="animation-delay:0.42s">c</span><span style="animation-delay:0.49s">o</span><span style="animation-delay:0.56s">n</span><span style="animation-delay:0.63s">n</span><span style="animation-delay:0.70s">e</span><span style="animation-delay:0.77s">c</span><span style="animation-delay:0.84s">t</span><span style="animation-delay:0.91s">!</span></h2>
       <div style="font-family: var(--mono); font-size: 15px; display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;">
         <a href="https://mail.google.com/mail/?view=cm&to=nb.narine@gmail.com" style="color: #111; text-decoration: underline;">email</a>
         <a href="https://www.linkedin.com/in/natasha-narine" target="_blank" rel="noopener noreferrer" style="color: #111; text-decoration: underline;">linkedin</a>
