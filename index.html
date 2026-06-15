@@ -123,6 +123,84 @@
       letter-spacing: -2px;
       text-transform: lowercase;
       margin-bottom: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+    }
+
+    .hero-letter {
+      display: inline-block;
+      position: relative;
+      cursor: default;
+      opacity: 0;
+      transform: scale(0);
+    }
+
+    .hero-letter.animate {
+      animation: letter-spring 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      animation-delay: var(--delay, 0s);
+    }
+
+    .hero-letter-space {
+      display: inline-block;
+      width: 0.28em;
+    }
+
+    @keyframes letter-spring {
+      0%   { transform: scale(0); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .hero-letter .l-base {
+      display: block;
+      transition: opacity 0.1s ease;
+    }
+
+    .hero-letter:hover .l-base { opacity: 0; }
+
+    .hero-letter .l-img {
+      position: absolute;
+      inset: 0;
+      background-image: url('windowsbackground.webp');
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      opacity: 0;
+      background-size: cover;
+      background-position: center;
+      transition: opacity 0.1s ease, background-position 3s ease-in-out;
+    }
+
+    .hero-letter:hover .l-img {
+      opacity: 1;
+      background-position: 10% center;
+    }
+
+    .hero-letter .l-sweep {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0;
+      background-image: url('windowsbackground.webp');
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .hero-letter.sweep-active .l-sweep {
+      animation: letter-sweep-fade 0.4s ease-in-out both;
+      animation-delay: var(--sweep-delay, 0s);
+    }
+
+    @keyframes letter-sweep-fade {
+      0%   { opacity: 0; }
+      10%  { opacity: 1; }
+      70%  { opacity: 1; }
+      100% { opacity: 0; }
     }
 
     .hero-sub {
@@ -905,13 +983,65 @@
       document.getElementById('read-more-btn').style.display = 'inline';
     });
 
+    // ── Reveal text: split hero h1 into animated letter spans ──
+    const _heroLetterSpans = [];
+    const _HERO_LETTER_DELAY = 0.07;
+    const _HERO_SPRING_MS = 700;
+
+    (function () {
+      const h1 = document.querySelector('.hero-h1');
+      const text = h1.textContent;
+
+      h1.innerHTML = '';
+
+      text.split('').forEach((char, i) => {
+        if (char === ' ') {
+          const sp = document.createElement('span');
+          sp.className = 'hero-letter-space';
+          h1.appendChild(sp);
+          return;
+        }
+        const wrap = document.createElement('span');
+        wrap.className = 'hero-letter';
+        wrap.style.setProperty('--delay', `${_heroLetterSpans.length * _HERO_LETTER_DELAY}s`);
+        wrap.style.setProperty('--sweep-delay', `${_heroLetterSpans.length * 0.05}s`);
+
+        const base  = document.createElement('span');
+        base.className = 'l-base';
+        base.textContent = char;
+
+        const img = document.createElement('span');
+        img.className = 'l-img';
+        img.textContent = char;
+
+        const sweep = document.createElement('span');
+        sweep.className = 'l-sweep';
+        sweep.textContent = char;
+
+        wrap.appendChild(base);
+        wrap.appendChild(img);
+        wrap.appendChild(sweep);
+        h1.appendChild(wrap);
+        _heroLetterSpans.push(wrap);
+      });
+    })();
+
     let activeCS = null;
 
     window.addEventListener('load', () => {
       setTimeout(() => {
         const screen = document.getElementById('loading-screen');
         screen.classList.add('fade-out');
-        setTimeout(() => screen.remove(), 350);
+        setTimeout(() => {
+          screen.remove();
+          // start spring animations now that the screen is visible
+          _heroLetterSpans.forEach(s => s.classList.add('animate'));
+          // trigger sweep after all letters have sprung in
+          const sweepDelay = (_heroLetterSpans.length - 1) * _HERO_LETTER_DELAY * 1000 + _HERO_SPRING_MS;
+          setTimeout(() => {
+            _heroLetterSpans.forEach(s => s.classList.add('sweep-active'));
+          }, sweepDelay);
+        }, 350);
       }, 1400);
     });
 
@@ -1070,7 +1200,7 @@
           for (let i = 0; i < messages.length; i++) {
             if (dismissed) return;
             await popup(messages[i], 5000);
-            if (i < messages.length - 1) await wait(7000);
+            if (i < messages.length - 1) await wait(12000);
           }
 
           // after first round, wait 15s then run bonus sequence
@@ -1082,7 +1212,7 @@
           await popup("your loss!", 5000);
 
           // back to top — wait 30s before restarting
-          await wait(30000);
+          await wait(45000);
         }
       }
 
@@ -1092,7 +1222,7 @@
         wrap.classList.remove('visible');
       });
 
-      setTimeout(runLoop, 5000);
+      setTimeout(runLoop, 20000);
     })();
   </script>
 </body>
