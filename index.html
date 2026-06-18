@@ -277,6 +277,23 @@
 
     .cs-expand.open { display: block; }
 
+    .cs-back-btn {
+      display: none;
+      position: fixed;
+      bottom: 28px;
+      right: 24px;
+      z-index: 999;
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 22px;
+      color: #aaa;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .cs-back-btn:hover { color: #555; }
+    .cs-back-btn.visible { display: block; }
+
     /* Case study inner content */
     .cs-d-head { margin-bottom: 24px; }
     .cs-d-title {
@@ -860,6 +877,8 @@
   </main>
 
   <!-- Lightbox -->
+  <button class="cs-back-btn" id="cs-back-btn" onclick="document.getElementById('case-studies').scrollIntoView({ behavior: 'smooth', block: 'start' })">↑</button>
+
   <div id="lightbox" onclick="closeLB()">
     <span id="lb-close">&#10005;</span>
     <img id="lb-img" src="" alt="" onclick="event.stopPropagation()" />
@@ -1036,7 +1055,6 @@
     </div>
     <div class="cs-d-section">
       <div class="cs-d-section-hdr"><span class="cs-d-num">10</span><span class="cs-d-section-title">reflection</span></div>
-      <div class="cs-d-section-intro">what this taught me, and what i'm carrying forward</div>
       <div class="cs-d-body"><strong>what this taught me</strong><ul class="cs-d-bullet"><li><strong>fix the system carrying the weight, not the symptom sitting on top of it.</strong> a recurring problem is rarely isolated — it's usually evidence the structure underneath can't carry what's being asked of it anymore.</li><li><strong>adoption beats design.</strong> the best system is the one that already matches how people behave, not the one with the best reputation or the most features.</li><li><strong>a single win doesn't validate anything — repeatability does.</strong> one good outcome can be luck. the same result holding up under harder constraints the second time is evidence.</li></ul><br><strong>what i'll keep in mind going forward</strong><ul class="cs-d-bullet"><li><strong>build a contingency plan before the live moment, not during it.</strong> flagging a risk early isn't a substitute for having a plan ready for when it actually shows up.</li><li><strong>design measurement into a new channel or system before scaling it, not after,</strong> so what's actually working can be proven instead of guessed at backward from results.</li><li><strong>treat any org structure as provisional.</strong> the right design at one scale is usually the wrong one at the next, so ownership and layers should get revisited on purpose, before growth forces the rebuild.</li></ul></div>
     </div>
   </div>
@@ -1114,12 +1132,24 @@
       }, 1400);
     });
 
+    function closeCS() {
+      const expand = document.getElementById('cs-expand');
+      expand.classList.remove('open');
+      document.getElementById('cs-back-btn').classList.remove('visible');
+      if (activeCS !== null) {
+        document.getElementById('cs-card-' + activeCS).classList.remove('active');
+        activeCS = null;
+      }
+      document.getElementById('case-studies').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
     function selectCS(idx) {
       const expand = document.getElementById('cs-expand');
       const content = document.getElementById('cs-expand-content');
 
       if (activeCS === idx) {
         expand.classList.remove('open');
+        document.getElementById('cs-back-btn').classList.remove('visible');
         document.getElementById('cs-card-' + idx).classList.remove('active');
         activeCS = null;
         return;
@@ -1128,6 +1158,7 @@
       document.querySelectorAll('.cs-card').forEach(c => c.classList.remove('active'));
       content.innerHTML = document.getElementById('cs-data-' + idx).innerHTML;
       expand.classList.add('open');
+      document.getElementById('cs-back-btn').classList.add('visible');
       document.getElementById('cs-card-' + idx).classList.add('active');
       activeCS = idx;
 
