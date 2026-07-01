@@ -267,6 +267,35 @@
       line-height: 1.65;
     }
 
+    .metrics-cards {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0;
+      border: 1px solid var(--border);
+    }
+
+    .metrics-card {
+      padding: 28px 20px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+
+    .metrics-card:last-child { border-right: none; }
+    .metrics-card .cs-d-stat-label { font-family: var(--mono); }
+    .metrics-card { padding: 0; }
+    .metrics-card-btn {
+      display: block;
+      width: 100%;
+      padding: 28px 20px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font: inherit;
+      text-align: center;
+    }
+    .metrics-card-btn:focus-visible { outline: 2px solid #000; outline-offset: -2px; }
+    .metrics-card:hover { background: #fafafa; transition: background 0.1s; }
+
     .cs-expand {
       display: none;
       border: 1px solid var(--border);
@@ -580,6 +609,9 @@
 
     #lb-close:hover { opacity: 1; }
 
+    /* ── Metrics Snapshot ── */
+    #metrics-snapshot { padding-top: 0; padding-bottom: 60px; }
+
     /* ── Mobile ── */
     @media (max-width: 768px) {
       /* Nav */
@@ -599,6 +631,9 @@
       .cs-cards { grid-template-columns: 1fr; }
       .cs-card { border-right: none; border-bottom: 1px solid var(--border); }
       .cs-card:last-child { border-bottom: none; }
+      .metrics-cards { grid-template-columns: 1fr; }
+      .metrics-card { border-right: none; border-bottom: 1px solid var(--border); }
+      .metrics-card:last-child { border-bottom: none; }
       .cs-expand { padding: 24px 16px; }
       .cs-d-meta { gap: 8px 16px; }
       .cs-d-stat-row { gap: 8px; }
@@ -730,6 +765,18 @@
         <h1 class="hero-h1">hi, i'm natasha!</h1>
         <p class="hero-sub">i'm a senior at gsu building my career in product management. <button id="read-more-btn" class="read-more-btn">read more</button></p>
         <p class="hero-sub" id="read-more-text" style="display:none;">i've spent my time <strong>leading a programming club, marketing early-stage products, organizing large-scale events, and turning vague ideas into launched products.</strong> somewhere in all of that, i figured out that i love taking messy, undefined problems and turning them into something that actually works. this site is where i document all of it! <button id="see-less-btn" class="read-more-btn">see less</button></p>
+      </div>
+    </section>
+
+    <!-- ── Metrics Snapshot ── -->
+    <section id="metrics-snapshot" aria-label="impact highlights">
+      <div class="section-label">by the numbers</div>
+      <div class="metrics-cards">
+        <div class="metrics-card"><button class="metrics-card-btn" onclick="selectCS(0)" aria-label="View TechRise case study"><div class="cs-d-stat-num">6x</div><div class="cs-d-stat-label">increase in product usage post-redesign</div></button></div>
+        <div class="metrics-card"><button class="metrics-card-btn" onclick="selectCS(2)" aria-label="View ProgSU case study"><div class="cs-d-stat-num">1,500+</div><div class="cs-d-stat-label">members grown across 4 campuses</div></button></div>
+        <div class="metrics-card"><button class="metrics-card-btn" onclick="selectCSAtSection(2,'cs-progsu-decision4')" aria-label="View ProgSU case study — Hacklanta"><div class="cs-d-stat-num">400+</div><div class="cs-d-stat-label">hackers, built in 5 weeks from zero</div></button></div>
+        <div class="metrics-card"><button class="metrics-card-btn" onclick="selectCS(2)" aria-label="View ProgSU case study — Hacklanta"><div class="cs-d-stat-num">$20k+</div><div class="cs-d-stat-label">sponsorship raised</div></button></div>
+        <div class="metrics-card"><button class="metrics-card-btn" onclick="selectCS(2)" aria-label="View ProgSU case study"><div class="cs-d-stat-num">~30</div><div class="cs-d-stat-label">students placed into first internships</div></button></div>
       </div>
     </section>
 
@@ -1033,7 +1080,7 @@
       <div class="cs-d-section-intro">structure as a product</div>
       <div class="cs-d-body">after the kickoff, the team had grown but responsibility hadn't kept pace: marketing was 5 people, tech was 4, outreach was 3, with no clear lines between them. i led the rebuild on the marketing and outreach side; the overall structure was a joint call with joey and the board.<br><br><strong>initial structure, post-kickoff</strong><br><table class="cs-d-table"><tr><th>level</th><th>role</th><th>scope</th></tr><tr><td>top</td><td>president</td><td>sets vision, fills gaps everywhere</td></tr><tr><td>domain vp</td><td>vp marketing</td><td>owns content, growth, brand end to end</td></tr><tr><td>domain vp</td><td>vp tech &amp; workshops</td><td>owns workshops &amp; hack nights end to end</td></tr><tr><td>domain vp</td><td>vp startups</td><td>owns build nights &amp; venture track end to end</td></tr><tr><td>domain vp</td><td>vp outreach</td><td>owns partnerships &amp; sponsors end to end</td></tr><tr><td>shared ops</td><td>secretary / pm</td><td>docs, sops, handoffs</td></tr><tr><td>shared ops</td><td>finance</td><td>budget, reimbursements</td></tr><tr><td>shared ops</td><td>event coordinator</td><td>logistics, day-of execution</td></tr></table><br>that held up at a couple dozen people. it didn't survive hacklanta. once the org hit 1,500+ members across four campuses, four flat domain vps couldn't carry the volume anymore, so we rebuilt a second time into a full c-suite.<br><br><strong>scaled structure, post-hacklanta</strong><br><table class="cs-d-table"><tr><th>domain</th><th>lead</th><th>vps</th><th>directors</th></tr><tr><td>tech &amp; development</td><td>cto</td><td>vp of t&amp;d, vp of programming</td><td>software dev, hacklanta, education</td></tr><tr><td>operations</td><td>coo</td><td>vp finance, vp of ops</td><td>finance, logistics, events</td></tr><tr><td>growth</td><td>cmo</td><td>project manager, vp of branding</td><td>content, podcast, design, analytics, community</td></tr><tr><td>relations &amp; outreach</td><td>cro</td><td>still being staffed</td><td>still being staffed</td></tr></table><br>the cadence scaled with it: one weekly sprint with the co-founders and the four c-suite leads keeps the org aligned at the top, then each function runs its own weekly sprint inside its own team.</div>
     </div>
-    <div class="cs-d-section">
+    <div class="cs-d-section cs-progsu-decision4">
       <div class="cs-d-section-hdr"><span class="cs-d-num">06</span><span class="cs-d-section-title">decision 4 — betting on the flagship event</span></div>
       <div class="cs-d-section-intro">hacklanta: gsu's first hackathon since 2017</div>
       <div class="cs-d-body">by this point the club had momentum: regular workshops, a clear identity, growing membership, nonprofit status in motion. the next call was the highest-stakes one: keep compounding through small recurring events, or make a single, much bigger bet.<br><br>this one was a group call. the case we made together as a board: gsu hadn't run a real hackathon since 2017, and even that one underperformed against regional players like hackatl and hackgt. the only options on campus were small and exclusive. there was a clear, unclaimed gap — a flagship event that could pull in students beyond gsu and put the club inside the broader atlanta tech ecosystem instead of just the campus bubble.<br><br>build nights and workshops didn't stop for the sprint — if anything they mattered more: that existing programming doubled as hackathon prep, and the sponsor companies already showing up to build nights gave students an early shot at getting on a recruiter's radar before hacklanta weekend even started. five weeks, from scratch, to gsu's first in-person hackathon in nearly a decade.<br><br>five weeks also forced a real choice on where to spend the team's time. paid social wasn't a real option, so the actual trade-off was flyers against a built channel: we built a direct channel into cs classrooms instead — a professor database, a single outreach message the whole team sent and followed up on, and volunteers delivering a short prepared pitch in person, classroom by classroom. we don't have clean attribution data tying signups directly to those visits, but it was the only promotion channel running at real volume in those five weeks, and the hackathon still pulled 400+ hackers with zero track record behind it.<br><br></div>
@@ -1167,6 +1214,17 @@
       }, 30);
     }
 
+    function selectCSAtSection(idx, sectionClass) {
+      selectCS(idx);
+      setTimeout(() => {
+        const target = document.querySelector('#cs-expand-content .' + sectionClass);
+        if (target) {
+          const top = target.getBoundingClientRect().top + window.scrollY - 52;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      }, 400);
+    }
+
     function openLB(src) {
       document.getElementById('lb-img').src = src;
       document.getElementById('lightbox').classList.add('open');
@@ -1187,7 +1245,7 @@
       <button id="clippy-close">&#10005;</button>
       <p id="clippy-msg"></p>
     </div>
-    <img src="clippy.png" alt="Clippy" id="clippy-img" />
+    <a href="desktop.html"><img src="clippy.png" alt="Clippy" id="clippy-img" /></a>
   </div>
 
   <style>
@@ -1212,6 +1270,7 @@
       width: 80px;
       height: auto;
       display: block;
+      cursor: pointer;
     }
 
     #clippy-bubble {
@@ -1221,6 +1280,7 @@
       padding: 10px 28px 10px 12px;
       width: 210px;
       margin-bottom: 6px;
+      cursor: pointer;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       font-size: 12px;
       line-height: 1.55;
@@ -1320,6 +1380,10 @@
         e.stopPropagation();
         dismissed = true;
         wrap.classList.remove('visible');
+      });
+
+      document.getElementById('clippy-bubble').addEventListener('click', () => {
+        window.location.href = 'desktop.html';
       });
 
       setTimeout(runLoop, 20000);
