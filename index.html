@@ -648,8 +648,9 @@
       .entry-grid { grid-template-columns: 1fr; }
 
       /* Blog */
-      #blog .two-col-grid > div[style*="width: 50%"],
-      #blog div[style*="width: 50%"] { width: 100% !important; }
+      #blog > div > div[style*="display: flex"] { flex-direction: column; }
+      #blog > div > div[style*="display: flex"] .entry { border-right: none !important; border-bottom: 1px solid var(--border) !important; }
+      #blog > div > div[style*="display: flex"] .entry:last-child { border-bottom: none !important; }
 
       /* Photos */
       .photos-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
@@ -882,12 +883,19 @@
     <!-- ── Blog ── -->
     <section id="blog">
       <div class="section-label">blog</div>
-      <div style="border: 1px solid var(--border); width: 50%;">
-        <a class="entry" href="https://natashanarine.substack.com/p/ive-been-a-product-manager-without" target="_blank" rel="noopener noreferrer">
+      <div style="border: 1px solid var(--border); display: flex;">
+        <a class="entry" href="https://natashanarine.substack.com/p/ive-been-a-product-manager-without" target="_blank" rel="noopener noreferrer" style="flex: 1; border-bottom: none; border-right: 1px solid var(--border);">
           <img class="entry-icon" src="icon-blog.png" alt="Blog" />
           <div>
             <div class="entry-role">i've been a product manager without even realizing it.</div>
             <div class="entry-desc">how I finally found my future career that was in front of me this whole time</div>
+          </div>
+        </a>
+        <a class="entry" href="https://natashanarine.substack.com/p/will-ai-be-the-end-of-the-world" target="_blank" rel="noopener noreferrer" style="flex: 1; border-bottom: none;">
+          <img class="entry-icon" src="icon-blog.png" alt="Blog" />
+          <div>
+            <div class="entry-role">will ai be the end of the world?</div>
+            <div class="entry-desc">my thoughts on generative ai as a college student in tech</div>
           </div>
         </a>
       </div>
