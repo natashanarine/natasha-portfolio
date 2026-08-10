@@ -223,7 +223,7 @@
     /* ── Case Studies ── */
     .cs-cards {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: repeat(4, 1fr);
       gap: 0;
       border: 1px solid var(--border);
     }
@@ -774,10 +774,10 @@
       <div class="section-label">by the numbers</div>
       <div class="metrics-cards">
         <div class="metrics-card"><button class="metrics-card-btn" onclick="selectCS(0)" aria-label="View TechRise case study"><div class="cs-d-stat-num">6x</div><div class="cs-d-stat-label">increase in product usage post-redesign</div></button></div>
-        <div class="metrics-card"><button class="metrics-card-btn" onclick="selectCS(2)" aria-label="View ProgSU case study"><div class="cs-d-stat-num">1,500+</div><div class="cs-d-stat-label">members grown across 4 campuses</div></button></div>
-        <div class="metrics-card"><button class="metrics-card-btn" onclick="selectCSAtSection(2,'cs-progsu-decision4')" aria-label="View ProgSU case study — Hacklanta"><div class="cs-d-stat-num">400+</div><div class="cs-d-stat-label">hackers, built in 5 weeks from zero</div></button></div>
-        <div class="metrics-card"><button class="metrics-card-btn" onclick="selectCS(2)" aria-label="View ProgSU case study — Hacklanta"><div class="cs-d-stat-num">$20k+</div><div class="cs-d-stat-label">sponsorship raised</div></button></div>
-        <div class="metrics-card"><button class="metrics-card-btn" onclick="selectCS(2)" aria-label="View ProgSU case study"><div class="cs-d-stat-num">~30</div><div class="cs-d-stat-label">students placed into first internships</div></button></div>
+        <div class="metrics-card"><button class="metrics-card-btn" onclick="selectCS(2)" aria-label="View progsu case study"><div class="cs-d-stat-num">1,500+</div><div class="cs-d-stat-label">members grown across 4 campuses</div></button></div>
+        <div class="metrics-card"><button class="metrics-card-btn" onclick="selectCSAtSection(2,'cs-progsu-decision4')" aria-label="View progsu case study — Hacklanta"><div class="cs-d-stat-num">400+</div><div class="cs-d-stat-label">hackers, built in 5 weeks from zero</div></button></div>
+        <div class="metrics-card"><button class="metrics-card-btn" onclick="selectCS(2)" aria-label="View progsu case study — Hacklanta"><div class="cs-d-stat-num">$20k+</div><div class="cs-d-stat-label">sponsorship raised</div></button></div>
+        <div class="metrics-card"><button class="metrics-card-btn" onclick="selectCS(2)" aria-label="View progsu case study"><div class="cs-d-stat-num">~30</div><div class="cs-d-stat-label">students placed into first internships</div></button></div>
       </div>
     </section>
 
@@ -787,17 +787,22 @@
       <div class="cs-cards">
         <div class="cs-card" id="cs-card-2" onclick="selectCS(2)">
           <img class="cs-card-icon" src="progsu.png" alt="progsu" />
-          <div class="cs-card-title">Progsu Relaunch & Scale</div>
+          <div class="cs-card-title">progsu: 0-to-1 Community Build</div>
           <div class="cs-card-desc">Took a dormant 5-year-old club to 1,500+ members across four georgia campuses. anchored by hacklanta — gsu's first hackathon since 2017. four decisions, one honest failure, and a results section.</div>
+        </div>
+        <div class="cs-card" id="cs-card-3" onclick="selectCS(3)">
+          <img class="cs-card-icon" src="pace.png" alt="Pace" />
+          <div class="cs-card-title">Pace: Customer Discovery Sprint</div>
+          <div class="cs-card-desc">A customer-discovery sprint that killed the hardware and found the real product. 40 interviews, 5 segments, and a pivot from ai smart glasses to an active reading companion.</div>
         </div>
         <div class="cs-card" id="cs-card-0" onclick="selectCS(0)">
           <img class="cs-card-icon" src="techrise.png" alt="TechRise" />
-          <div class="cs-card-title">TechRise App UI/UX Redesign</div>
+          <div class="cs-card-title">TechRise: UI/UX Redesign</div>
           <div class="cs-card-desc">The app had real utility but students weren't using it. I ran the end-to-end process: user research, problem reframing, scope prioritization, and a full redesign that drove a 6x increase in active usage.</div>
         </div>
         <div class="cs-card" id="cs-card-1" onclick="selectCS(1)">
           <img class="cs-card-icon" src="trace logo.png" alt="Trace" />
-          <div class="cs-card-title">Trace Brand Identity</div>
+          <div class="cs-card-title">Trace: Brand and Go-to-Market</div>
           <div class="cs-card-desc">No logo, no typeface, no way to run ads or submit to the app store. I identified the three decisions blocking launch, drove alignment across an async team, and delivered a repeatable brand system in one week.</div>
         </div>
       </div>
@@ -952,6 +957,10 @@
       <div class="cs-d-meta-item"><div class="cs-d-meta-label">Deliverables</div><div class="cs-d-meta-val">Research synthesis, user flows, wireframes, final UI, advisor variant</div></div>
     </div>
     <div class="cs-d-section">
+      <div class="cs-d-section-hdr"><span class="cs-d-num">—</span><span class="cs-d-section-title">snapshot</span></div>
+      <div class="cs-d-body"><div class="cs-d-stat-row"><div class="cs-d-stat"><div class="cs-d-stat-num">6x</div><div class="cs-d-stat-label">increase in active usage post-redesign</div></div><div class="cs-d-stat"><div class="cs-d-stat-num">25 to 156</div><div class="cs-d-stat-label">students actively using the app</div></div><div class="cs-d-stat"><div class="cs-d-stat-num">4 to 2</div><div class="cs-d-stat-label">taps reduced in advisor booking flow</div></div></div><br>grounded in user research. every design decision traced to a finding.</div>
+    </div>
+    <div class="cs-d-section">
       <div class="cs-d-section-hdr"><span class="cs-d-num">01</span><span class="cs-d-section-title">context</span></div>
       <div class="cs-d-section-intro">the app existed. the problem was adoption.</div>
       <div class="cs-d-body">TechRise is a student-focused platform with two core jobs: help students book advisor appointments and surface relevant internship opportunities. the product had real utility on paper. but engagement was low, and the team had a hunch the interface was the reason.<br><br>i came in to diagnose whether that was true and if so, where exactly the experience was breaking down.<br><br>my role was scoped as UI/UX but the engagement required PM work from day one: diagnosing the real problem, running research, making prioritization calls, and owning scope decisions through handoff.</div>
@@ -994,7 +1003,7 @@
     <div class="cs-d-section">
       <div class="cs-d-section-hdr"><span class="cs-d-num">07</span><span class="cs-d-section-title">output</span></div>
       <div class="cs-d-section-intro">what shipped and what moved</div>
-      <div class="cs-d-body"><ul class="cs-d-bullet"><li>redesigned navigation and information architecture across student-facing screens</li><li>new advisor booking flow: reduced steps, availability visible upfront</li><li>internship board with deadline-forward card design</li><li>simplified task tracker with three-state categorization</li><li>advisor-facing UI variant for future engineering use</li></ul>designs were handed off to Francis Ganya and implemented in the live TechRise app. active usage grew from ~25 students to 156 following the redesign, a 6x increase in the months after handoff.<br><br><div class="cs-d-stat-row"><div class="cs-d-stat"><div class="cs-d-stat-num">6x</div><div class="cs-d-stat-label">increase in active usage post-redesign</div></div><div class="cs-d-stat"><div class="cs-d-stat-num">25 to 156</div><div class="cs-d-stat-label">students actively using the app</div></div><div class="cs-d-stat"><div class="cs-d-stat-num">4 to 2</div><div class="cs-d-stat-label">taps reduced in advisor booking flow</div></div></div><br><img src="techrise-case-study-images.png" alt="TechRise case study screens" style="width:100%;border-radius:4px;display:block;" /></div>
+      <div class="cs-d-body"><ul class="cs-d-bullet"><li>redesigned navigation and information architecture across student-facing screens</li><li>new advisor booking flow: reduced steps, availability visible upfront</li><li>internship board with deadline-forward card design</li><li>simplified task tracker with three-state categorization</li><li>advisor-facing UI variant for future engineering use</li></ul>designs were handed off to Francis Ganya and implemented in the live TechRise app. active usage grew from ~25 students to 156 following the redesign, a 6x increase in the months after handoff.<br><br><img src="techrise-case-study-images.png" alt="TechRise case study screens" style="width:100%;border-radius:4px;display:block;" /></div>
     </div>
     <div class="cs-d-section">
       <div class="cs-d-section-hdr"><span class="cs-d-num">08</span><span class="cs-d-section-title">reflection</span></div>
@@ -1064,6 +1073,10 @@
       <div class="cs-d-meta-item"><div class="cs-d-meta-label">Deliverables</div><div class="cs-d-meta-val">mission/vision/positioning framework, weekly ops cadence, org structure redesign, hacklanta, sponsor program, progirls initiative</div></div>
     </div>
     <div class="cs-d-section">
+      <div class="cs-d-section-hdr"><span class="cs-d-num">—</span><span class="cs-d-section-title">snapshot</span></div>
+      <div class="cs-d-body"><div class="cs-d-stat-row"><div class="cs-d-stat"><div class="cs-d-stat-num">1,700+</div><div class="cs-d-stat-label">members grown</div></div><div class="cs-d-stat"><div class="cs-d-stat-num">40</div><div class="cs-d-stat-label">person board</div></div><div class="cs-d-stat"><div class="cs-d-stat-num">400+</div><div class="cs-d-stat-label">hackathon attendees</div></div><div class="cs-d-stat"><div class="cs-d-stat-num">$20k+</div><div class="cs-d-stat-label">sponsorship raised</div></div></div><br>partners incl. anthropic, equifax, adobe.</div>
+    </div>
+    <div class="cs-d-section">
       <div class="cs-d-section-hdr"><span class="cs-d-num">01</span><span class="cs-d-section-title">the short version</span></div>
       <div class="cs-d-section-intro">what actually happened, and what made it matter</div>
       <div class="cs-d-body">progsu went from a 10-person board with no working operating system to a 1,500+ member organization across four georgia campuses, anchored by hacklanta, gsu's first hackathon since 2017. the two decisions that mattered most: betting on one flagship event over continuing to grow through smaller ones, and the structural rebuild that let the org actually carry the volume that bet brought in. everything else below is what made those two calls possible, or what they cost.</div>
@@ -1111,6 +1124,68 @@
     <div class="cs-d-section">
       <div class="cs-d-section-hdr"><span class="cs-d-num">10</span><span class="cs-d-section-title">reflection</span></div>
       <div class="cs-d-body"><strong>what this taught me</strong><ul class="cs-d-bullet"><li><strong>fix the system carrying the weight, not the symptom sitting on top of it.</strong> a recurring problem is rarely isolated — it's usually evidence the structure underneath can't carry what's being asked of it anymore.</li><li><strong>adoption beats design.</strong> the best system is the one that already matches how people behave, not the one with the best reputation or the most features.</li><li><strong>a single win doesn't validate anything — repeatability does.</strong> one good outcome can be luck. the same result holding up under harder constraints the second time is evidence.</li></ul><br><strong>what i'll keep in mind going forward</strong><ul class="cs-d-bullet"><li><strong>build a contingency plan before the live moment, not during it.</strong> flagging a risk early isn't a substitute for having a plan ready for when it actually shows up.</li><li><strong>design measurement into a new channel or system before scaling it, not after,</strong> so what's actually working can be proven instead of guessed at backward from results.</li><li><strong>treat any org structure as provisional.</strong> the right design at one scale is usually the wrong one at the next, so ownership and layers should get revisited on purpose, before growth forces the rebuild.</li></ul></div>
+    </div>
+  </div>
+
+  <div id="cs-data-3" hidden>
+    <div class="cs-d-head">
+      <div class="cs-d-title">pace</div>
+      <div class="cs-d-subtitle">a customer-discovery sprint that killed the hardware and found the real product</div>
+    </div>
+    <div class="cs-d-meta">
+      <div class="cs-d-meta-item"><div class="cs-d-meta-label">Program</div><div class="cs-d-meta-val">georgia tech create-x pre-accelerator</div></div>
+      <div class="cs-d-meta-item"><div class="cs-d-meta-label">My Role</div><div class="cs-d-meta-val">sole researcher</div></div>
+      <div class="cs-d-meta-item"><div class="cs-d-meta-label">Timeline</div><div class="cs-d-meta-val">summer 2026</div></div>
+      <div class="cs-d-meta-item"><div class="cs-d-meta-label">Method</div><div class="cs-d-meta-val">40 interviews (24 live, 16 async), coded by pain score and failure mode</div></div>
+      <div class="cs-d-meta-item"><div class="cs-d-meta-label">Outcome</div><div class="cs-d-meta-val">killed the hardware, validated the problem, defined the next test</div></div>
+    </div>
+    <div class="cs-d-section">
+      <div class="cs-d-section-hdr"><span class="cs-d-num">—</span><span class="cs-d-section-title">snapshot</span></div>
+      <div class="cs-d-body"><div class="cs-d-stat-row"><div class="cs-d-stat"><div class="cs-d-stat-num">40</div><div class="cs-d-stat-label">interviews across 5 segments</div></div><div class="cs-d-stat"><div class="cs-d-stat-num">35/40</div><div class="cs-d-stat-label">sourced cold</div></div><div class="cs-d-stat"><div class="cs-d-stat-num">6.9</div><div class="cs-d-stat-label">avg pain score overall</div></div><div class="cs-d-stat"><div class="cs-d-stat-num">8.0</div><div class="cs-d-stat-label">avg pain in high-stakes segments</div></div><div class="cs-d-stat"><div class="cs-d-stat-num">16/40</div><div class="cs-d-stat-label">scored 8+ on pain</div></div></div><br>focus and retention led. speed was near the bottom.</div>
+    </div>
+    <div class="cs-d-section">
+      <div class="cs-d-section-hdr"><span class="cs-d-num">01</span><span class="cs-d-section-title">the bet i killed</span></div>
+      <div class="cs-d-section-intro">from ai smart glasses to a real problem worth keeping</div>
+      <div class="cs-d-body">pace started as ai smart glasses that highlighted words in real time, adapted to reading speed, and surfaced definitions, summaries, and translations in the lens. nine ai agents ran across three tiers: gaze tracking and ocr on the glasses, adaptive pacing and profiles on mobile, recaps and coaching in the cloud. it targeted students, professionals, and readers with dyslexia or adhd.<br><br>it demoed beautifully in a pitch. it was also a 5 to 7 year problem, not a summer one. custom optics, low-power edge inference, and a hardware supply chain each need a dedicated team. my hardware prototype budget was zero.<br><br>i separated the pain from the delivery mechanism. the reading problem was real and underserved. the glasses were me over-engineering the fix. killing the hardware did not invalidate the pain, so i kept the pain and went back to users.<br><br><table class="cs-d-table"><tr><th>original concept</th><th>detail</th></tr><tr><td>product</td><td>ai smart glasses (killed)</td></tr><tr><td>mechanic</td><td>real-time in-lens highlighting</td></tr><tr><td>architecture</td><td>9 agents, edge / mobile / cloud</td></tr><tr><td>timeline</td><td>5 to 7 years</td></tr><tr><td>hardware budget</td><td>$0</td></tr><tr><td>kept</td><td>the reading pain</td></tr></table></div>
+    </div>
+    <div class="cs-d-section">
+      <div class="cs-d-section-hdr"><span class="cs-d-num">02</span><span class="cs-d-section-title">what i needed to learn</span></div>
+      <div class="cs-d-section-intro">five research questions, chosen so every interview earned its place</div>
+      <div class="cs-d-body"><table class="cs-d-table"><tr><th>research question</th><th>why it matters</th></tr><tr><td>where does reading actually break down for you?</td><td>isolates the failure mode: focus, comprehension, speed, or motivation</td></tr><tr><td>what do you do when you get stuck?</td><td>surfaces the workaround they already use or pay for</td></tr><tr><td>what have you read lately that you feel good about finishing?</td><td>defines what success looks like</td></tr><tr><td>what have you been meaning to read but keep avoiding?</td><td>uncovers the emotional layer: guilt, overwhelm</td></tr><tr><td>if you read twice as fast with full comprehension, what changes?</td><td>tests whether the pain has downstream stakes</td></tr></table><br>targeted first: high-volume, high-stakes readers. grad, pre-med, and pre-law students, early-career analysts, engineers reading technical docs, and heavy readers who fell off.</div>
+    </div>
+    <div class="cs-d-section">
+      <div class="cs-d-section-hdr"><span class="cs-d-num">03</span><span class="cs-d-section-title">the evidence</span></div>
+      <div class="cs-d-section-intro">40 interviews, coded by failure mode and pain score</div>
+      <div class="cs-d-body">40 interviews across 5 segments. 24 live conversations (17 in person, 7 video) and 16 async (10 direct messages, 6 forum threads), run as a minimum viable experiment. the metric was simple: a 1 to 10 pain score and a coded failure mode for every interview. 35 of the 40 were sourced cold through online outreach and referrals. five were warm contacts.<br><br><table class="cs-d-table"><tr><th>failure mode</th><th>interviews</th></tr><tr><td>focus / distraction</td><td>10</td></tr><tr><td>retention / memory</td><td>8</td></tr><tr><td>motivation / avoidance</td><td>8</td></tr><tr><td>comprehension</td><td>6</td></tr><tr><td>speed</td><td>6</td></tr><tr><td>other</td><td>2</td></tr></table><br>focus and retention led. speed, the thing the glasses were built to optimize, was near the bottom. the evidence did not just refine the product, it pointed at a different one.<br><br><table class="cs-d-table"><tr><th>segment</th><th>avg pain (1 to 10)</th></tr><tr><td>pre-med / law</td><td>8.0</td></tr><tr><td>early-career analysts</td><td>7.4</td></tr><tr><td>undergrads</td><td>7.2</td></tr><tr><td>other</td><td>6.7</td></tr><tr><td>leisure readers</td><td>4.6</td></tr></table><br>leisure readers scored low and had almost no problem. the pain lives in required, high-stakes reading, not reading in general. that cut the market to the people who actually feel it.</div>
+    </div>
+    <div class="cs-d-section">
+      <div class="cs-d-section-hdr"><span class="cs-d-num">04</span><span class="cs-d-section-title">what i heard</span></div>
+      <div class="cs-d-section-intro">four patterns that shaped the product direction</div>
+      <div class="cs-d-body"><strong>the retention illusion.</strong> "i highlight everything, close the textbook, and it's like i never opened it." passive tools feel like progress and produce almost no recall.<br><br><strong>the tool is the problem.</strong> "i feel like i'm faking it." ai summaries were the single most common workaround, 8 of 40, and they backfired. users called them lossy and named real costs: a failed detail quiz, a production bug at work. the behavior the product has to beat is the one already hurting them.<br><br><strong>the pain is specific.</strong> "i can fly through a novel in a weekend, but one 40-page case opinion takes me three hours." same reader, opposite outcomes. the problem is not reading ability, it is dense, required reading.<br><br><strong>the insight the product is built on.</strong> "i've never once missed a book club deadline. if people are waiting on me, i finish." the same person hit near 100% completion on book club reading and near 0% on required reading. the only variable was social accountability and a deadline. that is a mechanic, not a feature.</div>
+    </div>
+    <div class="cs-d-section">
+      <div class="cs-d-section-hdr"><span class="cs-d-num">05</span><span class="cs-d-section-title">the workaround gap</span></div>
+      <div class="cs-d-section-intro">everything they use today is passive, or replaces the reading</div>
+      <div class="cs-d-body"><table class="cs-d-table"><tr><th>what they use</th><th>in the data</th><th>why it falls short</th><th>the opening</th></tr><tr><td>ai summaries</td><td>8 of 40, #1</td><td>lossy, kills detail retention, caused real failures</td><td>make people engage with the text, not skip it</td></tr><tr><td>highlighting / rereading</td><td>common</td><td>feels productive, near-zero recall</td><td>active retrieval, not re-exposure</td></tr><tr><td>pre-made briefs (quimbee, chegg)</td><td>students only</td><td>cover the what, miss the reasoning exams test</td><td>guided reading that keeps the source logic</td></tr><tr><td>avoidance (video, ask a teammate)</td><td>common</td><td>breaks when there is no substitute: exams, filings, rfcs</td><td>lower the activation energy to start</td></tr><tr><td>book club deadline</td><td>1 of 40</td><td>works completely, only exists for leisure reading</td><td>port accountability to required reading</td></tr></table></div>
+    </div>
+    <div class="cs-d-section">
+      <div class="cs-d-section-hdr"><span class="cs-d-num">06</span><span class="cs-d-section-title">jobs to be done</span></div>
+      <div class="cs-d-section-intro">what users actually need, ranked by evidence</div>
+      <div class="cs-d-body"><table class="cs-d-table"><tr><th>priority</th><th>job</th><th>evidence</th></tr><tr><td>p0</td><td>when i have dense required reading with real stakes, help me actually retain it so a quiz, exam, or manager does not expose me</td><td>pre-med / law and analysts, pain 8 to 9</td></tr><tr><td>p0</td><td>when i read something long and technical, help me know whether i truly understood it before it costs me</td><td>students and professionals</td></tr><tr><td>p1</td><td>when i keep avoiding a reading, give me the accountability that makes me start and finish it</td><td>undergrads, book club hit 100% completion</td></tr></table></div>
+    </div>
+    <div class="cs-d-section">
+      <div class="cs-d-section-hdr"><span class="cs-d-num">07</span><span class="cs-d-section-title">the hypothesis got sharper</span></div>
+      <div class="cs-d-section-intro">same structure, 40 interviews of evidence apart</div>
+      <div class="cs-d-body">the segment narrowed, the solution changed, and the reason got specific.<br><br><strong>initial:</strong> students, professionals, and readers with dyslexia or adhd will buy ai smart glasses that adapt to their reading in real time, because dense reading is slow, hard to focus on, and hard to retain.<br><br><strong>now:</strong> students and early-career professionals with high-stakes required reading will adopt an active reading companion, because passive tools fail them when retention actually matters.<br><br><table class="cs-d-table"><tr><th>in detail</th><th></th></tr><tr><td>segment</td><td>students and early-career professionals with high-stakes required reading</td></tr><tr><td>core problem</td><td>they complete dense reading through passive tools and retain almost nothing; the failure surfaces later, with real consequences</td></tr><tr><td>root cause</td><td>every existing tool is passive or replaces the reading; nothing verifies comprehension mid-read; ai summaries made it worse</td></tr><tr><td>mechanic</td><td>chunked guided pacing, a retrieval checkpoint after each section, and optional social or deadline accountability (the book club effect, built for required reading)</td></tr><tr><td>outcome</td><td>finish what you start, pass the detail-level test, stop feeling like you are faking it</td></tr></table><br><strong>what i am explicitly not building:</strong><ul class="cs-d-bullet"><li>another summarizer. it is the tool already failing them.</li><li>a speed-reading gimmick. speed was the lowest-ranked failure mode.</li><li>anything for leisure readers. they have no pain and will not pay.</li></ul></div>
+    </div>
+    <div class="cs-d-section">
+      <div class="cs-d-section-hdr"><span class="cs-d-num">08</span><span class="cs-d-section-title">what i still need to prove</span></div>
+      <div class="cs-d-section-intro">validated problem, unvalidated business</div>
+      <div class="cs-d-body">the decision: continue testing. 16 of 40 scored 8+ on pain, so the problem is validated. willingness to pay and the winning mechanic are not, so committing to a full build now would be committing on faith.<br><br><strong>open questions:</strong><ul class="cs-d-bullet"><li><strong>willingness to pay.</strong> no pricing signal has been tested yet.</li><li><strong>which mechanic leads.</strong> retrieval checkpoints or social accountability. only a prototype can rank them.</li><li><strong>the forum channel.</strong> undersampled at 6 of a 20-response target.</li></ul><br>next experiment: a two-week prototype test pitting retrieval checkpoints against accountability, run alongside a pricing smoke test.</div>
+    </div>
+    <div class="cs-d-section">
+      <div class="cs-d-section-hdr"><span class="cs-d-num">09</span><span class="cs-d-section-title">what this demonstrates</span></div>
+      <div class="cs-d-body"><ul class="cs-d-bullet"><li><strong>pivot judgment.</strong> killed a beloved hardware demo on an honest feasibility read, and kept the validated pain. separated the problem from the solution instead of defending the idea.</li><li><strong>user research.</strong> 40 mixed-method interviews, coded to a failure mode and pain score, with the distribution setting direction rather than a hunch.</li><li><strong>prioritization.</strong> used the failure-mode data to drop speed, the glasses' core, and the segment pain scores to cut leisure readers from the market.</li><li><strong>deciding what not to build.</strong> named three things out of scope, each tied to a specific piece of evidence.</li><li><strong>ambiguity and honesty.</strong> moved from a dead idea to a hypothesis a team could build against, and stayed honest about what discovery had not yet proven, with a test attached to each gap.</li></ul></div>
     </div>
   </div>
 
